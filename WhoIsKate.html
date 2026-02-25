@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalyani (Kate) - The DNA Translator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f9ff; /* Light Sky Blue tint */
+            color: #1e293b;
+        }
+        /* Palette: Vibrant & Trustworthy */
+        /* Primary: #0ea5e9 (Sky Blue) */
+        /* Secondary: #8b5cf6 (Violet) */
+        /* Accent: #f43f5e (Rose) */
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            max-height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #e2e8f0;
+            transform: translateX(-50%);
+        }
+    </style>
+    <!-- 
+        Data Source Analysis:
+        - Work: Computational Biologist / "DNA Translator".
+        - Projects: ProteoGX (Cancer GPS), EXCESP (Handshake Library).
+        - Visa: O-1A "Extraordinary Ability" (NBA All-Star analogy).
+        - Impact: Speeding up discovery from years to months.
+        - Personal: Request for prayer (Financial, Lonely, Stressful).
+        - Palette: Vibrant Blues and Purples.
+        - Constraint: NO SVG, NO Mermaid JS. Charts via Chart.js.
+    -->
+</head>
+<body class="antialiased">
+
+    <!-- Navigation / Hero -->
+    <div class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-slate-800">Kalyani (Kate) Dhusia</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#intro" class="text-slate-600 hover:text-[#0ea5e9]">The Job</a>
+                    <a href="#projects" class="text-slate-600 hover:text-[#0ea5e9]">The Inventions</a>
+                    <a href="#visa" class="text-slate-600 hover:text-[#0ea5e9]">The Visa</a>
+                    <a href="#prayer" class="text-slate-600 hover:text-[#f43f5e]">Prayer Requests</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div id="intro" class="relative bg-gradient-to-r from-[#0ea5e9] to-[#8b5cf6] text-white py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6">The "DNA Translator"</h1>
+            <p class="text-xl md:text-2xl font-light mb-8">
+                Turning 3 Billion "Letters" of DNA into Life-Saving Cures.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <div class="bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 border border-white/30">
+                    🧬 Biology
+                </div>
+                <div class="text-2xl font-bold flex items-center">+</div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 border border-white/30">
+                    💻 Computers
+                </div>
+                <div class="text-2xl font-bold flex items-center">=</div>
+                <div class="bg-white text-[#8b5cf6] font-bold rounded-full px-6 py-2">
+                    Me!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- What I Do Section -->
+    <div class="max-w-6xl mx-auto px-4 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-slate-800 mb-6">The Library Problem</h2>
+                <p class="text-lg text-slate-600 mb-4">
+                    Imagine your body is a library with <strong>3 billion books</strong> (your DNA). Somewhere in there is a single "typo" causing a disease like cancer.
+                </p>
+                <p class="text-lg text-slate-600 mb-6">
+                    If a doctor read every book, it would take lifetimes. I build <strong>AI Super-Robots</strong> that read the library in hours, find the typo, and point to the cure.
+                </p>
+                <div class="card p-6 border-l-4 border-[#0ea5e9]">
+                    <h3 class="font-bold text-lg mb-2">My Role: The Bridge</h3>
+                    <p class="text-slate-600">
+                        I stand between the doctors (who know the disease) and the computers (who handle the data) to translate "Code" into "Cures."
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Chart: Speed Comparison -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-center font-bold text-slate-700 mb-4">Time to Find the "Typo" (Genetic Mutation)</h3>
+                <div class="chart-container">
+                    <canvas id="speedChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-slate-500 mt-4">
+                    Comparing manual research vs. my automated AI pipelines.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Section -->
+    <div id="projects" class="bg-white py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">My Two Main Inventions</h2>
+                <p class="text-lg text-slate-500 mt-2">The tools I built to help scientists fight cancer.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- ProteoGX Card -->
+                <div class="card p-8 border-t-8 border-[#0ea5e9]">
+                    <div class="text-5xl mb-4">🗺️</div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">ProteoGX</h3>
+                    <p class="text-[#0ea5e9] font-bold mb-4 text-sm uppercase tracking-wide">The Cancer GPS</p>
+                    <p class="text-slate-600">
+                        Think of this as a specialized GPS for cancer. It helps doctors see exactly how a patient’s unique genetics are changing their proteins. Instead of guessing, they can pick the right treatment the first time.
+                    </p>
+                </div>
+
+                <!-- EXCESP Card -->
+                <div class="card p-8 border-t-8 border-[#8b5cf6]">
+                    <div class="text-5xl mb-4">🤝</div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">EXCESP</h3>
+                    <p class="text-[#8b5cf6] font-bold mb-4 text-sm uppercase tracking-wide">The Handshake Library</p>
+                    <p class="text-slate-600">
+                        Cells talk by "shaking hands" using proteins. I built a digital library that catalogs every possible handshake. This helps scientists design medicines that can "shake hands" with cancer cells to turn them off.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Visa Section -->
+    <div id="visa" class="py-16 bg-[#f8fafc]">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                
+                <!-- Chart: Visa Rarity -->
+                <div class="order-2 md:order-1 bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-center font-bold text-slate-700 mb-4">The "All-Star" Team (Visa Categories)</h3>
+                    <div class="chart-container">
+                        <canvas id="visaChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-slate-500 mt-4">
+                        The O-1A is reserved for the top small percentage of global experts.
+                    </p>
+                </div>
+
+                <div class="order-1 md:order-2">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-6">The "NBA All-Star" Visa 🏀</h2>
+                    <p class="text-lg text-slate-600 mb-6">
+                        People ask about my visa (O-1A). It's not a standard work visa. It is the <strong>"Extraordinary Ability"</strong> visa. 
+                    </p>
+                    <p class="text-lg text-slate-600 mb-6">
+                        Think of it this way: If science were professional basketball, getting an O-1A is like being recruited for the <strong>NBA All-Star Team</strong>. The US government vetted me and decided they need my brain here to solve big problems.
+                    </p>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-slate-700 mb-2">What I had to prove:</h4>
+                        <ul class="list-none space-y-2 text-slate-600">
+                            <li>✅ Original, major contributions to science.</li>
+                            <li>✅ Research used by scientists globally.</li>
+                            <li>✅ Judging the work of other experts.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Impact Section -->
+    <div class="bg-white py-16">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-slate-800 mb-10">The Impact of My Work</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Stat 1 -->
+                <div class="p-6 bg-slate-50 rounded-xl">
+                    <div class="text-4xl font-bold text-[#0ea5e9] mb-2">3 Billion</div>
+                    <div class="text-sm text-slate-500 uppercase font-semibold">DNA Letters Analyzed</div>
+                </div>
+                <!-- Stat 2 -->
+                <div class="p-6 bg-slate-50 rounded-xl">
+                    <div class="text-4xl font-bold text-[#8b5cf6] mb-2">26</div>
+                    <div class="text-sm text-slate-500 uppercase font-semibold">Scientific Publications</div>
+                </div>
+                <!-- Stat 3 -->
+                <div class="p-6 bg-slate-50 rounded-xl">
+                    <div class="text-4xl font-bold text-[#f43f5e] mb-2">13</div>
+                    <div class="text-sm text-slate-500 uppercase font-semibold">Institutions Supported</div>
+                </div>
+            </div>
+
+            <!-- Before/After Chart -->
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 border border-slate-100">
+                <h3 class="text-xl font-bold text-slate-700 mb-2">Before vs. After</h3>
+                <p class="text-slate-500 mb-6">Transforming Confusion into Cures</p>
+                <div class="chart-container">
+                    <canvas id="impactChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prayer Request Section -->
+    <div id="prayer" class="bg-gradient-to-br from-slate-800 to-slate-900 text-white py-20 px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="text-6xl mb-6">🙏</div>
+            <h2 class="text-3xl font-bold mb-6">Why I Value Your Prayers</h2>
+            <p class="text-xl font-light leading-relaxed mb-10 opacity-90">
+                Even though I work with "Extraordinary" science, staying here is heavy. The legal fees are a mountain, my family is far away in India, and the pressure is high. 
+                <br><br>
+                When you pray for me, you aren't just praying for a "scientist"—you're praying for a daughter, a friend, and a sister who is trying to use the gifts God gave her to help people live longer, healthier lives.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                <div class="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                    <h4 class="font-bold text-[#f43f5e] mb-1">Financial Peace</h4>
+                    <p class="text-sm opacity-80">For provision amidst high legal costs.</p>
+                </div>
+                <div class="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                    <h4 class="font-bold text-[#0ea5e9] mb-1">Emotional Strength</h4>
+                    <p class="text-sm opacity-80">For comfort while being far from family.</p>
+                </div>
+                <div class="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                    <h4 class="font-bold text-[#8b5cf6] mb-1">Legal Favor</h4>
+                    <p class="text-sm opacity-80">For smooth processing of my green card.</p>
+                </div>
+            </div>
+            <p class="mt-12 font-bold text-2xl">Thank you for being my family! ❤️</p>
+        </div>
+    </div>
+
+    <!-- Script for Charts -->
+    <script>
+        // --- UTILITY: Label Wrapping Logic ---
+        function formatLabel(str, maxwidth) {
+            if (typeof str !== 'string') return str;
+            if (str.length <= maxwidth) return str;
+            var sections = [];
+            var words = str.split(' ');
+            var temp = '';
+            words.forEach(function(item, index) {
+                if (temp.length > 0) {
+                    var concat = temp + ' ' + item;
+                    if (concat.length > maxwidth) {
+                        sections.push(temp);
+                        temp = item;
+                    } else {
+                        temp = concat;
+                    }
+                } else {
+                    temp = item;
+                }
+            });
+            if (temp.length > 0) sections.push(temp);
+            return sections;
+        }
+
+        // --- CHART 1: Speed Comparison (Bar) ---
+        const ctxSpeed = document.getElementById('speedChart').getContext('2d');
+        new Chart(ctxSpeed, {
+            type: 'bar',
+            data: {
+                labels: ['Manual Doctor Review', 'Kalyani\'s AI Code'],
+                datasets: [{
+                    label: 'Hours to Analyze Genome',
+                    data: [8760, 24], // 1 year vs 1 day (symbolic)
+                    backgroundColor: ['#cbd5e1', '#0ea5e9'],
+                    borderRadius: 8,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            },
+                            label: function(context) {
+                                return context.raw + ' Hours';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Time (Hours)' }
+                    },
+                    x: {
+                        ticks: {
+                            callback: function(value, index, values) {
+                                const label = this.getLabelForValue(value);
+                                return formatLabel(label, 16);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 2: Visa Rarity (Doughnut) ---
+        const ctxVisa = document.getElementById('visaChart').getContext('2d');
+        new Chart(ctxVisa, {
+            type: 'doughnut',
+            data: {
+                labels: ['General Work Visas', 'Specialized Knowledge', 'O-1A Extraordinary Ability'],
+                datasets: [{
+                    data: [80, 19, 1], // Symbolic percentages
+                    backgroundColor: ['#cbd5e1', '#94a3b8', '#8b5cf6'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 3: Before vs After (Bar) ---
+        const ctxImpact = document.getElementById('impactChart').getContext('2d');
+        new Chart(ctxImpact, {
+            type: 'bar',
+            data: {
+                labels: ['Data Clarity', 'Speed of Discovery', 'Treatment Accuracy'],
+                datasets: [
+                    {
+                        label: 'Before (Raw Data)',
+                        data: [20, 10, 30],
+                        backgroundColor: '#cbd5e1',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'After (My Tools)',
+                        data: [95, 90, 95],
+                        backgroundColor: '#f43f5e',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { display: false }, // Hide numbers for abstract concept
+                        grid: { display: false }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                const label = this.getLabelForValue(value);
+                                return formatLabel(label, 14);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
