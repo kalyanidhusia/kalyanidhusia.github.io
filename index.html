@@ -19,566 +19,315 @@ How to use:
 2) Replace the <body> ... </body> content with everything below (or paste sections you want)
 3) Update links, email, and project names where marked: [EDIT]
 =========================== -->
-
 <body>
+  <!-- Header / Nav -->
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a class="brand" href="#home">
+        <span class="name">Kalyani Dhusia, Ph.D.</span>
+        <span class="tag">Computational Biology • Bioinformatics</span>
+      </a>
 
-  <!-- Top Nav -->
-  <header class="topbar">
-    <div class="container nav">
-      <div class="brand">
-        <div class="brand-name">Kalyani Dhusia, PhD</div>
-        <div class="brand-tag">Computational Systems for Biology & Healthcare</div>
-      </div>
-
-      <nav class="navlinks">
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#proof">Proof</a>
-        <a href="#retainer">Retainer</a>
-        <a href="#contact" class="btn small">Work with me</a>
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#research">Research</a>
+        <a href="#publications">Publications</a>
+        <a href="#software">Software</a>
+        <a href="#service">Service</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-cta" href="#consulting">Consulting</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <p class="eyebrow">Bioinformatics • Multi-omics • Research Computing • Healthcare Data</p>
-        <h1>
-          I build production-ready computational pipelines and data systems that turn complex biology into actionable insight.
-        </h1>
-        <p class="subhead">
-          I partner with biotech, academic labs, and healthcare teams to design scalable bioinformatics workflows, integrate
-          multi-modal datasets, and deliver clear, decision-ready outputs—fast.
+  <!-- Hero (academic-first, human tone) -->
+  <main id="home" class="wrap">
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Computational biologist building reproducible analysis for genomics, proteomics, and single-cell.</h1>
+        <p>
+          I support research teams by designing pipelines, integrating multi-omics datasets, and translating results into
+          clear, publishable outputs. My work spans academic discovery and production-grade research computing.
         </p>
 
-        <div class="cta-row">
-          <a class="btn" href="#contact">Start a conversation</a>
-          <a class="btn ghost" href="#work">See portfolio</a>
-        </div>
-
-        <div class="mini-proof">
-          <div class="pill">Nextflow / Snakemake</div>
-          <div class="pill">HPC (Slurm) + Cloud (GCP/AWS)</div>
-          <div class="pill">Python • R • SQL • Git</div>
-          <div class="pill">Single-cell & bulk RNA-seq • Proteomics</div>
+        <div class="hero-links">
+          <a class="btn" href="#contact">Get in touch</a>
+          <a class="btn ghost" href="[EDIT_CV_LINK]">Download CV</a>
+          <a class="link" href="[EDIT_GITHUB]" target="_blank" rel="noopener">GitHub</a>
+          <a class="link" href="[EDIT_ORCID]" target="_blank" rel="noopener">ORCID</a>
+          <a class="link" href="[EDIT_LINKEDIN]" target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
 
       <aside class="hero-card">
         <div class="card">
-          <h3>What I’m best at</h3>
+          <h3>At a glance</h3>
           <ul>
-            <li><b>Pipeline engineering:</b> reproducible, container-ready workflows</li>
-            <li><b>Multi-omics integration:</b> DNA/RNA/protein/single-cell analytics</li>
-            <li><b>Clinical & research data systems:</b> relational databases + governance</li>
-            <li><b>Stakeholder communication:</b> explainable results & documentation</li>
+            <li>Assistant Staff Scientist, UAMS</li>
+            <li>Structural bioinformatics (Einstein) + applied genomics/proteomics</li>
+            <li>Workflow engineering: Nextflow, Snakemake</li>
+            <li>HPC (Slurm) + Cloud (GCP/AWS)</li>
           </ul>
-
-          <div class="divider"></div>
-
-          <h3>Quick links</h3>
-          <div class="linkgrid">
-            <a href="[EDIT_LINKEDIN]" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="[EDIT_GITHUB]" target="_blank" rel="noopener">GitHub</a>
-            <a href="[EDIT_ORCID]" target="_blank" rel="noopener">ORCID</a>
-            <a href="[EDIT_SCHOLAR]" target="_blank" rel="noopener">Google Scholar</a>
-          </div>
         </div>
       </aside>
-    </div>
-  </section>
+    </section>
 
-  <!-- Services -->
-  <section id="services" class="section">
-    <div class="container">
-      <div class="section-head">
-        <h2>Services</h2>
-        <p>Clear deliverables, fast execution, strong documentation. Built for scientific teams that need reliability.</p>
+    <!-- Simple tiles (inviting, not crowded) -->
+    <section class="tiles" aria-label="Highlights">
+      <div class="tile">
+        <h3>Research & analytics</h3>
+        <p>Multi-omics integration, biomarker-focused analysis, interpretable modeling, and figure-ready reporting.</p>
       </div>
+      <div class="tile">
+        <h3>Pipelines & reproducibility</h3>
+        <p>Reliable workflows on HPC/cloud with clean documentation, versioning, and handoff-ready outputs.</p>
+      </div>
+      <div class="tile">
+        <h3>Collaboration</h3>
+        <p>Comfortable translating between experimental and computational teams to keep projects moving.</p>
+      </div>
+    </section>
 
-      <div class="grid3">
+    <!-- Research -->
+    <section id="research" class="section">
+      <h2>Research focus</h2>
+      <p class="lead">
+        I work at the intersection of immunology, cancer biology, and computational methods—using multi-omics data to
+        understand mechanisms and support translational goals.
+      </p>
+
+      <div class="two-col">
         <div class="card">
-          <h3>Bioinformatics Pipeline Development</h3>
-          <p>End-to-end workflows for bulk/single-cell RNA-seq, WES/WGS, and proteomics—designed for HPC/cloud.</p>
-          <ul class="checklist">
-            <li>Nextflow / Snakemake workflow design</li>
-            <li>Containerization (Docker/Singularity) + versioned environments</li>
-            <li>QA/QC checkpoints and reproducibility</li>
+          <h3>Current work (UAMS)</h3>
+          <ul>
+            <li>Multi-omics analysis pipelines for genomics + proteomics</li>
+            <li>Clinical/research data integration and reproducible reporting</li>
+            <li>Core facility support and training</li>
           </ul>
         </div>
 
         <div class="card">
-          <h3>Multi-Omics Analytics & Integration</h3>
-          <p>Integrated analyses that connect signals across modalities and produce decision-ready results.</p>
-          <ul class="checklist">
-            <li>Bulk + single-cell + proteomics integration</li>
-            <li>Pathway/network analysis; target & biomarker prioritization</li>
-            <li>Publication-grade figures and reports</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>Research Data Infrastructure</h3>
-          <p>Data models and pipelines that make datasets usable, auditable, and scalable across teams.</p>
-          <ul class="checklist">
-            <li>Relational database design (SQL) and governance</li>
-            <li>ETL/ELT automation; data validation & integrity checks</li>
-            <li>Team-friendly documentation + onboarding</li>
+          <h3>Prior work (Einstein / MSU)</h3>
+          <ul>
+            <li>Protein-protein interaction modeling and immune signaling</li>
+            <li>Interactome resource development (EXCESP)</li>
+            <li>Genomic regulatory modeling</li>
           </ul>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Work / Portfolio -->
-  <section id="work" class="section alt">
-    <div class="container">
-      <div class="section-head">
-        <h2>Selected Work</h2>
-        <p>Representative projects. I can share deeper technical details under NDA when needed.</p>
+    <!-- Publications -->
+    <section id="publications" class="section">
+      <h2>Selected publications</h2>
+      <p class="lead">A short list here, with a full list on ORCID/Google Scholar.</p>
+
+      <div class="card">
+        <ul class="pubs">
+          <li><b>proteoDA</b> — quantitative proteomics package (JOSS, 2023)</li>
+          <li><b>EXCESP</b> — structure-based extracellular interactome database (J Proteome Res, 2022)</li>
+          <li><b>TNF/TNFR interactome analyses</b> (Comput Biol Chem, 2023)</li>
+        </ul>
+        <div class="inline-links">
+          <a href="[EDIT_ORCID]" target="_blank" rel="noopener">Full publication list (ORCID)</a>
+          <a href="[EDIT_SCHOLAR]" target="_blank" rel="noopener">Google Scholar</a>
+        </div>
       </div>
+    </section>
 
-      <div class="grid2">
-        <article class="card">
-          <div class="kicker">PIPELINE PLATFORM</div>
-          <h3>ProteoGX (Nextflow-based multi-omics workflows)</h3>
-          <p>
-            Modular workflow framework to standardize reference prep, alignment, variant calling, and downstream reporting
-            for genomics and proteogenomics projects.
-          </p>
-          <ul class="meta">
-            <li><b>Stack:</b> Nextflow, Python, R, Git, HPC (Slurm), containers</li>
-            <li><b>Outcome:</b> Reduced turnaround time by [METRIC]% by automating repeatable steps and standardizing QC.</li>
-          </ul>
-          <div class="tagrow">
-            <span class="tag">Workflow engineering</span>
-            <span class="tag">Reproducibility</span>
-            <span class="tag">HPC</span>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="kicker">DATA SYSTEM</div>
-          <h3>MMDB (clinical + molecular relational database)</h3>
-          <p>
-            Built and maintained a secure relational system integrating clinical and research data to support precision
-            medicine queries and analysis across oncology cohorts.
-          </p>
-          <ul class="meta">
-            <li><b>Stack:</b> SQL, Python, ETL, governance, access controls</li>
-            <li><b>Outcome:</b> Enabled structured queries across 500+ patients and improved data reliability via validation checks.</li>
-          </ul>
-          <div class="tagrow">
-            <span class="tag">Data modeling</span>
-            <span class="tag">ETL</span>
-            <span class="tag">Governance</span>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="kicker">ANALYTICS PRODUCT</div>
-          <h3>proteoDA (core-service proteomics analytics)</h3>
-          <p>
-            Published an R-based analysis framework that made standardized proteomics analysis accessible to non-expert users
-            in a core-service environment.
-          </p>
-          <ul class="meta">
-            <li><b>Stack:</b> R, limma-style modeling, visualization, documentation</li>
-            <li><b>Outcome:</b> Adopted by 30+ users; shortened “data-to-insight” cycle by [METRIC] days on average.</li>
-          </ul>
-          <div class="tagrow">
-            <span class="tag">Stat modeling</span>
-            <span class="tag">Visualization</span>
-            <span class="tag">Documentation</span>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="kicker">IMMUNOLOGY / STRUCTURAL BIOINFORMATICS</div>
-          <h3>EXCESP (extracellular interactome database)</h3>
-          <p>
-            Led development of a public, structure-based resource for extracellular protein-protein interactions, combining
-            computational modeling with machine learning methods.
-          </p>
-          <ul class="meta">
-            <li><b>Stack:</b> Python, Flask, SQL, ML, structural modeling</li>
-            <li><b>Outcome:</b> Produced peer-reviewed publications and reusable assets for collaborators.</li>
-          </ul>
-          <div class="tagrow">
-            <span class="tag">Structural bioinformatics</span>
-            <span class="tag">ML</span>
-            <span class="tag">Web tools</span>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Proof / Credibility -->
-  <section id="proof" class="section">
-    <div class="container">
-      <div class="section-head">
-        <h2>Proof & Credibility</h2>
-        <p>Signals that reduce perceived hiring/partner risk.</p>
-      </div>
-
-      <div class="grid3">
+    <!-- Software -->
+    <section id="software" class="section">
+      <h2>Software & resources</h2>
+      <div class="two-col">
         <div class="card">
-          <h3>Scientific authority</h3>
-          <ul class="checklist">
-            <li>O-1A (Extraordinary Ability) recipient</li>
-            <li>26 peer-reviewed publications</li>
-            <li>Invited journal reviewer (see ORCID)</li>
-            <li>AR INBRE NIH pilot grant reviewer (invitation-based)</li>
+          <h3>Open-source / reproducible work</h3>
+          <ul>
+            <li>proteoDA (R package)</li>
+            <li>Pipeline development (Nextflow / Snakemake)</li>
+            <li>ARINBRE GitHub maintenance</li>
           </ul>
+          <a class="link" href="[EDIT_GITHUB]" target="_blank" rel="noopener">Visit GitHub →</a>
         </div>
 
         <div class="card">
-          <h3>Operational leadership</h3>
-          <ul class="checklist">
-            <li>Maintains core facility pipelines and governance</li>
-            <li>Supervises students and manages delivery timelines</li>
-            <li>Maintains program GitHub org: ARINBRE</li>
-            <li>Grant support (review, award, billing) ~15% role</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>Visualization & single-cell</h3>
-          <ul class="checklist">
-            <li>ggplot2 / matplotlib for reporting</li>
+          <h3>Visualization</h3>
+          <ul>
+            <li>Publication figures: ggplot2 / matplotlib</li>
             <li>Single-cell workflows via nf-core Seurat pipeline</li>
-            <li>Publication-ready multi-omics figures</li>
-            <li>Clear communication to mixed audiences</li>
+            <li>Reports via notebooks / markdown</li>
           </ul>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Retainer -->
-  <section id="retainer" class="section alt">
-    <div class="container">
-      <div class="section-head">
-        <h2>Retainer / Consulting Engagements</h2>
-        <p>If you need reliable execution without hiring a full team, this is the cleanest model.</p>
+    <!-- Service -->
+    <section id="service" class="section">
+      <h2>Service & peer review</h2>
+      <div class="card">
+        <ul>
+          <li>AR INBRE NIH pilot grant reviewer (invitation-based)</li>
+          <li>Journal peer reviewer (ORCID record)</li>
+          <li>Training and operational support in core facility settings</li>
+        </ul>
       </div>
+    </section>
 
-      <div class="grid2">
+    <!-- Consulting (separate, quiet “side tab”) -->
+    <section id="consulting" class="section">
+      <h2>Consulting / Retainer</h2>
+      <p class="lead">
+        If you need short-turnaround support for bioinformatics pipelines, multi-omics analysis, or research data systems,
+        I take limited consulting engagements.
+      </p>
+
+      <div class="two-col">
         <div class="card">
-          <h3>Common retainer use-cases</h3>
-          <ul class="checklist">
-            <li>Build or refactor a production bioinformatics pipeline</li>
-            <li>Stand up a cohort database + reproducible analysis layer</li>
-            <li>Implement QC, reporting, and documentation standards</li>
-            <li>Help a team move from ad-hoc scripts to workflow tooling</li>
+          <h3>Good fit for</h3>
+          <ul>
+            <li>Pipeline build/refactor for RNA-seq, single-cell, proteomics, WES/WGS</li>
+            <li>Reproducible reporting and analysis handoff to internal teams</li>
+            <li>Data modeling + ETL for research/clinical integration</li>
           </ul>
         </div>
 
         <div class="card">
-          <h3>How I work</h3>
-          <ol class="steps">
-            <li><b>Week 1:</b> scope, data inventory, success metrics, risks</li>
-            <li><b>Weeks 2–4:</b> implementation + validation + documentation</li>
-            <li><b>Ongoing:</b> iteration, stakeholder updates, handoff training</li>
-          </ol>
-          <p class="note">
-            Typical deliverables: versioned pipeline, runbooks/SOPs, QC dashboards/plots, and reproducible reports.
+          <h3>Engagement types</h3>
+          <ul>
+            <li><b>Project-based:</b> defined scope + deliverables</li>
+            <li><b>Retainer:</b> ongoing support and iteration</li>
+          </ul>
+          <p class="small">
+            Note: I can share details under NDA where needed.
           </p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact -->
-  <section id="contact" class="section">
-    <div class="container">
-      <div class="section-head">
-        <h2>Contact</h2>
-        <p>Tell me what you’re trying to ship. I’ll respond with a concrete plan and next steps.</p>
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <div class="card contact">
+        <p>
+          Email: <a href="mailto:[EDIT_EMAIL]">[EDIT_EMAIL]</a><br/>
+          Location: Little Rock, AR • Open to remote collaboration
+        </p>
+        <p class="small">
+          Include: your data types, goal, timeline, and whether you use HPC/cloud.
+        </p>
       </div>
+    </section>
 
-      <div class="contact-card">
-        <div class="card">
-          <div class="contact-grid">
-            <div>
-              <h3>Best way to reach me</h3>
-              <p>
-                Email: <a href="mailto:[EDIT_EMAIL]">[EDIT_EMAIL]</a><br />
-                Location: Little Rock, AR (open to remote collaboration)
-              </p>
-
-              <div class="cta-row">
-                <a class="btn" href="mailto:[EDIT_EMAIL]?subject=Consulting%20inquiry%20-%20Kalyani%20Dhusia">
-                  Email me
-                </a>
-                <a class="btn ghost" href="[EDIT_LINKEDIN]" target="_blank" rel="noopener">
-                  Connect on LinkedIn
-                </a>
-              </div>
-            </div>
-
-            <div class="mini-card">
-              <h3>What to include</h3>
-              <ul class="checklist">
-                <li>Data types (RNA-seq, WES, proteomics, single-cell, etc.)</li>
-                <li>Current pain point (speed, scale, reproducibility, QA, handoff)</li>
-                <li>Timeline and any constraints (HPC, cloud, compliance)</li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
+    <footer class="footer">
+      <div class="wrap footer-row">
+        <span>© <span id="year"></span> Kalyani Dhusia</span>
+        <span class="footer-links">
+          <a href="[EDIT_GITHUB]" target="_blank" rel="noopener">GitHub</a>
+          <a href="[EDIT_LINKEDIN]" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="[EDIT_ORCID]" target="_blank" rel="noopener">ORCID</a>
+        </span>
       </div>
-    </div>
-  </section>
+    </footer>
+  </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer-row">
-      <div>© <span id="year"></span> Kalyani Dhusia</div>
-      <div class="footer-links">
-        <a href="[EDIT_GITHUB]" target="_blank" rel="noopener">GitHub</a>
-        <a href="[EDIT_LINKEDIN]" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="[EDIT_ORCID]" target="_blank" rel="noopener">ORCID</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Minimal JS -->
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 
-  <!-- ===========================
-  Minimal, clean CSS (keep in-page or move to style.css)
-  ============================ -->
+  <!-- =========
+  CSS: keep your same theme by copying your existing site colors into :root
+  ========= -->
   <style>
     :root{
-      --bg: #0b0f17;
-      --panel: #0f1623;
-      --alt: #0c1320;
-      --text: #e7eefc;
-      --muted: #b8c4dd;
-      --line: rgba(255,255,255,.08);
-      --accent: #7aa2ff;
-      --accent2: #66e3c4;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-      --max: 1080px;
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      /* IMPORTANT: paste your CURRENT site colors here */
+      --bg: [PASTE_OLD_BG];
+      --panel: [PASTE_OLD_PANEL];
+      --text: [PASTE_OLD_TEXT];
+      --muted: [PASTE_OLD_MUTED];
+      --accent: [PASTE_OLD_ACCENT];
+      --line: rgba(0,0,0,.10);
+      --radius: 14px;
+      --max: 980px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
 
-    *{ box-sizing: border-box; }
-    body{
-      margin:0;
-      font-family: var(--font);
-      background: radial-gradient(1200px 600px at 20% -10%, rgba(122,162,255,.18), transparent 60%),
-                  radial-gradient(900px 500px at 90% 10%, rgba(102,227,196,.14), transparent 55%),
-                  var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-    }
-    a{ color: var(--text); text-decoration: none; }
-    a:hover{ text-decoration: underline; }
-    .container{ max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+    body{ margin:0; font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.6; }
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding:0 18px; }
 
-    /* Topbar */
-    .topbar{
-      position: sticky; top: 0; z-index: 20;
-      backdrop-filter: blur(10px);
-      background: rgba(11,15,23,.7);
-      border-bottom: 1px solid var(--line);
+    .site-header{
+      position:sticky; top:0; z-index:10;
+      background:var(--bg);
+      border-bottom:1px solid var(--line);
     }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 14px 0;
-      gap: 16px;
-    }
-    .brand-name{ font-weight: 700; letter-spacing: .2px; }
-    .brand-tag{ font-size: 13px; color: var(--muted); margin-top: 2px; }
-    .navlinks{ display:flex; gap: 14px; align-items:center; flex-wrap: wrap; }
-    .navlinks a{ font-size: 14px; color: var(--muted); }
-    .navlinks a:hover{ color: var(--text); text-decoration:none; }
+    .header-row{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:14px; }
+    .brand{ display:flex; flex-direction:column; gap:2px; color:var(--text); }
+    .name{ font-weight:700; }
+    .tag{ font-size:13px; color:var(--muted); }
 
-    /* Buttons */
+    .nav{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+    .nav a{ color:var(--muted); font-size:14px; }
+    .nav a:hover{ color:var(--text); text-decoration:none; }
+    .nav-cta{
+      padding:8px 12px; border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--text) !important;
+      background:var(--panel);
+    }
+
+    .hero{ display:grid; grid-template-columns: 1.3fr .7fr; gap:18px; padding:26px 0 10px; }
+    .hero h1{ margin:0 0 10px; font-size:34px; line-height:1.15; letter-spacing:-.3px; }
+    .hero p{ margin:0 0 14px; color:var(--muted); }
+    .hero-links{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+
     .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      background: linear-gradient(135deg, rgba(122,162,255,.95), rgba(102,227,196,.75));
-      color: #07101a;
-      padding: 12px 16px;
-      border-radius: 999px;
-      font-weight: 700;
-      border: 1px solid rgba(255,255,255,.15);
-      box-shadow: var(--shadow);
-      text-decoration:none !important;
+      display:inline-block; padding:10px 14px; border-radius:999px;
+      background:var(--accent); color:white; font-weight:600;
     }
-    .btn:hover{ filter: brightness(1.03); }
-    .btn.small{ padding: 9px 12px; font-size: 13px; }
+    .btn:hover{ text-decoration:none; filter:brightness(1.03); }
     .btn.ghost{
-      background: transparent;
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,.18);
-      box-shadow: none;
+      background:transparent; color:var(--accent);
+      border:1px solid var(--accent);
     }
+    .link{ color:var(--muted); }
+    .link:hover{ color:var(--text); text-decoration:none; }
 
-    /* Hero */
-    .hero{ padding: 56px 0 26px; }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.4fr .9fr;
-      gap: 24px;
-      align-items: start;
-    }
-    .eyebrow{
-      color: var(--muted);
-      font-size: 13px;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      margin: 0 0 10px;
-    }
-    h1{
-      font-size: clamp(28px, 4vw, 44px);
-      line-height: 1.12;
-      margin: 0 0 14px;
-      letter-spacing: -0.6px;
-    }
-    .subhead{
-      font-size: 16px;
-      color: var(--muted);
-      margin: 0 0 20px;
-      max-width: 62ch;
-    }
-    .cta-row{ display:flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 6px; }
-    .mini-proof{ display:flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
-    .pill{
-      font-size: 12px;
-      color: var(--muted);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      padding: 8px 10px;
-      border-radius: 999px;
-    }
-    .hero-card .card{ position: sticky; top: 84px; }
-
-    /* Sections */
-    .section{ padding: 44px 0; }
-    .section.alt{ background: linear-gradient(180deg, transparent, rgba(255,255,255,.02), transparent); }
-    .section-head{ margin-bottom: 18px; }
-    .section-head h2{
-      font-size: 26px;
-      margin: 0 0 6px;
-      letter-spacing: -0.3px;
-    }
-    .section-head p{ margin:0; color: var(--muted); max-width: 85ch; }
-
-    /* Cards + Grids */
     .card{
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:16px;
     }
-    .grid3{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .grid2{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-    .divider{
-      height:1px;
-      background: var(--line);
-      margin: 14px 0;
-    }
-    .kicker{
-      font-size: 12px;
-      color: rgba(122,162,255,.95);
-      letter-spacing: .6px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .meta{ margin: 12px 0 0; padding-left: 18px; color: var(--muted); }
-    .tagrow{ display:flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-    .tag{
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-    }
+    .hero-card ul{ margin:10px 0 0; padding-left:18px; color:var(--muted); }
 
-    /* Lists */
-    ul{ margin: 10px 0 0; }
-    .checklist{ padding-left: 18px; color: var(--muted); }
-    .steps{ margin: 10px 0 0; padding-left: 18px; color: var(--muted); }
-    .note{ color: var(--muted); margin-top: 10px; }
+    .tiles{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin:18px 0 6px; }
+    .tile{ border:1px solid var(--line); border-radius:var(--radius); padding:14px; background:var(--panel); }
+    .tile h3{ margin:0 0 8px; font-size:16px; }
+    .tile p{ margin:0; color:var(--muted); font-size:14px; }
 
-    /* Link grid */
-    .linkgrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .linkgrid a{
-      padding: 10px 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 12px;
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      text-decoration: none;
-    }
-    .linkgrid a:hover{ color: var(--text); border-color: rgba(255,255,255,.22); }
+    .section{ padding:26px 0 0; }
+    .section h2{ margin:0 0 8px; font-size:22px; }
+    .lead{ margin:0 0 12px; color:var(--muted); }
 
-    /* Contact */
-    .contact-card{ margin-top: 10px; }
-    .contact-grid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 14px;
-      align-items:start;
-    }
-    .mini-card{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.15);
-      border-radius: 14px;
-      padding: 14px;
-    }
+    .two-col{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    ul{ margin:10px 0 0; padding-left:18px; color:var(--muted); }
+    .pubs li{ margin-bottom:8px; }
 
-    /* Footer */
-    .footer{
-      border-top: 1px solid var(--line);
-      padding: 20px 0;
-      color: var(--muted);
-    }
-    .footer-row{
-      display:flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-size: 14px;
-    }
-    .footer-links{ display:flex; gap: 14px; }
-    .footer-links a{ color: var(--muted); }
-    .footer-links a:hover{ color: var(--text); text-decoration:none; }
+    .inline-links{ margin-top:10px; display:flex; gap:14px; flex-wrap:wrap; font-size:14px; }
 
-    /* Responsive */
-    @media (max-width: 980px){
-      .hero-grid{ grid-template-columns: 1fr; }
-      .hero-card .card{ position: relative; top: auto; }
-      .grid3{ grid-template-columns: 1fr; }
-      .grid2{ grid-template-columns: 1fr; }
-      .contact-grid{ grid-template-columns: 1fr; }
-      .navlinks{ display:none; } /* keep simple on mobile */
+    .contact p{ margin:0 0 8px; }
+    .small{ color:var(--muted); font-size:13px; margin:0; }
+
+    .footer{ margin-top:26px; padding:16px 0; border-top:1px solid var(--line); }
+    .footer-row{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; color:var(--muted); }
+    .footer-links a{ color:var(--muted); margin-left:12px; }
+    .footer-links a:hover{ color:var(--text); text-decoration:none; }
+
+    @media (max-width: 900px){
+      .hero{ grid-template-columns:1fr; }
+      .tiles{ grid-template-columns:1fr; }
+      .two-col{ grid-template-columns:1fr; }
     }
   </style>
-
 </body>
 </html>
