@@ -1,244 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>kalyani dhusia personel website</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="webdhusia.css">
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
-<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-<link rel="stylesheet" href="fontawesome/css/all.css">
-<style>
-html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-</style>
-</head>
-<!-- ===========================
-MODERN CONSULTING HOMEPAGE (PASTE-IN)
-How to use:
-1) Back up your current index.html
-2) Replace the <body> ... </body> content with everything below (or paste sections you want)
-3) Update links, email, and project names where marked: [EDIT]
-=========================== -->
-<body>
-  <!-- Header / Nav -->
-  <header class="site-header">
-    <div class="wrap header-row">
-      <a class="brand" href="#home">
-        <span class="name">Kalyani Dhusia, Ph.D.</span>
-        <span class="tag">Computational Biology • Bioinformatics</span>
-      </a>
-
-      <nav class="nav">
-        <a href="#home">Home</a>
-        <a href="#research">Research</a>
-        <a href="#publications">Publications</a>
-        <a href="#software">Software</a>
-        <a href="#service">Service</a>
-        <a href="#contact">Contact</a>
-        <a class="nav-cta" href="#consulting">Consulting</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero (academic-first, human tone) -->
-  <main id="home" class="wrap">
-    <section class="hero">
-      <div class="hero-text">
-        <h1>Computational biologist building reproducible analysis for genomics, proteomics, and single-cell.</h1>
-        <p>
-          I support research teams by designing pipelines, integrating multi-omics datasets, and translating results into
-          clear, publishable outputs. My work spans academic discovery and production-grade research computing.
-        </p>
-
-        <div class="hero-links">
-          <a class="btn" href="#contact">Get in touch</a>
-          <a class="btn ghost" href="[EDIT_CV_LINK]">Download CV</a>
-          <a class="link" href="[EDIT_GITHUB]" target="_blank" rel="noopener">GitHub</a>
-          <a class="link" href="[EDIT_ORCID]" target="_blank" rel="noopener">ORCID</a>
-          <a class="link" href="[EDIT_LINKEDIN]" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </div>
-
-      <aside class="hero-card">
-        <div class="card">
-          <h3>At a glance</h3>
-          <ul>
-            <li>Assistant Staff Scientist, UAMS</li>
-            <li>Structural bioinformatics (Einstein) + applied genomics/proteomics</li>
-            <li>Workflow engineering: Nextflow, Snakemake</li>
-            <li>HPC (Slurm) + Cloud (GCP/AWS)</li>
-          </ul>
-        </div>
-      </aside>
-    </section>
-
-    <!-- Simple tiles (inviting, not crowded) -->
-    <section class="tiles" aria-label="Highlights">
-      <div class="tile">
-        <h3>Research & analytics</h3>
-        <p>Multi-omics integration, biomarker-focused analysis, interpretable modeling, and figure-ready reporting.</p>
-      </div>
-      <div class="tile">
-        <h3>Pipelines & reproducibility</h3>
-        <p>Reliable workflows on HPC/cloud with clean documentation, versioning, and handoff-ready outputs.</p>
-      </div>
-      <div class="tile">
-        <h3>Collaboration</h3>
-        <p>Comfortable translating between experimental and computational teams to keep projects moving.</p>
-      </div>
-    </section>
-
-    <!-- Research -->
-    <section id="research" class="section">
-      <h2>Research focus</h2>
-      <p class="lead">
-        I work at the intersection of immunology, cancer biology, and computational methods—using multi-omics data to
-        understand mechanisms and support translational goals.
-      </p>
-
-      <div class="two-col">
-        <div class="card">
-          <h3>Current work (UAMS)</h3>
-          <ul>
-            <li>Multi-omics analysis pipelines for genomics + proteomics</li>
-            <li>Clinical/research data integration and reproducible reporting</li>
-            <li>Core facility support and training</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>Prior work (Einstein / MSU)</h3>
-          <ul>
-            <li>Protein-protein interaction modeling and immune signaling</li>
-            <li>Interactome resource development (EXCESP)</li>
-            <li>Genomic regulatory modeling</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Publications -->
-    <section id="publications" class="section">
-      <h2>Selected publications</h2>
-      <p class="lead">A short list here, with a full list on ORCID/Google Scholar.</p>
-
-      <div class="card">
-        <ul class="pubs">
-          <li><b>proteoDA</b> — quantitative proteomics package (JOSS, 2023)</li>
-          <li><b>EXCESP</b> — structure-based extracellular interactome database (J Proteome Res, 2022)</li>
-          <li><b>TNF/TNFR interactome analyses</b> (Comput Biol Chem, 2023)</li>
-        </ul>
-        <div class="inline-links">
-          <a href="[EDIT_ORCID]" target="_blank" rel="noopener">Full publication list (ORCID)</a>
-          <a href="[EDIT_SCHOLAR]" target="_blank" rel="noopener">Google Scholar</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Software -->
-    <section id="software" class="section">
-      <h2>Software & resources</h2>
-      <div class="two-col">
-        <div class="card">
-          <h3>Open-source / reproducible work</h3>
-          <ul>
-            <li>proteoDA (R package)</li>
-            <li>Pipeline development (Nextflow / Snakemake)</li>
-            <li>ARINBRE GitHub maintenance</li>
-          </ul>
-          <a class="link" href="[EDIT_GITHUB]" target="_blank" rel="noopener">Visit GitHub →</a>
-        </div>
-
-        <div class="card">
-          <h3>Visualization</h3>
-          <ul>
-            <li>Publication figures: ggplot2 / matplotlib</li>
-            <li>Single-cell workflows via nf-core Seurat pipeline</li>
-            <li>Reports via notebooks / markdown</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Service -->
-    <section id="service" class="section">
-      <h2>Service & peer review</h2>
-      <div class="card">
-        <ul>
-          <li>AR INBRE NIH pilot grant reviewer (invitation-based)</li>
-          <li>Journal peer reviewer (ORCID record)</li>
-          <li>Training and operational support in core facility settings</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Consulting (separate, quiet “side tab”) -->
-    <section id="consulting" class="section">
-      <h2>Consulting / Retainer</h2>
-      <p class="lead">
-        If you need short-turnaround support for bioinformatics pipelines, multi-omics analysis, or research data systems,
-        I take limited consulting engagements.
-      </p>
-
-      <div class="two-col">
-        <div class="card">
-          <h3>Good fit for</h3>
-          <ul>
-            <li>Pipeline build/refactor for RNA-seq, single-cell, proteomics, WES/WGS</li>
-            <li>Reproducible reporting and analysis handoff to internal teams</li>
-            <li>Data modeling + ETL for research/clinical integration</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>Engagement types</h3>
-          <ul>
-            <li><b>Project-based:</b> defined scope + deliverables</li>
-            <li><b>Retainer:</b> ongoing support and iteration</li>
-          </ul>
-          <p class="small">
-            Note: I can share details under NDA where needed.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="section">
-      <h2>Contact</h2>
-      <div class="card contact">
-        <p>
-          Email: <a href="mailto:[EDIT_EMAIL]">[EDIT_EMAIL]</a><br/>
-          Location: Little Rock, AR • Open to remote collaboration
-        </p>
-        <p class="small">
-          Include: your data types, goal, timeline, and whether you use HPC/cloud.
-        </p>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="wrap footer-row">
-        <span>© <span id="year"></span> Kalyani Dhusia</span>
-        <span class="footer-links">
-          <a href="[EDIT_GITHUB]" target="_blank" rel="noopener">GitHub</a>
-          <a href="[EDIT_LINKEDIN]" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="[EDIT_ORCID]" target="_blank" rel="noopener">ORCID</a>
-        </span>
-      </div>
-    </footer>
-  </main>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-
-  <!-- =========
-  CSS: keep your same theme by copying your existing site colors into :root
-  ========= -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kalyani Dhusia, Ph.D. – Multi‑Omics & AI Bioinformatics Leader</title>
+  <!--
+    This portfolio page is designed to convey both academic credibility and
+    industry readiness. It positions Dr. Kalyani Dhusia as a bridge between
+    cutting‑edge research and real‑world biotech and healthcare innovation.
+    Replace the [EDIT_...] placeholders with your actual links, email and
+    colors. The CSS is inlined for simplicity and can be moved to a separate
+    stylesheet if desired.
+  -->
+  <link rel="stylesheet" href="webdhusia.css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+  <link rel="stylesheet" href="fontawesome/css/all.css">
   <style>
     :root{
-      /* IMPORTANT: paste your CURRENT site colors here */
+      /* Customize these with your current palette */
       --bg: [PASTE_OLD_BG];
       --panel: [PASTE_OLD_PANEL];
       --text: [PASTE_OLD_TEXT];
@@ -255,79 +34,300 @@ How to use:
     a:hover{ text-decoration:underline; }
     .wrap{ max-width:var(--max); margin:0 auto; padding:0 18px; }
 
-    .site-header{
-      position:sticky; top:0; z-index:10;
-      background:var(--bg);
-      border-bottom:1px solid var(--line);
-    }
+    /* Header */
+    .site-header{ position:sticky; top:0; z-index:10; background:#fff; border-bottom:1px solid var(--line); }
     .header-row{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:14px; }
     .brand{ display:flex; flex-direction:column; gap:2px; color:var(--text); }
     .name{ font-weight:700; }
     .tag{ font-size:13px; color:var(--muted); }
-
     .nav{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
     .nav a{ color:var(--muted); font-size:14px; }
     .nav a:hover{ color:var(--text); text-decoration:none; }
-    .nav-cta{
-      padding:8px 12px; border-radius:999px;
-      border:1px solid var(--line);
-      color:var(--text) !important;
-      background:var(--panel);
-    }
+    .nav-cta{ padding:8px 12px; border-radius:999px; border:1px solid var(--line); color:var(--text) !important; background:var(--panel); }
 
-    .hero{ display:grid; grid-template-columns: 1.3fr .7fr; gap:18px; padding:26px 0 10px; }
-    .hero h1{ margin:0 0 10px; font-size:34px; line-height:1.15; letter-spacing:-.3px; }
-    .hero p{ margin:0 0 14px; color:var(--muted); }
-    .hero-links{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-
-    .btn{
-      display:inline-block; padding:10px 14px; border-radius:999px;
-      background:var(--accent); color:white; font-weight:600;
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap:18px;
+      padding:32px 0 18px;
+      /*
+        Give the hero section a solid background so that it does not appear
+        transparent when placed over the site’s background. The panel color
+        variable is intended for card-like elements; if you prefer pure white,
+        substitute #fff for var(--panel).
+      */
+      background: var(--panel);
     }
-    .btn:hover{ text-decoration:none; filter:brightness(1.03); }
-    .btn.ghost{
-      background:transparent; color:var(--accent);
-      border:1px solid var(--accent);
-    }
+    .hero h1{ margin:0 0 12px; font-size:26px; line-height:1.2; }
+    .hero p{ margin:0 0 16px; color:var(--muted); }
+    .hero-links{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    .btn{ display:inline-block; padding:10px 16px; border-radius:999px; background:var(--accent); color:#fff; font-weight:600; }
+    .btn:hover{ text-decoration:none; filter:brightness(1.05); }
+    .btn.ghost{ background:transparent; color:var(--accent); border:1px solid var(--accent); }
     .link{ color:var(--muted); }
     .link:hover{ color:var(--text); text-decoration:none; }
-
-    .card{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:16px;
-    }
+    .card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px; }
     .hero-card ul{ margin:10px 0 0; padding-left:18px; color:var(--muted); }
 
-    .tiles{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin:18px 0 6px; }
+    /* Tiles & Sections */
+    .tiles{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin:20px 0 10px; }
     .tile{ border:1px solid var(--line); border-radius:var(--radius); padding:14px; background:var(--panel); }
-    .tile h3{ margin:0 0 8px; font-size:16px; }
+    .tile h3{ margin:0 0 8px; font-size:18px; }
     .tile p{ margin:0; color:var(--muted); font-size:14px; }
 
-    .section{ padding:26px 0 0; }
-    .section h2{ margin:0 0 8px; font-size:22px; }
-    .lead{ margin:0 0 12px; color:var(--muted); }
-
-    .two-col{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    ul{ margin:10px 0 0; padding-left:18px; color:var(--muted); }
-    .pubs li{ margin-bottom:8px; }
-
-    .inline-links{ margin-top:10px; display:flex; gap:14px; flex-wrap:wrap; font-size:14px; }
-
+    .section{ padding:32px 0 0; }
+    .section h2{ margin:0 0 10px; font-size:24px; }
+    .lead{ margin:0 0 16px; color:var(--muted); }
+    .two-col{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+    ul{ margin:10px 0 0; padding-left:20px; color:var(--muted); }
+    .inline-links{ margin-top:10px; display:flex; gap:16px; flex-wrap:wrap; font-size:14px; }
     .contact p{ margin:0 0 8px; }
     .small{ color:var(--muted); font-size:13px; margin:0; }
-
-    .footer{ margin-top:26px; padding:16px 0; border-top:1px solid var(--line); }
-    .footer-row{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; color:var(--muted); }
-    .footer-links a{ color:var(--muted); margin-left:12px; }
+    .footer{ margin-top:40px; padding:20px 0; border-top:1px solid var(--line); }
+    .footer-row{ display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted); }
+    .footer-links a{ color:var(--muted); margin-left:14px; }
     .footer-links a:hover{ color:var(--text); text-decoration:none; }
+    @media (max-width: 900px){ .hero{ grid-template-columns:1fr; } .two-col{ grid-template-columns:1fr; } }
 
-    @media (max-width: 900px){
-      .hero{ grid-template-columns:1fr; }
-      .tiles{ grid-template-columns:1fr; }
-      .two-col{ grid-template-columns:1fr; }
+    /*
+      When navigating via in‑page anchors (e.g. #research), the sticky header would normally
+      obscure the top of the section. Use scroll-padding-top or scroll-margin-top to ensure
+      that the section appears below the header when scrolled into view. Adjust the value
+      to match the approximate header height + any top margin. This prevents content from
+      being hidden under the sticky header when clicking nav links.
+    */
+    html{
+      scroll-behavior:smooth;
+      scroll-padding-top:60px; /* adjust to match your header height */
     }
   </style>
+</head>
+<body>
+  <!-- Header / Nav -->
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a class="brand" href="#home">
+        <span class="name">Kalyani Dhusia, Ph.D.</span>
+        <span class="tag">Multi‑Omics & AI Bioinformatics Leader</span>
+      </a>
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#research">Research</a>
+        <a href="#industry">Industry</a>
+        <a href="#publications">Publications</a>
+        <a href="#software">Software</a>
+        <a href="#service">Service</a>
+        <a class="nav-cta" href="#consulting">Consulting</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main id="home" class="wrap">
+    <!-- Hero section -->
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Architecting reproducible multi‑omics and AI systems for cancer and immunology.</h1>
+        <p>
+          I design and deploy scalable bioinformatics pipelines, integrate heterogeneous data,
+          and translate insights into actionable strategies for both academia and industry.
+          My experience spans structural immunology, cancer genomics, proteomics, and AI‑driven
+          healthcare operations.
+        </p>
+        <div class="hero-links">
+          <a class="btn" href="#contact">Get in touch</a>
+          <a class="btn ghost" href="https://github.com/kalyanidhusia/kalyanidhusia.github.io/blob/3199212fa000135d824867d5d306111062a404bf/CV_Kalyani_Dhusia_Updated.docx">Download CV</a>
+          <a class="link" href="https://github.com/kalyanidhusia" target="_blank" rel="noopener">GitHub</a>
+          <a class="link" href="https://orcid.org/0000-0002-8803-1295" target="_blank" rel="noopener">ORCID</a>
+          <a class="link" href="https://www.linkedin.com/in/kalyani-dhusia-ph-d-17241370/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="link" href="https://www.linkedin.com/newsletters/koshish-7191875485235044353/" target="_blank" rel="noopener">Newsletter</a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <div class="card">
+          <h3>Profile snapshot</h3>
+          <ul>
+            <li>Assistant Staff Scientist, UAMS</li>
+            <li>Creator of EXCESP & proteoDA</li>
+            <li>Engineer of Nextflow & nf‑core pipelines</li>
+            <li>AI/ML integration for clinical operations</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Highlight tiles -->
+    <section class="tiles" aria-label="Highlights">
+      <div class="tile">
+        <h3>Translational research</h3>
+        <p>Connecting multi‑omics data with clinical outcomes for biomarker discovery and therapeutic development.</p>
+      </div>
+      <div class="tile">
+        <h3>Reproducible pipelines</h3>
+        <p>Scalable workflows using Nextflow, nf‑core, and Slurm/cloud, with comprehensive documentation and versioning.</p>
+      </div>
+      <div class="tile">
+        <h3>AI & healthcare analytics</h3>
+        <p>Operational modeling and predictive analytics for hospital resource management and translational research.</p>
+      </div>
+      <div class="tile">
+        <h3>Leadership & mentoring</h3>
+        <p>Guiding interdisciplinary teams, training researchers, and advising biotech and startup executives.</p>
+      </div>
+    </section>
+
+    <!-- Research section -->
+    <section id="research" class="section">
+      <h2></h2>
+      <h2>Academic research focus</h2>
+      <p class="lead">My scientific foundation combines structural bioinformatics with systems‑level multi‑omics.</p>
+      <div class="two-col">
+        <div class="card">
+          <h3>Structural & immune systems biology</h3>
+          <ul>
+            <li>Protein‑protein interaction modeling (cytokines, receptors, pMHC–TCR complexes)</li>
+            <li>Dynamic simulations and energy landscape analyses for drug discovery</li>
+            <li>Neoantigen prediction and immune signaling pathways</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Multi‑omics integration</h3>
+          <ul>
+            <li>Proteogenomic pipelines for cancer (RNA‑seq, WES/WGS, TMT proteomics)</li>
+            <li>Dual RNA‑seq for host–pathogen studies</li>
+            <li>Single‑cell workflows (Seurat / nf‑core)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Industry & AI section -->
+    <section id="industry" class="section">
+      <h2>Industry & innovation</h2>
+      <p class="lead">I translate academic rigor into practical solutions for biotech, pharma, and AI‑powered healthcare startups.</p>
+      <div class="two-col">
+        <div class="card">
+          <h3>Biotech & pharma collaboration</h3>
+          <ul>
+            <li>Pipeline architecture and workflow refactoring for omics data</li>
+            <li>Biomarker strategy and experimental design consultation</li>
+            <li>Data modeling and ETL for regulatory submissions</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>AI & healthcare startups</h3>
+          <ul>
+            <li>Predictive analytics for resource allocation and clinical operations</li>
+            <li>Machine‑learning integration with genomics and EHR data</li>
+            <li>Technical due diligence and roadmap development for founders</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section id="publications" class="section">
+      <h2>Selected publications</h2>
+      <p class="lead">Highlights from my peer‑reviewed contributions. See ORCID/Google Scholar for the full list.</p>
+      <div class="card">
+        <ul>
+          <li><strong>proteoDA</strong> — R package for quantitative proteomics (JOSS, 2023)</li>
+          <li><strong>EXCESP</strong> — Extracellular interactome database (J Proteome Res, 2022)</li>
+          <li><strong>Dual RNA‑Seq pipeline</strong> — Host–pathogen transcriptomics (ms in prep, 2024)</li>
+          <li><strong>TNF/TNFR interactome analyses</strong> (Comput Biol Chem, 2023)</li>
+        </ul>
+        <div class="inline-links">
+          <a href="https://orcid.org/0000-0002-8803-1295" target="_blank" rel="noopener">Complete list (ORCID)</a>
+          <a href="[EDIT_SCHOLAR]" target="_blank" rel="noopener">Google Scholar</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Software & resources -->
+    <section id="software" class="section">
+      <h2>Software & resources</h2>
+      <div class="two-col">
+        <div class="card">
+          <h3>Open source & reproducible work</h3>
+          <ul>
+            <li><strong>proteoDA</strong> — differential analysis toolkit (R)</li>
+            <li><strong>EXCESP</strong> — extracellular interactome resource</li>
+            <li><strong>Nextflow / nf‑core pipelines</strong> — cancer genomics & proteomics</li>
+            <li>ARINBRE GitHub maintenance & workflow trainings</li>
+          </ul>
+          <a class="link" href="https://github.com/ARINBRE" target="_blank" rel="noopener">Explore my code →</a>
+        </div>
+        <div class="card">
+          <h3>Visualization & reporting</h3>
+          <ul>
+            <li>Publication‑ready figures (ggplot2, matplotlib)</li>
+            <li>Interactive notebooks & dashboards</li>
+            <li>Single‑cell analytic reports</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service & peer review -->
+    <section id="service" class="section">
+      <h2>Service & peer review</h2>
+      <div class="card">
+        <ul>
+          <li>AR INBRE NIH pilot grant reviewer</li>
+          <li>Journal reviewer across bioinformatics & immunology (see ORCID)</li>
+          <li>Mentorship & workshops in computational methods and reproducibility</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Consulting / retainer -->
+    <section id="consulting" class="section">
+      <h2>Consulting & retainer services</h2>
+      <p class="lead">I partner with research groups, biotech companies, and startups to build robust data infrastructures and analytical strategies.</p>
+      <div class="two-col">
+        <div class="card">
+          <h3>Engagement models</h3>
+          <ul>
+            <li><strong>Strategic advisor</strong> — guidance on workflow architecture, technology selection, and team structuring</li>
+            <li><strong>Project‑based</strong> — defined scope, milestones, and deliverables for pipeline builds or data integration</li>
+            <li><strong>Retainer</strong> — ongoing fractional chief data officer support for startups and labs</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Expertise offered</h3>
+          <ul>
+            <li>Omics pipeline development & refactoring (RNA‑seq, scRNA‑seq, proteomics, WES/WGS)</li>
+            <li>AI/ML integration with omics and clinical data</li>
+            <li>Data governance, reproducibility & regulatory readiness</li>
+          </ul>
+          <p class="small">I can provide references and project summaries under NDA as appropriate.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <div class="card contact">
+        <p>Email: <a href="mailto:[EDIT_EMAIL]">[EDIT_EMAIL]</a><br />
+           Location: Little Rock, AR (UTC‑6) • Available for remote collaboration</p>
+        <p class="small">When reaching out, please share your project scope, timelines, data types, and infrastructure (HPC/cloud).</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="wrap footer-row">
+        <span>© <span id="year"></span> Kalyani Dhusia</span>
+        <span class="footer-links">
+          <a href="https://github.com/kalyanidhusia" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/kalyani-dhusia-ph-d-17241370/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://orcid.org/0000-0002-8803-1295" target="_blank" rel="noopener">ORCID</a>
+        </span>
+      </div>
+    </footer>
+  </main>
+  <script> document.getElementById('year').textContent = new Date().getFullYear(); </script>
 </body>
 </html>
