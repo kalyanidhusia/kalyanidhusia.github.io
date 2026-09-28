@@ -19,6 +19,7 @@ import sys
 import time
 import argparse
 import difflib
+from typing import Optional, List, Dict, Tuple
 from urllib.parse import quote
 
 try:
@@ -58,7 +59,7 @@ def title_similarity(a: str, b: str) -> float:
     return difflib.SequenceMatcher(None, na, nb).ratio()
 
 
-def query_crossref(title: str, issn: str = None, year: int = None) -> list[dict]:
+def query_crossref(title: str, issn: str = None, year: int = None) -> List[Dict]:
     """Return top 5 CrossRef candidates for a title, optionally filtered by ISSN/year."""
     params = {
         "query.bibliographic": title,
@@ -83,7 +84,7 @@ def query_crossref(title: str, issn: str = None, year: int = None) -> list[dict]
         return []
 
 
-def find_best_match(candidates: list[dict], search_title: str) -> tuple[dict, float] | None:
+def find_best_match(candidates: List[Dict], search_title: str) -> Optional[Tuple[Dict, float]]:
     """Pick the highest-similarity CrossRef candidate above threshold."""
     if not candidates:
         return None
@@ -101,7 +102,7 @@ def find_best_match(candidates: list[dict], search_title: str) -> tuple[dict, fl
     return None
 
 
-def process_reviews(reviews: list[dict], write: bool, verbose: bool) -> tuple[list[dict], dict]:
+def process_reviews(reviews: List[Dict], write: bool, verbose: bool) -> Tuple[List[Dict], Dict]:
     """Enrich reviews with DOIs. Returns (updated_reviews, stats)."""
     stats = {"checked": 0, "matched": 0, "already_had_doi": 0, "no_title": 0, "no_match": 0}
     updated = []

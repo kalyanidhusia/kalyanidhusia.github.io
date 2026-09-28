@@ -26,6 +26,7 @@ Usage:
 import sys
 import csv
 import argparse
+from typing import Optional, List, Dict
 
 try:
     import yaml
@@ -37,7 +38,7 @@ REQUIRED_COLS = {"journal", "year", "date", "title"}
 OPTIONAL_COLS = {"source_id", "issn", "doi", "publisher_org", "verified_by"}
 
 
-def load_csv(path: str) -> list[dict]:
+def load_csv(path: str) -> List[Dict]:
     with open(path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         cols = set(reader.fieldnames or [])
@@ -47,7 +48,7 @@ def load_csv(path: str) -> list[dict]:
         return list(reader)
 
 
-def find_match(csv_row: dict, entries: list[dict]) -> int | None:
+def find_match(csv_row: Dict, entries: List[Dict]) -> Optional[int]:
     """Return the index of the first matching entry in `entries`, or None."""
     year = int(csv_row["year"]) if csv_row.get("year") else None
     if not year:
