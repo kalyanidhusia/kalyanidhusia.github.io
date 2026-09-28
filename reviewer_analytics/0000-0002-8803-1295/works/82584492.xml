@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<work:work xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review" put-code="82584492" visibility="public">
+    <common:created-date>2020-10-27T11:56:26.115Z</common:created-date>
+    <common:last-modified-date>2022-05-31T06:55:31.494Z</common:last-modified-date>
+    <common:source>
+        <common:source-client-id>
+            <common:uri>https://orcid.org/client/0000-0001-9884-1913</common:uri>
+            <common:path>0000-0001-9884-1913</common:path>
+            <common:host>orcid.org</common:host>
+        </common:source-client-id>
+        <common:source-name>Crossref</common:source-name>
+    </common:source>
+    <work:title>
+        <common:title>Understand the Functions of Scaffold Proteins in Cell Signaling by a Mesoscopic Simulation Method</common:title>
+    </work:title>
+    <work:journal-title>Biophysical Journal</work:journal-title>
+    <work:citation>
+        <work:citation-type>bibtex</work:citation-type>
+        <work:citation-value>@article{Su_2020,
+	doi = {10.1016/j.bpj.2020.10.002},
+	url = {https://doi.org/10.1016%2Fj.bpj.2020.10.002},
+	year = 2020,
+	month = {nov},
+	publisher = {Elsevier {BV}},
+	volume = {119},
+	number = {10},
+	pages = {2116--2126},
+	author = {Zhaoqian Su and Kalyani Dhusia and Yinghao Wu},
+	title = {Understand the Functions of Scaffold Proteins in Cell Signaling by a Mesoscopic Simulation Method},
+	journal = {Biophysical Journal}
+}</work:citation-value>
+    </work:citation>
+    <work:type>journal-article</work:type>
+    <common:publication-date>
+        <common:year>2020</common:year>
+        <common:month>11</common:month>
+    </common:publication-date>
+    <common:external-ids>
+        <common:external-id>
+            <common:external-id-type>doi</common:external-id-type>
+            <common:external-id-value>10.1016/j.bpj.2020.10.002</common:external-id-value>
+            <common:external-id-normalized transient="true">10.1016/j.bpj.2020.10.002</common:external-id-normalized>
+            <common:external-id-url>https://doi.org/10.1016/j.bpj.2020.10.002</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+    </common:external-ids>
+    <common:url>https://doi.org/10.1016/j.bpj.2020.10.002</common:url>
+    <work:contributors>
+        <work:contributor>
+            <work:credit-name>Zhaoqian Su</work:credit-name>
+            <work:contributor-attributes>
+                <work:contributor-role>author</work:contributor-role>
+            </work:contributor-attributes>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Kalyani Dhusia</work:credit-name>
+            <work:contributor-attributes>
+                <work:contributor-role>author</work:contributor-role>
+            </work:contributor-attributes>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Yinghao Wu</work:credit-name>
+            <work:contributor-attributes>
+                <work:contributor-role>author</work:contributor-role>
+            </work:contributor-attributes>
+        </work:contributor>
+    </work:contributors>
+</work:work>

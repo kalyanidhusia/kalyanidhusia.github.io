@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<service:service xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review" put-code="35030074" display-index="0" visibility="public">
+    <common:created-date>2026-03-09T02:16:01.190Z</common:created-date>
+    <common:last-modified-date>2026-03-09T02:16:01.190Z</common:last-modified-date>
+    <common:source>
+        <common:source-orcid>
+            <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+            <common:path>0000-0002-8803-1295</common:path>
+            <common:host>orcid.org</common:host>
+        </common:source-orcid>
+        <common:source-name>Kalyani Dhusia</common:source-name>
+    </common:source>
+    <common:role-title>Review Editor on the Editorial Board of Biological Modeling and Simulation</common:role-title>
+    <common:start-date>
+        <common:year>2023</common:year>
+        <common:month>09</common:month>
+        <common:day>18</common:day>
+    </common:start-date>
+    <common:end-date>
+        <common:year>2025</common:year>
+    </common:end-date>
+    <common:organization>
+        <common:name>Journal of Molecular Biosciences</common:name>
+        <common:address/>
+    </common:organization>
+    <common:url>https://www.frontiersin.org/journals/molecular-biosciences</common:url>
+    <common:external-ids>
+        <common:external-id>
+            <common:external-id-type>issn</common:external-id-type>
+            <common:external-id-value>2296-889X</common:external-id-value>
+            <common:external-id-normalized transient="true">2296-889X</common:external-id-normalized>
+            <common:external-id-url>https://portal.issn.org/resource/ISSN/2296-889X</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+    </common:external-ids>
+</service:service>

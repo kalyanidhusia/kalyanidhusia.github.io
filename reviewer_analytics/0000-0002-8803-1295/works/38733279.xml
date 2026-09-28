@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<work:work xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review" put-code="38733279" visibility="public">
+    <common:created-date>2017-11-17T14:45:03.510Z</common:created-date>
+    <common:last-modified-date>2021-04-28T15:51:26.776Z</common:last-modified-date>
+    <common:source>
+        <common:source-orcid>
+            <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+            <common:path>0000-0002-8803-1295</common:path>
+            <common:host>orcid.org</common:host>
+        </common:source-orcid>
+        <common:source-name>Kalyani Dhusia</common:source-name>
+    </common:source>
+    <work:title>
+        <common:title>Capacitating surveillance and situational awareness with measure of visual engagement using eyetracker</common:title>
+    </work:title>
+    <work:journal-title>2016 International Conference on Computing, Communication and Automation (ICCCA)</work:journal-title>
+    <work:citation>
+        <work:citation-type>bibtex</work:citation-type>
+        <work:citation-value>@INPROCEEDINGS{7813892, author= {R. Singh and S. Chandra and K. Dhusia and G. Sharma}, booktitle= {2016 International Conference on Computing, Communication and Automation (ICCCA)}, title= {Capacitating surveillance and situational awareness with measure of visual engagement using eyetracker}, year= {2016}, volume= {}, number= {}, pages= {1161-1165}, abstract= {Military application requires continuous surveillance and situation awareness at high security zones. For maintaining such requirements, there is a need to monitor visual attention for a defense personnel. Eye movements, captured through eye tracker can reveal visual engagements with the help of examining the direction of eye gaze. This not only reveals the opinion and behavioral patterns but also gives an idea that the brain can reveal hidden and profitable truths about consumers. Henceforth making it applicable in defense as well as in neuromarketing, as both domain want to grab visual attention of their personnel. This study tries to assess visual engagements through eye tracker using neuromarketing paradigm. Results can further be extended to the defense areas both fields involve visual attention. This paper investigates the use of Eyetracking as a potential research tool for analyzing the features that drives attention towards certain target (advertisement in this case). It is believed that eye movements are best indicators of visual attention. This paper gives an insight on the features that help us analyze visual attention and retention as tools to distinguish the effectiveness of the advertisement. The best feature of eye movements captured from eye tracking can identify glimpse of visual attention. Thus, making it greatly important in the use of defence as visual attention and henceforth brain reflexes are effected at immediate situations making it useful for surveillance, required feature in situational awareness and surveillance for border. This work here is of potential use in defence as it gives the measures of opinion and behavior of brain patterns of subjects revealing their hidden and profitable truths as that of customers.}, keywords= {advertising;cognition;gaze tracking;surveillance;advertisement;brain pattern behavior measure;brain pattern opinion measure;brain reflexes;eye gaze direction;eye movements;eyetracker;neuromarketing paradigm;retention analysis;situational awareness;surveillance;visual attention;visual attention monitoring;visual engagement measure;Automation;Face;Feature extraction;Gaze tracking;Surveillance;Tracking;Visualization;Eye tracking;Neuromarketing;advertising;attention;retention}, doi= {10.1109/CCAA.2016.7813892}, ISSN= {}, month= {April}}
+
+</work:citation-value>
+    </work:citation>
+    <work:type>conference-paper</work:type>
+    <common:publication-date>
+        <common:year>2016</common:year>
+    </common:publication-date>
+    <common:external-ids>
+        <common:external-id>
+            <common:external-id-type>doi</common:external-id-type>
+            <common:external-id-value>10.1109/CCAA.2016.7813892</common:external-id-value>
+            <common:external-id-normalized transient="true">10.1109/ccaa.2016.7813892</common:external-id-normalized>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+    </common:external-ids>
+    <work:contributors/>
+</work:work>

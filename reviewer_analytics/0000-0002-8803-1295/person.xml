@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<person:person xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review">
+    <person:name visibility="public" path="0000-0002-8803-1295">
+        <common:created-date>2016-04-15T23:14:46.554Z</common:created-date>
+        <common:last-modified-date>2016-04-15T23:14:46.554Z</common:last-modified-date>
+        <personal-details:given-names>Kalyani</personal-details:given-names>
+        <personal-details:family-name>Dhusia</personal-details:family-name>
+    </person:name>
+    <other-name:other-names/>
+    <person:biography visibility="public">
+        <common:created-date>2025-03-03T19:41:28.115Z</common:created-date>
+        <common:last-modified-date>2025-03-03T19:41:28.115Z</common:last-modified-date>
+        <personal-details:content>Kalyani Dhusia, Ph.D. is a Bioinformatics Scientist with extensive experience in genomics, computational biology, and machine learning. She holds a Ph.D. in Bioinformatics and currently serves as an Assistant Staff Scientist at the University of Arkansas for Medical Sciences (UAMS). Dr. Dhusia specializes in developing and optimizing bioinformatics pipelines for analyzing large-scale genomic, proteomics and multi-omic datasets. Her work focuses on precision medicine, cancer genomics, and epigenetic analysis, utilizing tools like Python, R, Nextflow, and GCP. She has contributed to numerous research projects and publications, demonstrating a strong ability to collaborate across interdisciplinary teams to advance biomedical research.</personal-details:content>
+    </person:biography>
+    <researcher-url:researcher-urls>
+        <researcher-url:researcher-url put-code="1292775" visibility="public" display-index="1">
+            <common:created-date>2017-11-17T14:46:50.946Z</common:created-date>
+            <common:last-modified-date>2022-10-24T19:39:55.354Z</common:last-modified-date>
+            <common:source>
+                <common:source-orcid>
+                    <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+                    <common:path>0000-0002-8803-1295</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-orcid>
+                <common:source-name>Kalyani Dhusia</common:source-name>
+            </common:source>
+            <researcher-url:url-name>website</researcher-url:url-name>
+            <researcher-url:url>https://kalyanidhusia.github.io/</researcher-url:url>
+        </researcher-url:researcher-url>
+    </researcher-url:researcher-urls>
+    <email:emails>
+        <email:email visibility="limited" verified="true" primary="true">
+            <common:created-date>2015-04-02T16:01:56.292Z</common:created-date>
+            <common:last-modified-date>2022-10-24T19:40:08.397Z</common:last-modified-date>
+            <common:source>
+                <common:source-orcid>
+                    <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+                    <common:path>0000-0002-8803-1295</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-orcid>
+                <common:source-name>Kalyani Dhusia</common:source-name>
+            </common:source>
+            <email:email>kalyanidhusia.bhu@gmail.com</email:email>
+        </email:email>
+    </email:emails>
+    <address:addresses>
+        <address:address put-code="93430" visibility="limited" display-index="2">
+            <common:created-date>2016-01-24T18:11:13.141Z</common:created-date>
+            <common:last-modified-date>2021-12-15T16:54:54.453Z</common:last-modified-date>
+            <common:source>
+                <common:source-orcid>
+                    <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+                    <common:path>0000-0002-8803-1295</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-orcid>
+                <common:source-name>Kalyani Dhusia</common:source-name>
+            </common:source>
+            <address:country>IN</address:country>
+        </address:address>
+        <address:address put-code="2005331" visibility="public" display-index="1">
+            <common:created-date>2021-03-09T15:33:49.849Z</common:created-date>
+            <common:last-modified-date>2021-03-09T15:33:49.849Z</common:last-modified-date>
+            <common:source>
+                <common:source-orcid>
+                    <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+                    <common:path>0000-0002-8803-1295</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-orcid>
+                <common:source-name>Kalyani Dhusia</common:source-name>
+            </common:source>
+            <address:country>US</address:country>
+        </address:address>
+    </address:addresses>
+    <keyword:keywords>
+        <keyword:keyword put-code="2784725" visibility="public" display-index="3">
+            <common:created-date>2022-10-24T19:40:50.892Z</common:created-date>
+            <common:last-modified-date>2022-10-24T19:40:50.892Z</common:last-modified-date>
+            <common:source>
+                <common:source-orcid>
+                    <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+                    <common:path>0000-0002-8803-1295</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-orcid>
+                <common:source-name>Kalyani Dhusia</common:source-name>
+            </common:source>
+            <keyword:content>machine learning</keyword:content>
+        </keyword:keyword>
+        <keyword:keyword put-code="2784724" visibility="public" display-index="2">
+            <common:created-date>2022-10-24T19:40:50.891Z</common:created-date>
+            <common:last-modified-date>2022-10-24T19:40:50.891Z</common:last-modified-date>
+            <common:source>
+                <common:source-orcid>
+                    <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+                    <common:path>0000-0002-8803-1295</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-orcid>
+                <common:source-name>Kalyani Dhusia</common:source-name>
+            </common:source>
+            <keyword:content>protein virtual reality</keyword:content>
+        </keyword:keyword>
+        <keyword:keyword put-code="2784723" visibility="public" display-index="1">
+            <common:created-date>2022-10-24T19:40:50.888Z</common:created-date>
+            <common:last-modified-date>2022-10-24T19:40:50.888Z</common:last-modified-date>
+            <common:source>
+                <common:source-orcid>
+                    <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+                    <common:path>0000-0002-8803-1295</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-orcid>
+                <common:source-name>Kalyani Dhusia</common:source-name>
+            </common:source>
+            <keyword:content>bioinformatics</keyword:content>
+        </keyword:keyword>
+    </keyword:keywords>
+    <external-identifier:external-identifiers>
+        <external-identifier:external-identifier put-code="666335" visibility="public" display-index="4">
+            <common:created-date>2017-03-13T05:25:30.633Z</common:created-date>
+            <common:last-modified-date>2025-03-03T19:34:04.813Z</common:last-modified-date>
+            <common:source>
+                <common:source-client-id>
+                    <common:uri>https://orcid.org/client/APP-4DPEW6SVSNQHKC8G</common:uri>
+                    <common:path>APP-4DPEW6SVSNQHKC8G</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-client-id>
+                <common:source-name>Loop</common:source-name>
+            </common:source>
+            <common:external-id-type>Loop profile</common:external-id-type>
+            <common:external-id-value>370344</common:external-id-value>
+            <common:external-id-url>http://loop.frontiersin.org/people/370344/overview?referrer=orcid_profile</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </external-identifier:external-identifier>
+        <external-identifier:external-identifier put-code="1408543" visibility="public" display-index="3">
+            <common:created-date>2019-06-15T17:27:37.350Z</common:created-date>
+            <common:last-modified-date>2023-01-24T18:02:27.080Z</common:last-modified-date>
+            <common:source>
+                <common:source-client-id>
+                    <common:uri>https://orcid.org/client/0000-0002-5982-8983</common:uri>
+                    <common:path>0000-0002-5982-8983</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-client-id>
+                <common:source-name>Scopus - Elsevier</common:source-name>
+                <common:assertion-origin-orcid>
+                    <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+                    <common:path>0000-0002-8803-1295</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:assertion-origin-orcid>
+                <common:assertion-origin-name>Kalyani Dhusia</common:assertion-origin-name>
+            </common:source>
+            <common:external-id-type>Scopus Author ID</common:external-id-type>
+            <common:external-id-value>57193133168</common:external-id-value>
+            <common:external-id-url>http://www.scopus.com/inward/authorDetails.url?authorID=57193133168&amp;partnerID=MN8TOARS</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </external-identifier:external-identifier>
+        <external-identifier:external-identifier put-code="2114086" visibility="public" display-index="2">
+            <common:created-date>2021-06-23T01:17:52.222Z</common:created-date>
+            <common:last-modified-date>2025-03-03T19:33:27.173Z</common:last-modified-date>
+            <common:source>
+                <common:source-client-id>
+                    <common:uri>https://orcid.org/client/APP-1DSJAQCZ1PW1VN5X</common:uri>
+                    <common:path>APP-1DSJAQCZ1PW1VN5X</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-client-id>
+                <common:source-name>Web of Science Researcher Profile Sync</common:source-name>
+            </common:source>
+            <common:external-id-type>ResearcherID</common:external-id-type>
+            <common:external-id-value>X-8790-2019</common:external-id-value>
+            <common:external-id-url>https://www.webofscience.com/wos/author/record/X-8790-2019</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </external-identifier:external-identifier>
+        <external-identifier:external-identifier put-code="2840387" visibility="limited" display-index="1">
+            <common:created-date>2023-01-13T10:06:01.176Z</common:created-date>
+            <common:last-modified-date>2025-03-03T19:34:04.779Z</common:last-modified-date>
+            <common:source>
+                <common:source-client-id>
+                    <common:uri>https://orcid.org/client/APP-WRQOUAK78G5F7GMD</common:uri>
+                    <common:path>APP-WRQOUAK78G5F7GMD</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-client-id>
+                <common:source-name>Multidisciplinary Digital Publishing Institute</common:source-name>
+            </common:source>
+            <common:external-id-type>SciProfiles</common:external-id-type>
+            <common:external-id-value>1194818</common:external-id-value>
+            <common:external-id-url>https://sciprofiles.com/profile/1194818</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </external-identifier:external-identifier>
+        <external-identifier:external-identifier put-code="3857377" visibility="limited" display-index="1">
+            <common:created-date>2025-03-03T19:39:05.713Z</common:created-date>
+            <common:last-modified-date>2025-03-03T19:39:05.713Z</common:last-modified-date>
+            <common:source>
+                <common:source-client-id>
+                    <common:uri>https://orcid.org/client/APP-4DPEW6SVSNQHKC8G</common:uri>
+                    <common:path>APP-4DPEW6SVSNQHKC8G</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-client-id>
+                <common:source-name>Loop</common:source-name>
+            </common:source>
+            <common:external-id-type>Loop profile</common:external-id-type>
+            <common:external-id-value>640379</common:external-id-value>
+            <common:external-id-url>http://loop.frontiersin.org/people/640379/overview?referrer=orcid_profile</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </external-identifier:external-identifier>
+        <external-identifier:external-identifier put-code="4305159" visibility="limited" display-index="1">
+            <common:created-date>2026-03-09T01:38:40.694Z</common:created-date>
+            <common:last-modified-date>2026-03-09T01:38:40.694Z</common:last-modified-date>
+            <common:source>
+                <common:source-client-id>
+                    <common:uri>https://orcid.org/client/APP-PIPD3W8Z8DY9GESR</common:uri>
+                    <common:path>APP-PIPD3W8Z8DY9GESR</common:path>
+                    <common:host>orcid.org</common:host>
+                </common:source-client-id>
+                <common:source-name>Web of Science Researcher Profiles</common:source-name>
+            </common:source>
+            <common:external-id-type>ResearcherID</common:external-id-type>
+            <common:external-id-value>X-8790-2019</common:external-id-value>
+            <common:external-id-url>https://www.webofscience.com/wos/author/record/X-8790-2019</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </external-identifier:external-identifier>
+    </external-identifier:external-identifiers>
+</person:person>

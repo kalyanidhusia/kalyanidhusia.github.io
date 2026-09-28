@@ -1,0 +1,2419 @@
+# Master peer review record for Kalyani Dhusia (ORCID 0000-0002-8803-1295)
+# Auto-generated. 137 entries: 1 editorial + 1 grant review + 135 journal reviews.
+# ORCID export date: 2026-09-28. Fill unnamed ISSN journals by hand as you resolve them.
+
+reviews:
+
+  - id: 2023-frontiers-molecular-biosciences-editorial
+    type: editorial
+    start_date: 2023-09-18
+    end_date: 2025
+    role: Review Editor
+    editorial_board: Biological Modeling and Simulation
+    journal: Frontiers in Molecular Biosciences
+    journal_url: "https://www.frontiersin.org/journals/molecular-biosciences"
+    issn: 2296-889X
+    verified_by:
+      - wos
+    evidence:
+      - type: wos_record
+        description: Web of Science editorial-service record
+        url: "https://www.webofscience.com/wos/op/peer-reviews/summary"
+    cv_line: |-
+      Review Editor, Editorial Board of Biological Modeling and Simulation, Frontiers in Molecular Biosciences (Sept 2023 – 2025).
+    notes: WoS-verified editorial service record.
+
+  - id: 2026-arinbre-pilot
+    type: grant_review
+    year: 2026
+    date: 2026-01
+    role: reviewer
+    program: Arkansas INBRE Pilot Awards
+    program_full_name: Institutional Development Award (IDeA) Networks of Biomedical Research Excellence — Arkansas
+    program_funding_source: NIH NIGMS (P20)
+    host_institution: University of Arkansas for Medical Sciences (UAMS)
+    cycle: 2026
+    panel_size: 12
+    proposals_reviewed: 9
+    proposals_submitted: 18
+    awards_funded_this_cycle: 6
+    scoring_system: NIH 1-9 scale
+    review_platform: RedCap
+    award_mechanism:
+      duration_months: 12
+      max_direct_costs_usd: 50000
+      start_date: 2026-05-01
+    panel_convener:
+      name: "Jerry Ware, PhD"
+      title: "Associate Director, Arkansas INBRE"
+      affiliation: "UAMS, Physiology & Cell Biology"
+    assignment_email_date: 2025-12-19
+    reviews_completed_by: 2026-01-09
+    verified_by:
+      - letter
+    evidence:
+      - type: email
+        description: Reviewer assignment email from Dr. Jerry Ware
+        file: Jerry_ARINBRE_REVIEWER.pdf
+        date: 2025-12-19
+    cv_line: |-
+      Reviewer, Arkansas INBRE Pilot Project Program, 2026 cycle. Reviewed 9 proposals on a 12-member panel; NIH-style 1-9 scoring, RedCap platform. Convened by Dr. Jerry Ware (Associate Director, AR INBRE).
+    biosketch_line: |-
+      Peer Reviewer, NIH IDeA-funded Arkansas INBRE Pilot Project Program (2026 cycle, UAMS). Reviewed 9 proposals under NIH-style criteria.
+    notes: |-
+      No grant number to cite; evidence is the panel convener's assignment email retained on file. AR INBRE is an NIH NIGMS-funded IDeA program (P20).
+
+  - id: 2026-elsevier-computational-biology-and-chemistry-089
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Computational Biology and Chemistry
+    publisher_org: "Elsevier, Inc."
+    issn: 1476-9271
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 24183126
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computational Biology and Chemistry, 2026."
+
+  - id: 2026-elsevier-computational-biology-and-chemistry-092
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Computational Biology and Chemistry
+    publisher_org: "Elsevier, Inc."
+    issn: 1476-9271
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 24728166
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computational Biology and Chemistry, 2026."
+
+  - id: 2026-elsevier-computational-biology-and-chemistry-096
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Computational Biology and Chemistry
+    publisher_org: "Elsevier, Inc."
+    issn: 1476-9271
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 26130860
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computational Biology and Chemistry, 2026."
+
+  - id: 2026-elsevier-computational-biology-and-chemistry-101
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Computational Biology and Chemistry
+    publisher_org: "Elsevier, Inc."
+    issn: 1476-9271
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 27565120
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computational Biology and Chemistry, 2026."
+
+  - id: 2026-elsevier-computational-biology-and-chemistry-102
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Computational Biology and Chemistry
+    publisher_org: "Elsevier, Inc."
+    issn: 1476-9271
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 27882073
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computational Biology and Chemistry, 2026."
+
+  - id: 2026-elsevier-computational-biology-and-chemistry-104
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Computational Biology and Chemistry
+    publisher_org: "Elsevier, Inc."
+    issn: 1476-9271
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 28216397
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computational Biology and Chemistry, 2026."
+
+  - id: 2026-wos-genes-107
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Genes
+    publisher_org: Clarivate PLC
+    issn: 2073-4425
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241788
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Genes, 2026."
+
+  - id: 2026-wos-genes-116
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Genes
+    publisher_org: Clarivate PLC
+    issn: 2073-4425
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241797
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Genes, 2026."
+
+  - id: 2026-elsevier-issn-0006-291x-103
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:0006-291X"
+    publisher_org: "Elsevier, Inc."
+    issn: 0006-291X
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 27940103
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:0006-291X, 2026."
+
+  - id: 2026-elsevier-issn-0006-291x-106
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:0006-291X"
+    publisher_org: "Elsevier, Inc."
+    issn: 0006-291X
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 28589630
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:0006-291X, 2026."
+
+  - id: 2026-elsevier-issn-0006-8993-098
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:0006-8993"
+    publisher_org: "Elsevier, Inc."
+    issn: 0006-8993
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 26615944
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:0006-8993, 2026."
+
+  - id: 2026-elsevier-issn-0944-7113-091
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:0944-7113"
+    publisher_org: "Elsevier, Inc."
+    issn: 0944-7113
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 24367138
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:0944-7113, 2026."
+
+  - id: 2026-elsevier-issn-1043-4666-095
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:1043-4666"
+    publisher_org: "Elsevier, Inc."
+    issn: 1043-4666
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 26128400
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:1043-4666, 2026."
+
+  - id: 2026-elsevier-issn-1043-4666-097
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:1043-4666"
+    publisher_org: "Elsevier, Inc."
+    issn: 1043-4666
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 26604253
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:1043-4666, 2026."
+
+  - id: 2026-elsevier-issn-1043-4666-105
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:1043-4666"
+    publisher_org: "Elsevier, Inc."
+    issn: 1043-4666
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 28515318
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:1043-4666, 2026."
+
+  - id: 2026-wos-issn-2046-2069-117
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:2046-2069"
+    publisher_org: Clarivate PLC
+    issn: 2046-2069
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241798
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, ISSN:2046-2069, 2026."
+
+  - id: 2026-elsevier-issn-2773-0441-090
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: "ISSN:2773-0441"
+    publisher_org: "Elsevier, Inc."
+    issn: 2773-0441
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 24195978
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2773-0441, 2026."
+
+  - id: 2026-wos-journal-of-biomolecular-structure-and-dy-118
+    type: journal_review
+    year: 2026
+    date: 2026
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241799
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2026."
+
+  - id: 2025-elsevier-computational-biology-and-chemistry-087
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: Computational Biology and Chemistry
+    publisher_org: "Elsevier, Inc."
+    issn: 1476-9271
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 23797949
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computational Biology and Chemistry, 2025."
+
+  - id: 2025-wos-genes-093
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: Genes
+    publisher_org: Clarivate PLC
+    issn: 2073-4425
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 24971910
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Genes, 2025."
+
+  - id: 2025-mdpi-genes-100
+    type: journal_review
+    year: 2025
+    date: 2025-11
+    role: reviewer
+    journal: Genes
+    publisher_org: MDPI
+    issn: 2073-4425
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 26703890
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, Genes, 2025."
+
+  - id: 2025-elsevier-issn-0006-8993-085
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:0006-8993"
+    publisher_org: "Elsevier, Inc."
+    issn: 0006-8993
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 23200467
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:0006-8993, 2025."
+
+  - id: 2025-elsevier-issn-0304-419x-070
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:0304-419X"
+    publisher_org: "Elsevier, Inc."
+    issn: 0304-419X
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 19332278
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:0304-419X, 2025."
+
+  - id: 2025-elsevier-issn-1043-4666-088
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:1043-4666"
+    publisher_org: "Elsevier, Inc."
+    issn: 1043-4666
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 23989057
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:1043-4666, 2025."
+
+  - id: 2025-wos-issn-1718-7729-094
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:1718-7729"
+    publisher_org: Clarivate PLC
+    issn: 1718-7729
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 24975472
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:1718-7729, 2025."
+
+  - id: 2025-wos-issn-2079-7737-065
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2079-7737"
+    publisher_org: Clarivate PLC
+    issn: 2079-7737
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 18681113
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2079-7737, 2025."
+
+  - id: 2025-mdpi-issn-2079-7737-067
+    type: journal_review
+    year: 2025
+    date: 2025-01
+    role: reviewer
+    journal: "ISSN:2079-7737"
+    publisher_org: MDPI
+    issn: 2079-7737
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18896429
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2079-7737, 2025."
+
+  - id: 2025-springer_nature-issn-2192-6662-075
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2192-6662"
+    publisher_org: Springer Nature
+    issn: 2192-6662
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 20624028
+      - type: orcid_source
+        value: "Springer Nature @ Editorial Manager"
+    cv_line: "Peer reviewer, ISSN:2192-6662, 2025."
+
+  - id: 2025-springer_nature-issn-2192-6662-081
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2192-6662"
+    publisher_org: Springer Nature
+    issn: 2192-6662
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 22699117
+      - type: orcid_source
+        value: "Springer Nature @ Editorial Manager"
+    cv_line: "Peer reviewer, ISSN:2192-6662, 2025."
+
+  - id: 2025-elsevier-issn-2405-5808-068
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18905254
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2025."
+
+  - id: 2025-elsevier-issn-2405-5808-069
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 19121573
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2025."
+
+  - id: 2025-elsevier-issn-2405-5808-076
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 21319610
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2025."
+
+  - id: 2025-elsevier-issn-2405-5808-078
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 21509682
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2025."
+
+  - id: 2025-elsevier-issn-2405-5808-080
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 22007074
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2025."
+
+  - id: 2025-elsevier-issn-2405-5808-082
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 22890781
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2025."
+
+  - id: 2025-elsevier-issn-2405-5808-084
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 23199220
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2025."
+
+  - id: 2025-elsevier-issn-2405-5808-086
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 23401877
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2025."
+
+  - id: 2025-mdpi-issn-2673-2688-071
+    type: journal_review
+    year: 2025
+    date: 2025-04
+    role: reviewer
+    journal: "ISSN:2673-2688"
+    publisher_org: MDPI
+    issn: 2673-2688
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 19639683
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2673-2688, 2025."
+
+  - id: 2025-wos-issn-2673-2688-072
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2673-2688"
+    publisher_org: Clarivate PLC
+    issn: 2673-2688
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 20107643
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2673-2688, 2025."
+
+  - id: 2025-elsevier-issn-2773-0441-077
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2773-0441"
+    publisher_org: "Elsevier, Inc."
+    issn: 2773-0441
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 21499554
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2773-0441, 2025."
+
+  - id: 2025-elsevier-issn-2773-0441-083
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: "ISSN:2773-0441"
+    publisher_org: "Elsevier, Inc."
+    issn: 2773-0441
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 22892607
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2773-0441, 2025."
+
+  - id: 2025-wos-international-journal-of-molecular-scien-073
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: International Journal of Molecular Sciences (IJMS)
+    publisher_org: Clarivate PLC
+    issn: 1422-0067
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 20487200
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, International Journal of Molecular Sciences (IJMS), 2025."
+
+  - id: 2025-mdpi-international-journal-of-molecular-scien-099
+    type: journal_review
+    year: 2025
+    date: 2025-05
+    role: reviewer
+    journal: International Journal of Molecular Sciences (IJMS)
+    publisher_org: MDPI
+    issn: 1422-0067
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 26703888
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, International Journal of Molecular Sciences (IJMS), 2025."
+
+  - id: 2025-wos-journal-of-biomolecular-structure-and-dy-066
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 18874948
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2025."
+
+  - id: 2025-wos-journal-of-biomolecular-structure-and-dy-074
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 20501094
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2025."
+
+  - id: 2025-wos-journal-of-biomolecular-structure-and-dy-079
+    type: journal_review
+    year: 2025
+    date: 2025
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 21808208
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2025."
+
+  - id: 2024-wos-biomolecules-023
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Biomolecules
+    publisher_org: Clarivate PLC
+    issn: 2218-273X
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 13476367
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Biomolecules, 2024."
+
+  - id: 2024-wos-biomolecules-047
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Biomolecules
+    publisher_org: Clarivate PLC
+    issn: 2218-273X
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 17669492
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Biomolecules, 2024."
+
+  - id: 2024-wos-biomolecules-050
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Biomolecules
+    publisher_org: Clarivate PLC
+    issn: 2218-273X
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 17837658
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Biomolecules, 2024."
+
+  - id: 2024-wos-biomolecules-053
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Biomolecules
+    publisher_org: Clarivate PLC
+    issn: 2218-273X
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 18180229
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Biomolecules, 2024."
+
+  - id: 2024-mdpi-biomolecules-054
+    type: journal_review
+    year: 2024
+    date: 2024-11
+    role: reviewer
+    journal: Biomolecules
+    publisher_org: MDPI
+    issn: 2218-273X
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284458
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, Biomolecules, 2024."
+
+  - id: 2024-mdpi-biomolecules-055
+    type: journal_review
+    year: 2024
+    date: 2024-11
+    role: reviewer
+    journal: Biomolecules
+    publisher_org: MDPI
+    issn: 2218-273X
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284460
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, Biomolecules, 2024."
+
+  - id: 2024-mdpi-biomolecules-056
+    type: journal_review
+    year: 2024
+    date: 2024-02
+    role: reviewer
+    journal: Biomolecules
+    publisher_org: MDPI
+    issn: 2218-273X
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284463
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, Biomolecules, 2024."
+
+  - id: 2024-wos-cancers-026
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Cancers
+    publisher_org: Clarivate PLC
+    issn: 2072-6694
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 13612662
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Cancers, 2024."
+
+  - id: 2024-wos-cancers-031
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Cancers
+    publisher_org: Clarivate PLC
+    issn: 2072-6694
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 14207489
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Cancers, 2024."
+
+  - id: 2024-mdpi-cancers-057
+    type: journal_review
+    year: 2024
+    date: 2024-02
+    role: reviewer
+    journal: Cancers
+    publisher_org: MDPI
+    issn: 2072-6694
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284464
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, Cancers, 2024."
+
+  - id: 2024-elsevier-computers-in-biology-and-medicine-020
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 13031531
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2024."
+
+  - id: 2024-elsevier-computers-in-biology-and-medicine-021
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 13164258
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2024."
+
+  - id: 2024-elsevier-computers-in-biology-and-medicine-024
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 13505557
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2024."
+
+  - id: 2024-elsevier-computers-in-biology-and-medicine-027
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 13665125
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2024."
+
+  - id: 2024-elsevier-computers-in-biology-and-medicine-029
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 13920477
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2024."
+
+  - id: 2024-elsevier-computers-in-biology-and-medicine-037
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 15435415
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2024."
+
+  - id: 2024-elsevier-computers-in-biology-and-medicine-038
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 15435418
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2024."
+
+  - id: 2024-elsevier-computers-in-biology-and-medicine-042
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 16764778
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2024."
+
+  - id: 2024-elsevier-issn-0168-3659-048
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:0168-3659"
+    publisher_org: "Elsevier, Inc."
+    issn: 0168-3659
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 17716857
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:0168-3659, 2024."
+
+  - id: 2024-wos-issn-1467-3037-025
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:1467-3037"
+    publisher_org: Clarivate PLC
+    issn: 1467-3037
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 13566252
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:1467-3037, 2024."
+
+  - id: 2024-mdpi-issn-1467-3045-058
+    type: journal_review
+    year: 2024
+    date: 2024-02
+    role: reviewer
+    journal: "ISSN:1467-3045"
+    publisher_org: MDPI
+    issn: 1467-3045
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284465
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:1467-3045, 2024."
+
+  - id: 2024-wos-issn-1999-5903-044
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:1999-5903"
+    publisher_org: Clarivate PLC
+    issn: 1999-5903
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 17117458
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:1999-5903, 2024."
+
+  - id: 2024-wos-issn-1999-5903-049
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:1999-5903"
+    publisher_org: Clarivate PLC
+    issn: 1999-5903
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 17790791
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:1999-5903, 2024."
+
+  - id: 2024-mdpi-issn-1999-5903-064
+    type: journal_review
+    year: 2024
+    date: 2024-10
+    role: reviewer
+    journal: "ISSN:1999-5903"
+    publisher_org: MDPI
+    issn: 1999-5903
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284472
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:1999-5903, 2024."
+
+  - id: 2024-mdpi-issn-2073-431x-063
+    type: journal_review
+    year: 2024
+    date: 2024-12
+    role: reviewer
+    journal: "ISSN:2073-431X"
+    publisher_org: MDPI
+    issn: 2073-431X
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284471
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2073-431X, 2024."
+
+  - id: 2024-wos-issn-2078-2489-030
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2078-2489"
+    publisher_org: Clarivate PLC
+    issn: 2078-2489
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 14072827
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2078-2489, 2024."
+
+  - id: 2024-mdpi-issn-2078-2489-059
+    type: journal_review
+    year: 2024
+    date: 2024-04
+    role: reviewer
+    journal: "ISSN:2078-2489"
+    publisher_org: MDPI
+    issn: 2078-2489
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284466
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2078-2489, 2024."
+
+  - id: 2024-wos-issn-2079-9292-046
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2079-9292"
+    publisher_org: Clarivate PLC
+    issn: 2079-9292
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 17537139
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2079-9292, 2024."
+
+  - id: 2024-mdpi-issn-2079-9292-062
+    type: journal_review
+    year: 2024
+    date: 2024-11
+    role: reviewer
+    journal: "ISSN:2079-9292"
+    publisher_org: MDPI
+    issn: 2079-9292
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284470
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2079-9292, 2024."
+
+  - id: 2024-wos-issn-2218-1989-041
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2218-1989"
+    publisher_org: Clarivate PLC
+    issn: 2218-1989
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 16483257
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2218-1989, 2024."
+
+  - id: 2024-mdpi-issn-2218-1989-060
+    type: journal_review
+    year: 2024
+    date: 2024-08
+    role: reviewer
+    journal: "ISSN:2218-1989"
+    publisher_org: MDPI
+    issn: 2218-1989
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284467
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2218-1989, 2024."
+
+  - id: 2024-wos-issn-2254-9625-035
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2254-9625"
+    publisher_org: Clarivate PLC
+    issn: 2254-9625
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 14749841
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2254-9625, 2024."
+
+  - id: 2024-mdpi-issn-2254-9625-061
+    type: journal_review
+    year: 2024
+    date: 2024-04
+    role: reviewer
+    journal: "ISSN:2254-9625"
+    publisher_org: MDPI
+    issn: 2254-9625
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 18284469
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2254-9625, 2024."
+
+  - id: 2024-elsevier-issn-2405-5808-051
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2405-5808"
+    publisher_org: "Elsevier, Inc."
+    issn: 2405-5808
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 17946319
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2405-5808, 2024."
+
+  - id: 2024-elsevier-issn-2773-0441-028
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2773-0441"
+    publisher_org: "Elsevier, Inc."
+    issn: 2773-0441
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 13714192
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2773-0441, 2024."
+
+  - id: 2024-elsevier-issn-2773-0441-034
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2773-0441"
+    publisher_org: "Elsevier, Inc."
+    issn: 2773-0441
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 14481471
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2773-0441, 2024."
+
+  - id: 2024-elsevier-issn-2773-0441-039
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2773-0441"
+    publisher_org: "Elsevier, Inc."
+    issn: 2773-0441
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 15611104
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2773-0441, 2024."
+
+  - id: 2024-elsevier-issn-2773-0441-045
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: "ISSN:2773-0441"
+    publisher_org: "Elsevier, Inc."
+    issn: 2773-0441
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 17494460
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, ISSN:2773-0441, 2024."
+
+  - id: 2024-wos-journal-of-biomolecular-structure-and-dy-022
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 13429474
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024."
+
+  - id: 2024-wos-journal-of-biomolecular-structure-and-dy-032
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 14296745
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024."
+
+  - id: 2024-wos-journal-of-biomolecular-structure-and-dy-033
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 14415541
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024."
+
+  - id: 2024-wos-journal-of-biomolecular-structure-and-dy-036
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 15188216
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024."
+
+  - id: 2024-wos-journal-of-biomolecular-structure-and-dy-040
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 15858354
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024."
+
+  - id: 2024-wos-journal-of-biomolecular-structure-and-dy-043
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 17009763
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024."
+
+  - id: 2024-wos-journal-of-biomolecular-structure-and-dy-052
+    type: journal_review
+    year: 2024
+    date: 2024
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 18065721
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-006
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 10691726
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-007
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 10703597
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-008
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 10703606
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-012
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 11411908
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-013
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 11411925
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-014
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 11411931
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-017
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 11726457
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-018
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 11986033
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-019
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 12366884
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-elsevier-computers-in-biology-and-medicine-135
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Computers in Biology and Medicine
+    publisher_org: "Elsevier, Inc."
+    issn: 0010-4825
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 9849006
+      - type: orcid_source
+        value: Elsevier Editorial
+    cv_line: "Peer reviewer, Computers in Biology and Medicine, 2023."
+
+  - id: 2023-wos-issn-2504-2289-127
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: "ISSN:2504-2289"
+    publisher_org: Publons
+    issn: 2504-2289
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 8753932
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2504-2289, 2023."
+
+  - id: 2023-wos-issn-2504-2289-128
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: "ISSN:2504-2289"
+    publisher_org: Publons
+    issn: 2504-2289
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 8778677
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2504-2289, 2023."
+
+  - id: 2023-wos-issn-2504-2289-129
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: "ISSN:2504-2289"
+    publisher_org: Publons
+    issn: 2504-2289
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 8852388
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2504-2289, 2023."
+
+  - id: 2023-wos-issn-2504-2289-130
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: "ISSN:2504-2289"
+    publisher_org: Publons
+    issn: 2504-2289
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 8889352
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2504-2289, 2023."
+
+  - id: 2023-mdpi-issn-2504-2289-131
+    type: journal_review
+    year: 2023
+    date: 2023-02
+    role: reviewer
+    journal: "ISSN:2504-2289"
+    publisher_org: MDPI
+    issn: 2504-2289
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 9066663
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2504-2289, 2023."
+
+  - id: 2023-wos-issn-2504-2289-134
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: "ISSN:2504-2289"
+    publisher_org: Publons
+    issn: 2504-2289
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 9774526
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2504-2289, 2023."
+
+  - id: 2023-mdpi-issn-2813-2084-005
+    type: journal_review
+    year: 2023
+    date: 2023-03
+    role: reviewer
+    journal: "ISSN:2813-2084"
+    publisher_org: MDPI
+    issn: 2813-2084
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 10676979
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2813-2084, 2023."
+
+  - id: 2023-wos-issn-2813-2084-114
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: "ISSN:2813-2084"
+    publisher_org: Clarivate PLC
+    issn: 2813-2084
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241795
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, ISSN:2813-2084, 2023."
+
+  - id: 2023-mdpi-issn-2813-2084-126
+    type: journal_review
+    year: 2023
+    date: 2023-02
+    role: reviewer
+    journal: "ISSN:2813-2084"
+    publisher_org: MDPI
+    issn: 2813-2084
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 8657756
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2813-2084, 2023."
+
+  - id: 2023-wos-issn-2813-2084-133
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: "ISSN:2813-2084"
+    publisher_org: Publons
+    issn: 2813-2084
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 9524608
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2813-2084, 2023."
+
+  - id: 2023-wos-int-j-of-environmental-research-and-publ-125
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Int. J. of Environmental Research and Public Health
+    publisher_org: Publons
+    issn: 1660-4601
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 8535651
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Int. J. of Environmental Research and Public Health, 2023."
+
+  - id: 2023-mdpi-int-j-of-environmental-research-and-publ-132
+    type: journal_review
+    year: 2023
+    date: 2023-01
+    role: reviewer
+    journal: Int. J. of Environmental Research and Public Health
+    publisher_org: MDPI
+    issn: 1660-4601
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 9066664
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, Int. J. of Environmental Research and Public Health, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-001
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 10158119
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-003
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 10346199
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-004
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 10673375
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-009
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 10938331
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-010
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 11092737
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-011
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 11092738
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-015
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 11552809
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-016
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 11691073
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2023-wos-journal-of-biomolecular-structure-and-dy-115
+    type: journal_review
+    year: 2023
+    date: 2023
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241796
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023."
+
+  - id: 2022-wos-genes-122
+    type: journal_review
+    year: 2022
+    date: 2022
+    role: reviewer
+    journal: Genes
+    publisher_org: Publons
+    issn: 2073-4425
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 8026134
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Genes, 2022."
+
+  - id: 2022-mdpi-genes-124
+    type: journal_review
+    year: 2022
+    date: 2022-11
+    role: reviewer
+    journal: Genes
+    publisher_org: MDPI
+    issn: 2073-4425
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 8285955
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, Genes, 2022."
+
+  - id: 2022-wos-issn-1554-8120-111
+    type: journal_review
+    year: 2022
+    date: 2022
+    role: reviewer
+    journal: "ISSN:1554-8120"
+    publisher_org: Clarivate PLC
+    issn: 1554-8120
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241792
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, ISSN:1554-8120, 2022."
+
+  - id: 2022-wos-issn-2079-7737-121
+    type: journal_review
+    year: 2022
+    date: 2022
+    role: reviewer
+    journal: "ISSN:2079-7737"
+    publisher_org: Publons
+    issn: 2079-7737
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 7507876
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:2079-7737, 2022."
+
+  - id: 2022-mdpi-issn-2079-7737-123
+    type: journal_review
+    year: 2022
+    date: 2022-09
+    role: reviewer
+    journal: "ISSN:2079-7737"
+    publisher_org: MDPI
+    issn: 2079-7737
+    verified_by:
+      - orcid
+    evidence:
+      - type: orcid_put_code
+        value: 8285953
+      - type: orcid_source
+        value: Multidisciplinary Digital Publishing Institute
+    cv_line: "Peer reviewer, ISSN:2079-7737, 2022."
+
+  - id: 2022-wos-journal-of-biomolecular-structure-and-dy-002
+    type: journal_review
+    year: 2022
+    date: 2022
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 10158123
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2022."
+
+  - id: 2022-wos-journal-of-biomolecular-structure-and-dy-110
+    type: journal_review
+    year: 2022
+    date: 2022
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241791
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2022."
+
+  - id: 2022-wos-journal-of-biomolecular-structure-and-dy-112
+    type: journal_review
+    year: 2022
+    date: 2022
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241793
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2022."
+
+  - id: 2022-wos-journal-of-biomolecular-structure-and-dy-113
+    type: journal_review
+    year: 2022
+    date: 2022
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241794
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2022."
+
+  - id: 2021-wos-journal-of-biomolecular-structure-and-dy-109
+    type: journal_review
+    year: 2021
+    date: 2021
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241790
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2021."
+
+  - id: 2021-wos-journal-of-biomolecular-structure-and-dy-119
+    type: journal_review
+    year: 2021
+    date: 2021
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Publons
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 4414595
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2021."
+
+  - id: 2020-wos-journal-of-biomolecular-structure-and-dy-108
+    type: journal_review
+    year: 2020
+    date: 2020
+    role: reviewer
+    journal: Journal of Biomolecular Structure and Dynamics
+    publisher_org: Clarivate PLC
+    issn: 1538-0254
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 29241789
+      - type: orcid_source
+        value: Web of Science Researcher Profiles
+    cv_line: "Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2020."
+
+  - id: 2019-wos-issn-1554-8120-120
+    type: journal_review
+    year: 2019
+    date: 2019
+    role: reviewer
+    journal: "ISSN:1554-8120"
+    publisher_org: Clarivate PLC
+    issn: 1554-8120
+    verified_by:
+      - orcid
+      - wos
+    evidence:
+      - type: orcid_put_code
+        value: 4414597
+      - type: orcid_source
+        value: Web of Science Researcher Profile Sync
+    cv_line: "Peer reviewer, ISSN:1554-8120, 2019."

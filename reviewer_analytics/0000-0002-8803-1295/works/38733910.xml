@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<work:work xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review" put-code="38733910" visibility="public">
+    <common:created-date>2017-11-17T15:11:34.153Z</common:created-date>
+    <common:last-modified-date>2021-04-28T15:51:28.225Z</common:last-modified-date>
+    <common:source>
+        <common:source-orcid>
+            <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+            <common:path>0000-0002-8803-1295</common:path>
+            <common:host>orcid.org</common:host>
+        </common:source-orcid>
+        <common:source-name>Kalyani Dhusia</common:source-name>
+    </common:source>
+    <work:title>
+        <common:title>Epitope prediction for MSP119 protein in Plasmodium yeolii using computational approaches</common:title>
+    </work:title>
+    <work:journal-title>Network Modeling Analysis in Health Informatics and Bioinformatics</work:journal-title>
+    <work:citation>
+        <work:citation-type>bibtex</work:citation-type>
+        <work:citation-value>@Article{Dhusia2016, author= {Dhusia, Kalyani
+and Kesarwani, Pragya
+and Yadav, Pramod Kumar}, title= {Epitope prediction for MSP119 protein in Plasmodium yeolii using computational approaches}, journal= {Network Modeling Analysis in Health Informatics and Bioinformatics}, year= {2016}, month= {Jun}, day= {04}, volume= {5}, number= {1}, pages= {19}, abstract= {Malaria disease is caused by the transmission of Plasmodium, through the bite of a female A                        nopheles mosquito. Although the Plasmodium life-cycle has been extensively characterized, relatively little is known about sporozoite interaction with host organelles and proteins. Individuals that survive continuous exposure to infection do eventually develop clinical immunity, suggesting that a vaccine against asexual blood stage of the parasite is achievable. The merozoite surface protein (MSP119) of Plasmodium yoelii was considered as the target protein for epitope prediction using the computational approaches. The T-cell and B-cell epitopes for MSP119 were predicted using a variety of computational tools. Out of these predicted epitopes, the epitopes being expressed by the protozoa were identified. The 3D structures of T-cell epitopes (MHC-I and MHC-II) were modeled by homology modeling method followed by validation using the SAVES server. Further, the MHC molecules were identified and their 3D structures were retrieved from the Protein Data Bank. The protein--protein docking of modeled epitopes with respective MHC molecules were also carried out. Total Six T-cell epitopes (`ELSEHYYDRY', `LLIITIVFNI', `MMYHIYKLK', `IYQAMYNVIF', `SEEDMPADDF', `YVLLQNSTI') for MSP119 have been identified as promising vaccine candidates. Furthermore, six B-cell epitopes (`QPTET', `SEETE', `SDKYNKKKP', `KEKKKE', `CKKNKA', `THPDNT') have also been identified as potential epitopes. In future, these predicted epitopes might be exploited in vaccine development against malarial infection.}, issn= {2192-6670}, doi= {10.1007/s13721-016-0127-4}, url= {https://doi.org/10.1007/s13721-016-0127-4}}
+
+</work:citation-value>
+    </work:citation>
+    <work:type>journal-article</work:type>
+    <common:publication-date>
+        <common:year>2016</common:year>
+    </common:publication-date>
+    <common:external-ids>
+        <common:external-id>
+            <common:external-id-type>doi</common:external-id-type>
+            <common:external-id-value>10.1007/s13721-016-0127-4</common:external-id-value>
+            <common:external-id-normalized transient="true">10.1007/s13721-016-0127-4</common:external-id-normalized>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+    </common:external-ids>
+    <common:url>https://doi.org/10.1007/s13721-016-0127-4</common:url>
+    <work:contributors/>
+</work:work>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<work:work xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review" put-code="58521984" visibility="public">
+    <common:created-date>2019-06-15T17:27:40.696Z</common:created-date>
+    <common:last-modified-date>2022-05-28T20:11:52.367Z</common:last-modified-date>
+    <common:source>
+        <common:source-client-id>
+            <common:uri>https://orcid.org/client/0000-0002-5982-8983</common:uri>
+            <common:path>0000-0002-5982-8983</common:path>
+            <common:host>orcid.org</common:host>
+        </common:source-client-id>
+        <common:source-name>Scopus - Elsevier</common:source-name>
+        <common:assertion-origin-orcid>
+            <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+            <common:path>0000-0002-8803-1295</common:path>
+            <common:host>orcid.org</common:host>
+        </common:assertion-origin-orcid>
+        <common:assertion-origin-name>Kalyani Dhusia</common:assertion-origin-name>
+    </common:source>
+    <work:title>
+        <common:title>Nicotinic acetylcholine receptor alpha 1(nAChRα1) subunit peptides as potential antiviral agents against rabies virus</common:title>
+    </work:title>
+    <work:journal-title>International Journal of Biological Macromolecules</work:journal-title>
+    <work:citation>
+        <work:citation-type>bibtex</work:citation-type>
+        <work:citation-value>@article{Dhusia2017,title = {Nicotinic acetylcholine receptor alpha 1(nAChR?1) subunit peptides as potential antiviral agents against rabies virus},journal = {International Journal of Biological Macromolecules},year = {2017},volume = {104},pages = {180-188},author = {Sajjanar, B. and Dhusia, K. and Saxena, S. and Joshi, V. and Bisht, D. and Thakuria, D. and Manjunathareddy, G.B. and Ramteke, P.W. and Kumar, S.}}</work:citation-value>
+    </work:citation>
+    <work:type>journal-article</work:type>
+    <common:publication-date>
+        <common:year>2017</common:year>
+    </common:publication-date>
+    <common:external-ids>
+        <common:external-id>
+            <common:external-id-type>doi</common:external-id-type>
+            <common:external-id-value>10.1016/j.ijbiomac.2017.05.179</common:external-id-value>
+            <common:external-id-normalized transient="true">10.1016/j.ijbiomac.2017.05.179</common:external-id-normalized>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+        <common:external-id>
+            <common:external-id-type>eid</common:external-id-type>
+            <common:external-id-value>2-s2.0-85020465049</common:external-id-value>
+            <common:external-id-normalized transient="true">2-s2.0-85020465049</common:external-id-normalized>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+    </common:external-ids>
+    <common:url>http://www.scopus.com/inward/record.url?eid=2-s2.0-85020465049&amp;partnerID=MN8TOARS</common:url>
+    <work:contributors>
+        <work:contributor>
+            <work:credit-name>Sajjanar, B.</work:credit-name>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Dhusia, K.</work:credit-name>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Saxena, S.</work:credit-name>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Joshi, V.</work:credit-name>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Bisht, D.</work:credit-name>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Thakuria, D.</work:credit-name>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Manjunathareddy, G.B.</work:credit-name>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Ramteke, P.W.</work:credit-name>
+        </work:contributor>
+        <work:contributor>
+            <work:credit-name>Kumar, S.</work:credit-name>
+        </work:contributor>
+    </work:contributors>
+</work:work>

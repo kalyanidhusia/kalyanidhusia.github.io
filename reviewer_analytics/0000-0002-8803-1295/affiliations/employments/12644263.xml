@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employment:employment xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review" put-code="12644263" display-index="1" visibility="public">
+    <common:created-date>2020-09-10T04:11:11.008Z</common:created-date>
+    <common:last-modified-date>2022-09-29T19:24:31.885Z</common:last-modified-date>
+    <common:source>
+        <common:source-orcid>
+            <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+            <common:path>0000-0002-8803-1295</common:path>
+            <common:host>orcid.org</common:host>
+        </common:source-orcid>
+        <common:source-name>Kalyani Dhusia</common:source-name>
+    </common:source>
+    <common:department-name>Systems and Computational Biology</common:department-name>
+    <common:role-title>Research Fellow</common:role-title>
+    <common:start-date>
+        <common:year>2020</common:year>
+        <common:month>01</common:month>
+        <common:day>01</common:day>
+    </common:start-date>
+    <common:end-date>
+        <common:year>2022</common:year>
+        <common:month>01</common:month>
+        <common:day>03</common:day>
+    </common:end-date>
+    <common:organization>
+        <common:name>Albert Einstein College of Medicine</common:name>
+        <common:address>
+            <common:city>The Bronx</common:city>
+            <common:region>New York</common:region>
+            <common:country>US</common:country>
+        </common:address>
+        <common:disambiguated-organization>
+            <common:disambiguated-organization-identifier>grid.251993.5</common:disambiguated-organization-identifier>
+            <common:disambiguation-source>GRID</common:disambiguation-source>
+        </common:disambiguated-organization>
+    </common:organization>
+</employment:employment>

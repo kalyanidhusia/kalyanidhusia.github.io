@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<work:work xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review" put-code="92983930" visibility="public">
+    <common:created-date>2021-04-28T15:50:33.210Z</common:created-date>
+    <common:last-modified-date>2021-04-28T15:51:47.584Z</common:last-modified-date>
+    <common:source>
+        <common:source-orcid>
+            <common:uri>https://orcid.org/0000-0002-8803-1295</common:uri>
+            <common:path>0000-0002-8803-1295</common:path>
+            <common:host>orcid.org</common:host>
+        </common:source-orcid>
+        <common:source-name>Kalyani Dhusia</common:source-name>
+    </common:source>
+    <work:title>
+        <common:title>Mechanistic dissection of spatial organization in NF-κB signaling pathways by hybrid simulations.</common:title>
+    </work:title>
+    <work:journal-title>Integrative biology : quantitative biosciences from nano to macro</work:journal-title>
+    <work:short-description>The nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB) is one of the most important transcription factors involved in the regulation of inflammatory signaling pathways. Inappropriate activation of these pathways has been linked to autoimmunity and cancers. Emerging experimental evidences have been showing the existence of elaborate spatial organizations for various molecular components in the pathways. One example is the scaffold protein tumor necrosis factor receptor associated factor (TRAF). While most TRAF proteins form trimeric quaternary structure through their coiled-coil regions, the N-terminal region of some members in the family can further be dimerized. This dimerization of TRAF trimers can drive them into higher-order clusters as a response to receptor stimulation, which functions as a spatial platform to mediate the downstream poly-ubiquitination. However, the molecular mechanism underlying the TRAF protein clustering and its functional impacts are not well-understood. In this article, we developed a hybrid simulation method to tackle this problem. The assembly of TRAF-based signaling platform at the membrane-proximal region is modeled with spatial resolution, while the dynamics of downstream signaling network, including the negative feedbacks through various signaling inhibitors, is simulated as stochastic chemical reactions. These two algorithms are further synchronized under a multiscale simulation framework. Using this computational model, we illustrated that the formation of TRAF signaling platform can trigger an oscillatory NF-κB response. We further demonstrated that the temporal patterns of downstream signal oscillations are closely regulated by the spatial factors of TRAF clustering, such as the geometry and energy of dimerization between TRAF trimers. In general, our study sheds light on the basic mechanism of NF-κB signaling pathway and highlights the functional importance of spatial regulation within the pathway. The simulation framework also showcases its potential of application to other signaling pathways in cells.</work:short-description>
+    <work:type>journal-article</work:type>
+    <common:publication-date>
+        <common:year>2021</common:year>
+        <common:month>04</common:month>
+        <common:day>24</common:day>
+    </common:publication-date>
+    <common:external-ids>
+        <common:external-id>
+            <common:external-id-type>pmid</common:external-id-type>
+            <common:external-id-value>33893499</common:external-id-value>
+            <common:external-id-normalized transient="true">33893499</common:external-id-normalized>
+            <common:external-id-url>https://www.ncbi.nlm.nih.gov/pubmed/33893499</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+        <common:external-id>
+            <common:external-id-type>doi</common:external-id-type>
+            <common:external-id-value>10.1093/intbio/zyab006</common:external-id-value>
+            <common:external-id-normalized transient="true">10.1093/intbio/zyab006</common:external-id-normalized>
+            <common:external-id-url>https://doi.org/10.1093/intbio/zyab006</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+    </common:external-ids>
+    <common:url>https://doi.org/10.1093/intbio/zyab006</common:url>
+    <work:contributors/>
+</work:work>

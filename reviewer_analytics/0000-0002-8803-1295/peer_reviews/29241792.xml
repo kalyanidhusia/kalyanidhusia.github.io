@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<peer-review:peer-review xmlns:address="http://www.orcid.org/ns/address" xmlns:email="http://www.orcid.org/ns/email" xmlns:history="http://www.orcid.org/ns/history" xmlns:employment="http://www.orcid.org/ns/employment" xmlns:education="http://www.orcid.org/ns/education" xmlns:other-name="http://www.orcid.org/ns/other-name" xmlns:deprecated="http://www.orcid.org/ns/deprecated" xmlns:funding="http://www.orcid.org/ns/funding" xmlns:research-resource="http://www.orcid.org/ns/research-resource" xmlns:service="http://www.orcid.org/ns/service" xmlns:researcher-url="http://www.orcid.org/ns/researcher-url" xmlns:distinction="http://www.orcid.org/ns/distinction" xmlns:internal="http://www.orcid.org/ns/internal" xmlns:membership="http://www.orcid.org/ns/membership" xmlns:person="http://www.orcid.org/ns/person" xmlns:personal-details="http://www.orcid.org/ns/personal-details" xmlns:bulk="http://www.orcid.org/ns/bulk" xmlns:common="http://www.orcid.org/ns/common" xmlns:record="http://www.orcid.org/ns/record" xmlns:keyword="http://www.orcid.org/ns/keyword" xmlns:activities="http://www.orcid.org/ns/activities" xmlns:qualification="http://www.orcid.org/ns/qualification" xmlns:external-identifier="http://www.orcid.org/ns/external-identifier" xmlns:error="http://www.orcid.org/ns/error" xmlns:preferences="http://www.orcid.org/ns/preferences" xmlns:invited-position="http://www.orcid.org/ns/invited-position" xmlns:work="http://www.orcid.org/ns/work" xmlns:peer-review="http://www.orcid.org/ns/peer-review" put-code="29241792" visibility="limited">
+    <common:created-date>2026-09-28T17:04:00.259Z</common:created-date>
+    <common:last-modified-date>2026-09-28T17:04:00.259Z</common:last-modified-date>
+    <common:source>
+        <common:source-client-id>
+            <common:uri>https://orcid.org/client/APP-PIPD3W8Z8DY9GESR</common:uri>
+            <common:path>APP-PIPD3W8Z8DY9GESR</common:path>
+            <common:host>orcid.org</common:host>
+        </common:source-client-id>
+        <common:source-name>Web of Science Researcher Profiles</common:source-name>
+    </common:source>
+    <peer-review:reviewer-role>reviewer</peer-review:reviewer-role>
+    <peer-review:review-identifiers>
+        <common:external-id>
+            <common:external-id-type>other-id</common:external-id-type>
+            <common:external-id-value>kI5bDG0m</common:external-id-value>
+            <common:external-id-normalized transient="true">ki5bdg0m</common:external-id-normalized>
+            <common:external-id-url>https://publons.com/wos-op/review/author/kI5bDG0m/</common:external-id-url>
+            <common:external-id-relationship>self</common:external-id-relationship>
+        </common:external-id>
+    </peer-review:review-identifiers>
+    <peer-review:review-url>https://publons.com/wos-op/review/author/kI5bDG0m/</peer-review:review-url>
+    <peer-review:review-type>review</peer-review:review-type>
+    <peer-review:review-completion-date>
+        <common:year>2022</common:year>
+    </peer-review:review-completion-date>
+    <peer-review:review-group-id>issn:1554-8120</peer-review:review-group-id>
+    <peer-review:subject-type>journal-article</peer-review:subject-type>
+    <peer-review:convening-organization>
+        <common:name>Clarivate PLC</common:name>
+        <common:address>
+            <common:city>London</common:city>
+            <common:country>GB</common:country>
+        </common:address>
+    </peer-review:convening-organization>
+</peer-review:peer-review>
