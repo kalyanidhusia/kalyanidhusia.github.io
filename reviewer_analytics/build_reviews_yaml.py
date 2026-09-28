@@ -169,16 +169,20 @@ frontiers_editorial = {
     "journal": "Frontiers in Molecular Biosciences",
     "journal_url": "https://www.frontiersin.org/journals/molecular-biosciences",
     "issn": "2296-889X",
-    "verified_by": ["wos"],
+    "manuscripts_handled": 7,
+    "verified_by": ["wos", "frontiers"],
     "evidence": [
         {"type": "wos_record", "description": "Web of Science editorial-service record",
          "url": "https://www.webofscience.com/wos/op/peer-reviews/summary"},
+        {"type": "frontiers_reviewer_id", "value": "640379",
+         "description": "Frontiers reviewer ID; per-manuscript review pages linked in individual entries"},
     ],
     "cv_line": (
         "Review Editor, Editorial Board of Biological Modeling and Simulation, "
-        "Frontiers in Molecular Biosciences (Sept 2023 – 2025)."
+        "Frontiers in Molecular Biosciences (Sept 2023 – 2025). "
+        "Handled 7 manuscript reviews on the section."
     ),
-    "notes": "WoS-verified editorial service record.",
+    "notes": "WoS-verified editorial service. Frontiers review portal shows 7 handled manuscripts during tenure; see individual frontiers_review entries.",
 }
 
 # UAMS Poster Session Judge (research day service)
@@ -222,8 +226,82 @@ mdpi_guest_editor = {
     ),
 }
 
-# Combine — special-service entries first, then journal reviews
-master = [frontiers_editorial, mdpi_guest_editor, arinbre, uams_judge] + entries
+# Frontiers manuscript reviews - not in ORCID, handled during editorial tenure
+# (7 during 2023-2025 Frontiers in Molecular Biosciences editorial board;
+#  1 from 2022 predates the board tenure - journal TBD, likely Frontiers in Microbiology)
+FRONTIERS_JOURNAL_MB = "Frontiers in Molecular Biosciences (Biological Modeling and Simulation section)"
+FRONTIERS_JOURNAL_MB_URL = "https://www.frontiersin.org/journals/molecular-biosciences"
+FRONTIERS_JOURNAL_MB_ISSN = "2296-889X"
+
+frontiers_reviews_data = [
+    # 2025
+    ("1531793", "2025-04-23",
+     "Successful prediction of LC8 binding to intrinsically disordered proteins illuminates AlphaFold's black box"),
+    ("1542267", "2025-04-08",
+     "Use of AI-Methods over MD Simulations in the Sampling of Conformational Ensembles in IDPs"),
+    ("1549177", "2025-03-25",
+     "Computational Analysis of the Structural-Functional Dynamics of a Co-receptor proteoglycan"),
+    ("1543939", "2025-02-14",
+     "Metabolite profiling, antimalarial potentials of Schleichera oleosa using LC-MS and GC-MS: in vitro, molecular docking and molecular dynamics"),
+    # 2024
+    ("1366588", "2024-04-04",
+     "Characterisation of four peptides from milk fermented with kombucha cultures, and their metal complexes - In search of new biotherapeutics"),
+    ("1278701", "2024-03-27",
+     "Adenanthera pavonina-derived compounds to identify potential activators of mutated insulin receptor tyrosine kinase from diabetes mellitus: insight into the phytochemical analysis and in silico assays"),
+    # 2023
+    ("1258834", "2023-11-20",
+     "Chimeric vaccine design against conserved TonB dependent receptor-like β-barrel domain from the outer membrane tbpA and hpuB proteins of Kingella kingae ATCC 23330"),
+]
+
+frontiers_review_entries = []
+for review_id, date, title in frontiers_reviews_data:
+    year = int(date[:4])
+    frontiers_review_entries.append({
+        "id": f"{year}-frontiers-mb-{review_id}",
+        "type": "journal_review",
+        "year": year,
+        "date": date,
+        "role": "reviewer",
+        "journal": FRONTIERS_JOURNAL_MB,
+        "publisher_org": "Frontiers",
+        "issn": FRONTIERS_JOURNAL_MB_ISSN,
+        "manuscript_title": title,
+        "review_round": 2,
+        "verified_by": ["frontiers"],
+        "evidence": [
+            {"type": "frontiers_review_url",
+             "url": f"https://review.frontiersin.org/review/{review_id}/2/640379",
+             "description": "Frontiers review portal page (reviewer-authenticated)"},
+        ],
+        "cv_line": f"Peer reviewer, {FRONTIERS_JOURNAL_MB}, {date}.",
+        "notes": "Handled as Review Editor on the Biological Modeling and Simulation section board.",
+    })
+
+# Feb 2022 review predates Frontiers editorial board tenure (Sept 2023) -
+# the journal is TBD (URL doesn't reveal it). Topic is bacterial genomics/regulation,
+# most likely Frontiers in Microbiology - but flagged for user confirmation.
+frontiers_review_entries.append({
+    "id": "2022-frontiers-tbd-823240",
+    "type": "journal_review",
+    "year": 2022,
+    "date": "2022-02-14",
+    "role": "reviewer",
+    "journal": "Frontiers (journal TBD)",
+    "publisher_org": "Frontiers",
+    "manuscript_title": "Sensory systems and transcriptional regulation in Escherichia coli",
+    "review_round": 2,
+    "verified_by": ["frontiers"],
+    "evidence": [
+        {"type": "frontiers_review_url",
+         "url": "https://review.frontiersin.org/review/823240/2/640379",
+         "description": "Frontiers review portal page (reviewer-authenticated)"},
+    ],
+    "cv_line": "Peer reviewer, Frontiers (journal TBD), 2022-02-14.",
+    "notes": "Predates the Biological Modeling and Simulation editorial board tenure (Sept 2023). Topic (E. coli sensory systems) suggests Frontiers in Microbiology or similar - confirm exact journal from Frontiers reviewer dashboard.",
+})
+
+# Combine — special-service entries first, then journal reviews (including Frontiers)
+master = [frontiers_editorial, mdpi_guest_editor, arinbre, uams_judge] + frontiers_review_entries + entries
 
 # Write YAML manually (avoid pyyaml dependency, keep it deterministic)
 def yaml_val(v, indent=0):

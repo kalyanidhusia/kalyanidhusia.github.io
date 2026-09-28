@@ -1,5 +1,5 @@
 # Master peer review record for Kalyani Dhusia (ORCID 0000-0002-8803-1295)
-# Auto-generated. 139 entries: 1 editorial + 1 grant review + 135 journal reviews.
+# Auto-generated. 147 entries: 1 editorial + 1 grant review + 135 journal reviews.
 # ORCID export date: 2026-09-28. Fill unnamed ISSN journals by hand as you resolve them.
 
 reviews:
@@ -13,15 +13,21 @@ reviews:
     journal: Frontiers in Molecular Biosciences
     journal_url: "https://www.frontiersin.org/journals/molecular-biosciences"
     issn: 2296-889X
+    manuscripts_handled: 7
     verified_by:
       - wos
+      - frontiers
     evidence:
       - type: wos_record
         description: Web of Science editorial-service record
         url: "https://www.webofscience.com/wos/op/peer-reviews/summary"
+      - type: frontiers_reviewer_id
+        value: 640379
+        description: Frontiers reviewer ID; per-manuscript review pages linked in individual entries
     cv_line: |-
-      Review Editor, Editorial Board of Biological Modeling and Simulation, Frontiers in Molecular Biosciences (Sept 2023 – 2025).
-    notes: WoS-verified editorial service record.
+      Review Editor, Editorial Board of Biological Modeling and Simulation, Frontiers in Molecular Biosciences (Sept 2023 – 2025). Handled 7 manuscript reviews on the section.
+    notes: |-
+      WoS-verified editorial service. Frontiers review portal shows 7 handled manuscripts during tenure; see individual frontiers_review entries.
 
   - id: 2026-mdpi-ai-ml-bioinformatics-special-issue
     type: guest_editor
@@ -96,6 +102,170 @@ reviews:
         date: 2025-04-09
     cv_line: |-
       Judge, Poster Session, PA Student Research Day, College of Health Professions, University of Arkansas for Medical Sciences, April 9, 2025.
+
+  - id: 2025-frontiers-mb-1531793
+    type: journal_review
+    year: 2025
+    date: 2025-04-23
+    role: reviewer
+    journal: Frontiers in Molecular Biosciences (Biological Modeling and Simulation section)
+    publisher_org: Frontiers
+    issn: 2296-889X
+    manuscript_title: |-
+      Successful prediction of LC8 binding to intrinsically disordered proteins illuminates AlphaFold's black box
+    review_round: 2
+    verified_by:
+      - frontiers
+    evidence:
+      - type: frontiers_review_url
+        url: "https://review.frontiersin.org/review/1531793/2/640379"
+        description: Frontiers review portal page (reviewer-authenticated)
+    cv_line: |-
+      Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section), 2025-04-23.
+    notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
+
+  - id: 2025-frontiers-mb-1542267
+    type: journal_review
+    year: 2025
+    date: 2025-04-08
+    role: reviewer
+    journal: Frontiers in Molecular Biosciences (Biological Modeling and Simulation section)
+    publisher_org: Frontiers
+    issn: 2296-889X
+    manuscript_title: Use of AI-Methods over MD Simulations in the Sampling of Conformational Ensembles in IDPs
+    review_round: 2
+    verified_by:
+      - frontiers
+    evidence:
+      - type: frontiers_review_url
+        url: "https://review.frontiersin.org/review/1542267/2/640379"
+        description: Frontiers review portal page (reviewer-authenticated)
+    cv_line: |-
+      Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section), 2025-04-08.
+    notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
+
+  - id: 2025-frontiers-mb-1549177
+    type: journal_review
+    year: 2025
+    date: 2025-03-25
+    role: reviewer
+    journal: Frontiers in Molecular Biosciences (Biological Modeling and Simulation section)
+    publisher_org: Frontiers
+    issn: 2296-889X
+    manuscript_title: Computational Analysis of the Structural-Functional Dynamics of a Co-receptor proteoglycan
+    review_round: 2
+    verified_by:
+      - frontiers
+    evidence:
+      - type: frontiers_review_url
+        url: "https://review.frontiersin.org/review/1549177/2/640379"
+        description: Frontiers review portal page (reviewer-authenticated)
+    cv_line: |-
+      Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section), 2025-03-25.
+    notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
+
+  - id: 2025-frontiers-mb-1543939
+    type: journal_review
+    year: 2025
+    date: 2025-02-14
+    role: reviewer
+    journal: Frontiers in Molecular Biosciences (Biological Modeling and Simulation section)
+    publisher_org: Frontiers
+    issn: 2296-889X
+    manuscript_title: |-
+      Metabolite profiling, antimalarial potentials of Schleichera oleosa using LC-MS and GC-MS: in vitro, molecular docking and molecular dynamics
+    review_round: 2
+    verified_by:
+      - frontiers
+    evidence:
+      - type: frontiers_review_url
+        url: "https://review.frontiersin.org/review/1543939/2/640379"
+        description: Frontiers review portal page (reviewer-authenticated)
+    cv_line: |-
+      Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section), 2025-02-14.
+    notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
+
+  - id: 2024-frontiers-mb-1366588
+    type: journal_review
+    year: 2024
+    date: 2024-04-04
+    role: reviewer
+    journal: Frontiers in Molecular Biosciences (Biological Modeling and Simulation section)
+    publisher_org: Frontiers
+    issn: 2296-889X
+    manuscript_title: |-
+      Characterisation of four peptides from milk fermented with kombucha cultures, and their metal complexes - In search of new biotherapeutics
+    review_round: 2
+    verified_by:
+      - frontiers
+    evidence:
+      - type: frontiers_review_url
+        url: "https://review.frontiersin.org/review/1366588/2/640379"
+        description: Frontiers review portal page (reviewer-authenticated)
+    cv_line: |-
+      Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section), 2024-04-04.
+    notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
+
+  - id: 2024-frontiers-mb-1278701
+    type: journal_review
+    year: 2024
+    date: 2024-03-27
+    role: reviewer
+    journal: Frontiers in Molecular Biosciences (Biological Modeling and Simulation section)
+    publisher_org: Frontiers
+    issn: 2296-889X
+    manuscript_title: |-
+      Adenanthera pavonina-derived compounds to identify potential activators of mutated insulin receptor tyrosine kinase from diabetes mellitus: insight into the phytochemical analysis and in silico assays
+    review_round: 2
+    verified_by:
+      - frontiers
+    evidence:
+      - type: frontiers_review_url
+        url: "https://review.frontiersin.org/review/1278701/2/640379"
+        description: Frontiers review portal page (reviewer-authenticated)
+    cv_line: |-
+      Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section), 2024-03-27.
+    notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
+
+  - id: 2023-frontiers-mb-1258834
+    type: journal_review
+    year: 2023
+    date: 2023-11-20
+    role: reviewer
+    journal: Frontiers in Molecular Biosciences (Biological Modeling and Simulation section)
+    publisher_org: Frontiers
+    issn: 2296-889X
+    manuscript_title: |-
+      Chimeric vaccine design against conserved TonB dependent receptor-like β-barrel domain from the outer membrane tbpA and hpuB proteins of Kingella kingae ATCC 23330
+    review_round: 2
+    verified_by:
+      - frontiers
+    evidence:
+      - type: frontiers_review_url
+        url: "https://review.frontiersin.org/review/1258834/2/640379"
+        description: Frontiers review portal page (reviewer-authenticated)
+    cv_line: |-
+      Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section), 2023-11-20.
+    notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
+
+  - id: 2022-frontiers-tbd-823240
+    type: journal_review
+    year: 2022
+    date: 2022-02-14
+    role: reviewer
+    journal: Frontiers (journal TBD)
+    publisher_org: Frontiers
+    manuscript_title: Sensory systems and transcriptional regulation in Escherichia coli
+    review_round: 2
+    verified_by:
+      - frontiers
+    evidence:
+      - type: frontiers_review_url
+        url: "https://review.frontiersin.org/review/823240/2/640379"
+        description: Frontiers review portal page (reviewer-authenticated)
+    cv_line: "Peer reviewer, Frontiers (journal TBD), 2022-02-14."
+    notes: |-
+      Predates the Biological Modeling and Simulation editorial board tenure (Sept 2023). Topic (E. coli sensory systems) suggests Frontiers in Microbiology or similar - confirm exact journal from Frontiers reviewer dashboard.
 
   - id: 2026-elsevier-computational-biology-and-chemistry-089
     type: journal_review
