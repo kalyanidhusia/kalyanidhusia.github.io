@@ -113,14 +113,10 @@ reviews:
   - type: frontiers_review_url
     url: https://review.frontiersin.org/review/1531793/2/640379
     description: Frontiers review portal page (reviewer-authenticated)
-  - type: crossref_lookup
-    url: https://doi.org/10.3389/fmolb.2025.1531793
-    description: DOI matched via CrossRef (title similarity 0.90)
   cv_line: Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section),
     2025-04-23.
   notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
-  doi: 10.3389/fmolb.2025.1531793
-  doi_confidence: 0.902
+  topic_area: structural_drug_discovery
 - id: 2025-frontiers-mb-1542267
   type: journal_review
   year: 2025
@@ -138,14 +134,10 @@ reviews:
   - type: frontiers_review_url
     url: https://review.frontiersin.org/review/1542267/2/640379
     description: Frontiers review portal page (reviewer-authenticated)
-  - type: crossref_lookup
-    url: https://doi.org/10.3389/fmolb.2025.1542267
-    description: DOI matched via CrossRef (title similarity 1.00)
   cv_line: Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section),
     2025-04-08.
   notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
-  doi: 10.3389/fmolb.2025.1542267
-  doi_confidence: 1.0
+  topic_area: structural_drug_discovery
 - id: 2025-frontiers-mb-1549177
   type: journal_review
   year: 2025
@@ -162,14 +154,10 @@ reviews:
   - type: frontiers_review_url
     url: https://review.frontiersin.org/review/1549177/2/640379
     description: Frontiers review portal page (reviewer-authenticated)
-  - type: crossref_lookup
-    url: https://doi.org/10.3389/fmolb.2025.1549177
-    description: DOI matched via CrossRef (title similarity 1.00)
   cv_line: Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section),
     2025-03-25.
   notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
-  doi: 10.3389/fmolb.2025.1549177
-  doi_confidence: 1.0
+  topic_area: structural_drug_discovery
 - id: 2025-frontiers-mb-1543939
   type: journal_review
   year: 2025
@@ -187,14 +175,10 @@ reviews:
   - type: frontiers_review_url
     url: https://review.frontiersin.org/review/1543939/2/640379
     description: Frontiers review portal page (reviewer-authenticated)
-  - type: crossref_lookup
-    url: https://doi.org/10.3389/fmolb.2025.1543939
-    description: DOI matched via CrossRef (title similarity 1.00)
   cv_line: Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section),
     2025-02-14.
   notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
-  doi: 10.3389/fmolb.2025.1543939
-  doi_confidence: 1.0
+  topic_area: structural_drug_discovery
 - id: 2024-frontiers-mb-1366588
   type: journal_review
   year: 2024
@@ -212,14 +196,10 @@ reviews:
   - type: frontiers_review_url
     url: https://review.frontiersin.org/review/1366588/2/640379
     description: Frontiers review portal page (reviewer-authenticated)
-  - type: crossref_lookup
-    url: https://doi.org/10.3389/fmolb.2024.1366588
-    description: DOI matched via CrossRef (title similarity 0.99)
   cv_line: Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section),
     2024-04-04.
   notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
-  doi: 10.3389/fmolb.2024.1366588
-  doi_confidence: 0.989
+  topic_area: structural_drug_discovery
 - id: 2024-frontiers-mb-1278701
   type: journal_review
   year: 2024
@@ -241,6 +221,7 @@ reviews:
   cv_line: Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section),
     2024-03-27.
   notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
+  topic_area: disease_biology
 - id: 2023-frontiers-mb-1258834
   type: journal_review
   year: 2023
@@ -258,14 +239,10 @@ reviews:
   - type: frontiers_review_url
     url: https://review.frontiersin.org/review/1258834/2/640379
     description: Frontiers review portal page (reviewer-authenticated)
-  - type: crossref_lookup
-    url: https://doi.org/10.3389/fmolb.2023.1258834
-    description: DOI matched via CrossRef (title similarity 0.98)
   cv_line: Peer reviewer, Frontiers in Molecular Biosciences (Biological Modeling and Simulation section),
     2023-11-20.
   notes: Handled as Review Editor on the Biological Modeling and Simulation section board.
-  doi: 10.3389/fmolb.2023.1258834
-  doi_confidence: 0.985
+  topic_area: immunology_signaling
 - id: 2022-frontiers-tbd-823240
   type: journal_review
   year: 2022
@@ -281,15 +258,11 @@ reviews:
   - type: frontiers_review_url
     url: https://review.frontiersin.org/review/823240/2/640379
     description: Frontiers review portal page (reviewer-authenticated)
-  - type: crossref_lookup
-    url: https://doi.org/10.3389/fbioe.2022.823240
-    description: DOI matched via CrossRef (title similarity 1.00)
   cv_line: Peer reviewer, Frontiers (journal TBD), 2022-02-14.
   notes: Predates the Biological Modeling and Simulation editorial board tenure (Sept 2023). Topic (E.
     coli sensory systems) suggests Frontiers in Microbiology or similar - confirm exact journal from Frontiers
     reviewer dashboard.
-  doi: 10.3389/fbioe.2022.823240
-  doi_confidence: 1.0
+  topic_area: bioinformatics_methods
 - id: 2026-elsevier-computational-biology-and-chemistry-089
   type: journal_review
   year: 2026
@@ -309,18 +282,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 3
     description: Title from Elsevier Reviewer Hub Review History Report (revision 3)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiolchem.2026.109352
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 3
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 3)
   cv_line: Peer reviewer, Computational Biology and Chemistry, 2026.
   manuscript_title: Computational Identification of Candidate ST2-Binding Bioactive Compounds as Putative
     Modulators for Severe Type 2–High Asthma
   review_round: 3
-  doi: 10.1016/j.compbiolchem.2026.109352
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2026-elsevier-computational-biology-and-chemistry-092
   type: journal_review
   year: 2026
@@ -340,18 +306,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 2
     description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiolchem.2026.109352
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 2
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
   cv_line: Peer reviewer, Computational Biology and Chemistry, 2026.
   manuscript_title: Computational Identification of Candidate ST2-Binding Bioactive Compounds as Putative
     Modulators for Severe Type 2–High Asthma
   review_round: 2
-  doi: 10.1016/j.compbiolchem.2026.109352
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2026-elsevier-computational-biology-and-chemistry-096
   type: journal_review
   year: 2026
@@ -371,18 +330,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiolchem.2026.109352
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, Computational Biology and Chemistry, 2026.
   manuscript_title: Computational Identification of Candidate ST2-Binding Bioactive Compounds as Putative
     Modulators for Severe Type 2–High Asthma
   review_round: 1
-  doi: 10.1016/j.compbiolchem.2026.109352
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2026-elsevier-computational-biology-and-chemistry-101
   type: journal_review
   year: 2026
@@ -402,18 +354,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 2
     description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiolchem.2026.109017
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 2
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
   cv_line: Peer reviewer, Computational Biology and Chemistry, 2026.
   manuscript_title: Integrating Bioinformatics, Machine Learning and Molecular Biology to Elucidate the
     Anti-Allergic Mechanisms of Ginkgo biloba Leaves
   review_round: 2
-  doi: 10.1016/j.compbiolchem.2026.109017
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2026-elsevier-computational-biology-and-chemistry-102
   type: journal_review
   year: 2026
@@ -433,18 +378,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiolchem.2026.109017
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, Computational Biology and Chemistry, 2026.
   manuscript_title: Integrating Bioinformatics, Machine Learning and Molecular Biology to Elucidate the
     Anti-Allergic Mechanisms of Ginkgo biloba Leaves
   review_round: 1
-  doi: 10.1016/j.compbiolchem.2026.109017
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2026-elsevier-computational-biology-and-chemistry-104
   type: journal_review
   year: 2026
@@ -464,18 +402,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiolchem.2026.109352
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computational Biology and Chemistry, 2026.
   manuscript_title: Computational Identification of Candidate ST2-Binding Bioactive Compounds as Putative
     Modulators for Severe Type 2–High Asthma
   review_round: 0
-  doi: 10.1016/j.compbiolchem.2026.109352
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2026-wos-genes-107
   type: journal_review
   year: 2026
@@ -498,22 +429,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: genes-4292059
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/genes17070773
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: genes-4292059
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, Genes, 2026.
   manuscript_title: 'Cell-Type Deconvolution of Equine BALF RNA-Seq: A Critical Comparison with Matched
     Single-Cell Data'
   review_rounds: 2
   source_manuscript_id: genes-4292059
   manuscript_status: accepted
-  doi: 10.3390/genes17070773
-  doi_confidence: 1.0
+  topic_area: bioinformatics_methods
 - id: 2026-wos-genes-116
   type: journal_review
   year: 2026
@@ -550,13 +472,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:0006-291X, 2026.
   manuscript_title: Integrative Analysis of Receptor Ligand Interactions in Combining DTSSP Crosslinking
     and High-Dimensional Profiling
   review_round: 1
+  topic_area: immunology_signaling
 - id: 2026-elsevier-issn-0006-291x-106
   type: journal_review
   year: 2026
@@ -576,13 +496,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:0006-291X, 2026.
   manuscript_title: Integrative Analysis of Receptor Ligand Interactions in Combining DTSSP Crosslinking
     and High-Dimensional Profiling
   review_round: 0
+  topic_area: immunology_signaling
 - id: 2026-elsevier-issn-0006-8993-098
   type: journal_review
   year: 2026
@@ -602,13 +520,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:0006-8993, 2026.
   manuscript_title: Alisol A 24-acetate ameliorates Parkinson's disease by suppressing CCR1-mediated neuronal
     oxidative stress and apoptosis
   review_round: 0
+  topic_area: disease_biology
 - id: 2026-elsevier-issn-0944-7113-091
   type: journal_review
   year: 2026
@@ -628,17 +544,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.phymed.2026.158437
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:0944-7113, 2026.
   manuscript_title: EGCG inactivates tumor necrosis factor-alpha (TNFα) by inducing its higher-order assembly
   review_round: 0
-  doi: 10.1016/j.phymed.2026.158437
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2026-elsevier-issn-1043-4666-095
   type: journal_review
   year: 2026
@@ -658,12 +567,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:1043-4666, 2026.
   manuscript_title: TNF-TNFR Signaling Modality Conserved Across Invertebrate
   review_round: 1
+  topic_area: immunology_signaling
 - id: 2026-elsevier-issn-1043-4666-097
   type: journal_review
   year: 2026
@@ -683,12 +590,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 2
     description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
-  - type: elsevier_reviewer_hub
-    review_round: 2
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
   cv_line: Peer reviewer, ISSN:1043-4666, 2026.
   manuscript_title: Unraveling TNF–TNFR Signaling Architecture Across Invertebrates
   review_round: 2
+  topic_area: immunology_signaling
 - id: 2026-elsevier-issn-1043-4666-105
   type: journal_review
   year: 2026
@@ -708,12 +613,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:1043-4666, 2026.
   manuscript_title: Unraveling TNF–TNFR Signaling Architecture Across Invertebrates
   review_round: 1
+  topic_area: immunology_signaling
 - id: 2026-wos-issn-2046-2069-117
   type: journal_review
   year: 2026
@@ -732,18 +635,12 @@ reviews:
     value: Web of Science Researcher Profiles
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1039/d6ra07666a
-    description: DOI matched via CrossRef (title similarity 0.88)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, ISSN:2046-2069, 2026.
   manuscript_title: PET micro/nanoplastic exposure alters the physicochemical fingerprint of epirubicin–albumin
     mixtures and modulates bacterial growth and stress responses in Escherichia coli and Staphylococcus
     aureus
   review_rounds: 1
-  doi: 10.1039/d6ra07666a
-  doi_confidence: 0.884
+  topic_area: other
 - id: 2026-elsevier-issn-2773-0441-090
   type: journal_review
   year: 2026
@@ -763,12 +660,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:2773-0441, 2026.
   manuscript_title: Deciphering the miRNAs as potential theragnostic targets in Gallbladder cancer
   review_round: 1
+  topic_area: cancer_biology
 - id: 2026-wos-journal-of-biomolecular-structure-and-dy-118
   type: journal_review
   year: 2026
@@ -787,12 +682,11 @@ reviews:
     value: Web of Science Researcher Profiles
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2026.
   manuscript_title: Structural Basis and Molecular Dynamics Characterization of Momordin Ic–SENP1 Interaction
     Underlying Ferroptosis Regulation in Osteoarthritis
   review_rounds: 1
+  topic_area: disease_biology
 - id: 2025-elsevier-computational-biology-and-chemistry-087
   type: journal_review
   year: 2025
@@ -812,18 +706,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiolchem.2026.109017
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computational Biology and Chemistry, 2025.
   manuscript_title: Integrating Bioinformatics, Machine Learning and Molecular Biology to Elucidate the
     Anti-Allergic Mechanisms of Ginkgo biloba Leaves
   review_round: 0
-  doi: 10.1016/j.compbiolchem.2026.109017
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2025-wos-genes-093
   type: journal_review
   year: 2025
@@ -846,21 +733,12 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: genes-4040691
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/genes17010002
-    description: DOI matched via CrossRef (title similarity 0.99)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: genes-4040691
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, Genes, 2025.
   manuscript_title: 'scSelector: a Flexible Single Cell Data Analysis Assistant for Biomedical Researcher'
   review_rounds: 1
   source_manuscript_id: genes-4040691
   manuscript_status: accepted
-  doi: 10.3390/genes17010002
-  doi_confidence: 0.988
+  topic_area: bioinformatics_methods
 - id: 2025-mdpi-genes-100
   type: journal_review
   year: 2025
@@ -896,18 +774,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.brainres.2026.150322
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:0006-8993, 2025.
   manuscript_title: DJ-1 deficiency in SH-SY5Y cells reveals dysregulated networks of genes and pathways
     involved in neuronal function and disease
   review_round: 0
-  doi: 10.1016/j.brainres.2026.150322
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2025-elsevier-issn-0304-419x-070
   type: journal_review
   year: 2025
@@ -927,18 +798,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.bbcan.2025.189314
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:0304-419X, 2025.
   manuscript_title: 'PAQR4: from spatial regulation of cell signaling to physiological homeostasis and
     diseases'
   review_round: 0
-  doi: 10.1016/j.bbcan.2025.189314
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2025-elsevier-issn-1043-4666-088
   type: journal_review
   year: 2025
@@ -958,12 +822,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:1043-4666, 2025.
   manuscript_title: Unraveling TNF–TNFR Signaling Architecture Across Invertebrates
   review_round: 0
+  topic_area: immunology_signaling
 - id: 2025-wos-issn-1718-7729-094
   type: journal_review
   year: 2025
@@ -986,22 +848,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: curroncol-3950567
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/curroncol32120696
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: curroncol-3950567
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:1718-7729, 2025.
   manuscript_title: 'Readability Optimization of Layperson Summaries in Urological Oncology Clinical Trials:
     Outcomes from the BRIDGE-AI 8 Study'
   review_rounds: 1
   source_manuscript_id: curroncol-3950567
   manuscript_status: accepted
-  doi: 10.3390/curroncol32120696
-  doi_confidence: 1.0
+  topic_area: other
 - id: 2025-wos-issn-2079-7737-065
   type: journal_review
   year: 2025
@@ -1024,22 +877,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: biology-3432595
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/biology14020172
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: biology-3432595
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2079-7737, 2025.
   manuscript_title: Sequence-Only Prediction of Super-Enhancers in Human Cell Lines Using Transformer
     Models
   review_rounds: 1
   source_manuscript_id: biology-3432595
   manuscript_status: accepted
-  doi: 10.3390/biology14020172
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2025-mdpi-issn-2079-7737-067
   type: journal_review
   year: 2025
@@ -1107,18 +951,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 3
     description: Title from Elsevier Reviewer Hub Review History Report (revision 3)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.bbrep.2025.102384
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 3
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 3)
   cv_line: Peer reviewer, ISSN:2405-5808, 2025.
   manuscript_title: Unraveling the Molecular Landscape of Clear Cell Renal Cell Carcinoma Through Integrative
     Transcriptomic Analysis and Validation Using Clinical Samples
   review_round: 3
-  doi: 10.1016/j.bbrep.2025.102384
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2025-elsevier-issn-2405-5808-069
   type: journal_review
   year: 2025
@@ -1138,18 +975,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 2
     description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.bbrep.2025.102384
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 2
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
   cv_line: Peer reviewer, ISSN:2405-5808, 2025.
   manuscript_title: Unraveling the Molecular Landscape of Clear Cell Renal Cell Carcinoma Through Integrative
     Transcriptomic Analysis and Validation Using Clinical Samples
   review_round: 2
-  doi: 10.1016/j.bbrep.2025.102384
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2025-elsevier-issn-2405-5808-076
   type: journal_review
   year: 2025
@@ -1169,18 +999,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.bbrep.2025.102384
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:2405-5808, 2025.
   manuscript_title: Unraveling the Molecular Landscape of Clear Cell Renal Cell Carcinoma Through Integrative
     Transcriptomic Analysis and Validation Using Clinical Samples
   review_round: 1
-  doi: 10.1016/j.bbrep.2025.102384
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2025-elsevier-issn-2405-5808-078
   type: journal_review
   year: 2025
@@ -1200,13 +1023,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:2405-5808, 2025.
   manuscript_title: Herbacetin regulates the miR-424/LRIG1 axis through HIF-1α inhibition to inhibit angiogenesis
     and mitigate malignant melanoma progression
   review_round: 1
+  topic_area: cancer_biology
 - id: 2025-elsevier-issn-2405-5808-080
   type: journal_review
   year: 2025
@@ -1226,13 +1047,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:2405-5808, 2025.
   manuscript_title: 'Exploring the Role of WNK4 and FKBP5 in Asthma: Insights from Bioinformatic Analysis,
     Machine Learning and Preliminary Validation'
   review_round: 0
+  topic_area: disease_biology
 - id: 2025-elsevier-issn-2405-5808-082
   type: journal_review
   year: 2025
@@ -1252,13 +1071,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:2405-5808, 2025.
   manuscript_title: Herbacetin regulates the miR-424/LRIG1 axis through HIF-1α inhibition to inhibit angiogenesis
     and mitigate malignant melanoma progression
   review_round: 0
+  topic_area: cancer_biology
 - id: 2025-elsevier-issn-2405-5808-084
   type: journal_review
   year: 2025
@@ -1278,18 +1095,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.bbrep.2025.102010
-    description: DOI matched via CrossRef (title similarity 0.98)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:2405-5808, 2025.
   manuscript_title: 'The effect of enhancers on the lentiviral transduction efficiency in the human RPE
     cells: Insights for enhancing retinal gene therapies'
   review_round: 0
-  doi: 10.1016/j.bbrep.2025.102010
-  doi_confidence: 0.978
+  topic_area: disease_biology
 - id: 2025-elsevier-issn-2405-5808-086
   type: journal_review
   year: 2025
@@ -1309,18 +1119,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 2
     description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.bbrep.2025.101964
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 2
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
   cv_line: Peer reviewer, ISSN:2405-5808, 2025.
   manuscript_title: Intestinal antibody repertoire is altered by diabetes and varies depending on the
     pathogenesis
   review_round: 2
-  doi: 10.1016/j.bbrep.2025.101964
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2025-mdpi-issn-2673-2688-071
   type: journal_review
   year: 2025
@@ -1343,22 +1146,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: ai-3572464
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/ai6040084
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: ai-3572464
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2673-2688, 2025.
   manuscript_title: 'Artificial Intelligence in Ovarian Cancer: A Systematic Review and Meta-Analysis
     of Predictive AI Models in Genomics, Radiomics, and Immunotherapy'
   review_rounds: 1
   source_manuscript_id: ai-3572464
   manuscript_status: accepted
-  doi: 10.3390/ai6040084
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2025-wos-issn-2673-2688-072
   type: journal_review
   year: 2025
@@ -1395,12 +1189,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:2773-0441, 2025.
   manuscript_title: Deciphering the miRNAs as potential theragnostic targets in Gallbladder cancer
   review_round: 0
+  topic_area: cancer_biology
 - id: 2025-elsevier-issn-2773-0441-083
   type: journal_review
   year: 2025
@@ -1420,18 +1212,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.humgen.2025.201500
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:2773-0441, 2025.
   manuscript_title: 'Genetic and Molecular Insights into Diabetic Foot Ulcers: Unveiling Biomarkers for
     Precision Medicine'
   review_round: 1
-  doi: 10.1016/j.humgen.2025.201500
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2025-wos-international-journal-of-molecular-scien-073
   type: journal_review
   year: 2025
@@ -1454,22 +1239,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: ijms-3613931
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/ijms26125590
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: ijms-3613931
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, International Journal of Molecular Sciences (IJMS), 2025.
   manuscript_title: 'XGB-BIF: An XGBoost-Driven Biomarker Identification framework for detecting Cancer
     using Human Genomic Data'
   review_rounds: 1
   source_manuscript_id: ijms-3613931
   manuscript_status: accepted
-  doi: 10.3390/ijms26125590
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2025-mdpi-international-journal-of-molecular-scien-099
   type: journal_review
   year: 2025
@@ -1504,17 +1280,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2025.2540826
-    description: DOI matched via CrossRef (title similarity 0.99)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2025.
   manuscript_title: 'Investigating RND Efflux Pumps in Sphingobium yanoikuyae P4: The Role of Non-Pathogenic
     Bacteria in Antibiotic Resistance Gene Spread Amid Environmental Contamination'
   review_rounds: 2
-  doi: 10.1080/07391102.2025.2540826
-  doi_confidence: 0.994
+  topic_area: structural_drug_discovery
 - id: 2025-wos-journal-of-biomolecular-structure-and-dy-074
   type: journal_review
   year: 2025
@@ -1533,16 +1303,10 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2025.2475225
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2025.
   manuscript_title: Structural and functional implications of ABCC1 variants on clinical statin response
   review_rounds: 3
-  doi: 10.1080/07391102.2025.2475225
-  doi_confidence: 1.0
+  topic_area: structural_drug_discovery
 - id: 2025-wos-journal-of-biomolecular-structure-and-dy-079
   type: journal_review
   year: 2025
@@ -1582,22 +1346,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: biomolecules-3326921
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/biom14121609
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: biomolecules-3326921
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, Biomolecules, 2024.
   manuscript_title: Tumor-Infiltrating Immune Cells and HLA Expression as Potential Biomarkers Predicting
     Response to PD-1 Inhibitor Therapy in Stage IV Melanoma Patients
   review_rounds: 2
   source_manuscript_id: biomolecules-3326921
   manuscript_status: accepted
-  doi: 10.3390/biom14121609
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2024-wos-biomolecules-047
   type: journal_review
   year: 2024
@@ -1620,22 +1375,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: biomolecules-3328406
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/biom14121521
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: biomolecules-3328406
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, Biomolecules, 2024.
   manuscript_title: 'Natural Compounds Targeting Thymic Stromal Lymphopoietin (TSLP): A Promising Therapeutic
     Strategy for Atopic Dermatitis'
   review_rounds: 1
   source_manuscript_id: biomolecules-3328406
   manuscript_status: accepted
-  doi: 10.3390/biom14121521
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2024-wos-biomolecules-050
   type: journal_review
   year: 2024
@@ -1658,22 +1404,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: biomolecules-2883962
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/biom14030308
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: biomolecules-2883962
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, Biomolecules, 2024.
   manuscript_title: Integrated analysis of lncRNAs and mRNAs reveals complex gene network mediated by
     lncRNAs and regulatory function of MuLRR-RLK-AS in response to phytoplasma infection in mulberry
   review_rounds: 1
   source_manuscript_id: biomolecules-2883962
   manuscript_status: accepted
-  doi: 10.3390/biom14030308
-  doi_confidence: 1.0
+  topic_area: bioinformatics_methods
 - id: 2024-wos-biomolecules-053
   type: journal_review
   year: 2024
@@ -1761,22 +1498,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: cancers-2889900
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/cancers16081461
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: cancers-2889900
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, Cancers, 2024.
   manuscript_title: 'Adjuvant PD-1 Checkpoint Inhibition in Early Cutaneous Melanoma: Immunological Mode
     of Action and the Role of Ultraviolet Radiation'
   review_rounds: 2
   source_manuscript_id: cancers-2889900
   manuscript_status: accepted
-  doi: 10.3390/cancers16081461
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2024-wos-cancers-031
   type: journal_review
   year: 2024
@@ -1829,12 +1557,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2024.
   manuscript_title: 'ALRT: An Active Learning Framework for Irregularly Sampled Clinical Data'
   review_round: 1
+  topic_area: ai_ml_methods
 - id: 2024-elsevier-computers-in-biology-and-medicine-021
   type: journal_review
   year: 2024
@@ -1854,13 +1580,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 2
     description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
-  - type: elsevier_reviewer_hub
-    review_round: 2
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2024.
   manuscript_title: A heterogeneous network-based method with a multi-channel attention mechanism for
     predicting drug–target interactions
   review_round: 2
+  topic_area: ai_ml_methods
 - id: 2024-elsevier-computers-in-biology-and-medicine-024
   type: journal_review
   year: 2024
@@ -1880,12 +1604,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2024.
   manuscript_title: 'ALRT: An Active Learning Framework for Irregularly Sampled Clinical Data'
   review_round: 0
+  topic_area: ai_ml_methods
 - id: 2024-elsevier-computers-in-biology-and-medicine-027
   type: journal_review
   year: 2024
@@ -1905,13 +1627,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2024.
   manuscript_title: Autoencoder with Involution-Convolution based Attention Module for Cancer Classification
     using Gene Expression Data
   review_round: 0
+  topic_area: cancer_biology
 - id: 2024-elsevier-computers-in-biology-and-medicine-029
   type: journal_review
   year: 2024
@@ -1931,18 +1651,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 2
     description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.108407
-    description: DOI matched via CrossRef (title similarity 0.99)
-  - type: elsevier_reviewer_hub
-    review_round: 2
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 2)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2024.
   manuscript_title: Assessing the Reproducibility of Machine- learning-based Biomarker Discovery in Parkinson's
     Disease
   review_round: 2
-  doi: 10.1016/j.compbiomed.2024.108407
-  doi_confidence: 0.995
+  topic_area: disease_biology
 - id: 2024-elsevier-computers-in-biology-and-medicine-037
   type: journal_review
   year: 2024
@@ -1962,18 +1675,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.108407
-    description: DOI matched via CrossRef (title similarity 0.99)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2024.
   manuscript_title: Assessing the Reproducibility of Machine- learning-based Biomarker Discovery in Parkinson's
     Disease
   review_round: 1
-  doi: 10.1016/j.compbiomed.2024.108407
-  doi_confidence: 0.995
+  topic_area: disease_biology
 - id: 2024-elsevier-computers-in-biology-and-medicine-038
   type: journal_review
   year: 2024
@@ -1993,13 +1699,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2024.
   manuscript_title: Identification and validation of diagnostic markers of atherosclerosis progression
     via bioinformatics strategies
   review_round: 0
+  topic_area: disease_biology
 - id: 2024-elsevier-computers-in-biology-and-medicine-042
   type: journal_review
   year: 2024
@@ -2019,17 +1723,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.108385
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2024.
   manuscript_title: Classifying Alkaliphilic Proteins using Embeddings from Protein Language Model
   review_round: 1
-  doi: 10.1016/j.compbiomed.2024.108385
-  doi_confidence: 1.0
+  topic_area: structural_drug_discovery
 - id: 2024-elsevier-issn-0168-3659-048
   type: journal_review
   year: 2024
@@ -2049,18 +1746,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.jconrel.2025.02.046
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:0168-3659, 2024.
   manuscript_title: Albumin-Conjugated Flumethasone for Targeting and Normalization of Pancreatic Stellate
     Cells
   review_round: 0
-  doi: 10.1016/j.jconrel.2025.02.046
-  doi_confidence: 1.0
+  topic_area: structural_drug_discovery
 - id: 2024-wos-issn-1467-3037-025
   type: journal_review
   year: 2024
@@ -2100,16 +1790,12 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: cimb-2899419
     description: Title and status from MDPI reviewer dashboard export
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: cimb-2899419
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:1467-3045, 2024.
   manuscript_title: Integrating Multi-Omics Data for Liver Cancer
   review_rounds: 1
   source_manuscript_id: cimb-2899419
   manuscript_status: accepted
+  topic_area: cancer_biology
 - id: 2024-wos-issn-1999-5903-044
   type: journal_review
   year: 2024
@@ -2132,21 +1818,12 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: futureinternet-3213935
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/fi16120462
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: futureinternet-3213935
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:1999-5903, 2024.
   manuscript_title: 'Generative AI in Medicine and Healthcare: Moving Beyond the ‘Peak of Inflated Expectations’'
   review_rounds: 2
   source_manuscript_id: futureinternet-3213935
   manuscript_status: accepted
-  doi: 10.3390/fi16120462
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2024-wos-issn-1999-5903-049
   type: journal_review
   year: 2024
@@ -2199,13 +1876,11 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: computers-3352507
     description: Title and status from MDPI reviewer dashboard export
-  - type: mdpi_dashboard
-    manuscript_id: computers-3352507
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2073-431X, 2024.
   manuscript_title: Machine and Deep Learning for Speech-Based Alzheimer's Detec
   source_manuscript_id: computers-3352507
   manuscript_status: accepted
+  topic_area: disease_biology
 - id: 2024-wos-issn-2078-2489-030
   type: journal_review
   year: 2024
@@ -2228,22 +1903,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: information-2951135
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/info15040235
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: information-2951135
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2078-2489, 2024.
   manuscript_title: 'An Overview on the Advancements of Support Vector Machine Models in Healthcare Applications:
     A Review'
   review_rounds: 1
   source_manuscript_id: information-2951135
   manuscript_status: accepted
-  doi: 10.3390/info15040235
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2024-mdpi-issn-2078-2489-059
   type: journal_review
   year: 2024
@@ -2282,21 +1948,12 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: electronics-3269156
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/electronics13244895
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: electronics-3269156
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2079-9292, 2024.
   manuscript_title: Research of Chinese Entity Recognition Model Based on Multi-Feature Semantic Enhancement
   review_rounds: 1
   source_manuscript_id: electronics-3269156
   manuscript_status: accepted
-  doi: 10.3390/electronics13244895
-  doi_confidence: 1.0
+  topic_area: other
 - id: 2024-mdpi-issn-2079-9292-062
   type: journal_review
   year: 2024
@@ -2335,22 +1992,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: metabolites-3176207
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/metabo14090510
-    description: DOI matched via CrossRef (title similarity 0.87)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: metabolites-3176207
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2218-1989, 2024.
   manuscript_title: Predicting the Pathway Involvement of Metabolites in Both Pathway Categories and Individual
     Pathways
   review_rounds: 1
   source_manuscript_id: metabolites-3176207
   manuscript_status: accepted
-  doi: 10.3390/metabo14090510
-  doi_confidence: 0.866
+  topic_area: bioinformatics_methods
 - id: 2024-mdpi-issn-2218-1989-060
   type: journal_review
   year: 2024
@@ -2389,22 +2037,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: ejihpe-2985024
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/ejihpe14050093
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: ejihpe-2985024
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2254-9625, 2024.
   manuscript_title: Comparative Analysis of Artificial Intelligence Virtual Assistant and Large Language
     Models in Post-Operative Care
   review_rounds: 1
   source_manuscript_id: ejihpe-2985024
   manuscript_status: accepted
-  doi: 10.3390/ejihpe14050093
-  doi_confidence: 1.0
+  topic_area: other
 - id: 2024-mdpi-issn-2254-9625-061
   type: journal_review
   year: 2024
@@ -2440,18 +2079,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.bbrep.2025.101964
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:2405-5808, 2024.
   manuscript_title: Intestinal antibody repertoire is altered by diabetes and varies depending on the
     pathogenesis
   review_round: 1
-  doi: 10.1016/j.bbrep.2025.101964
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2024-elsevier-issn-2773-0441-028
   type: journal_review
   year: 2024
@@ -2471,13 +2103,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:2773-0441, 2024.
   manuscript_title: 'In silico analysis of microRNA-mRNA interaction in skeletal muscle aging: Potential
     biomarker and therapeutic target Comprehensive analysis of mutational features'
   review_round: 0
+  topic_area: disease_biology
 - id: 2024-elsevier-issn-2773-0441-034
   type: journal_review
   year: 2024
@@ -2497,13 +2127,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:2773-0441, 2024.
   manuscript_title: 'of colorectal cancer and multiple primary cancers including colorectal component:
     data from The Cancer Genome Atlas'
   review_round: 0
+  topic_area: cancer_biology
 - id: 2024-elsevier-issn-2773-0441-039
   type: journal_review
   year: 2024
@@ -2523,18 +2151,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.humgen.2024.201300
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, ISSN:2773-0441, 2024.
   manuscript_title: 'Characterization of Cellular Heterogeneity in Recurrent Pediatric Glioblastoma: Machine
     learning-Enhanced Single-Cell RNA-Seq Unveils Regulatory Signatures'
   review_round: 1
-  doi: 10.1016/j.humgen.2024.201300
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2024-elsevier-issn-2773-0441-045
   type: journal_review
   year: 2024
@@ -2554,18 +2175,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.humgen.2024.201300
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, ISSN:2773-0441, 2024.
   manuscript_title: 'Characterization of Cellular Heterogeneity in Recurrent Pediatric Glioblastoma: Machine
     learning-Enhanced Single-Cell RNA-Seq Unveils Regulatory Signatures'
   review_round: 0
-  doi: 10.1016/j.humgen.2024.201300
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2024-wos-journal-of-biomolecular-structure-and-dy-022
   type: journal_review
   year: 2024
@@ -2584,17 +2198,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2024.2446670
-    description: DOI matched via CrossRef (title similarity 0.98)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024.
   manuscript_title: 'The Anti-MRSA Resource: A Comprehensive Archive of Anti-MRSA Peptides &amp; Essential
     Oils'
   review_rounds: 2
-  doi: 10.1080/07391102.2024.2446670
-  doi_confidence: 0.976
+  topic_area: structural_drug_discovery
 - id: 2024-wos-journal-of-biomolecular-structure-and-dy-032
   type: journal_review
   year: 2024
@@ -2613,17 +2221,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2024.2404545
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2024.
   manuscript_title: Prognosis and immunotherapeutic implications of molecular classification of cervical
     cancer based on immunophenoscore-related genes
   review_rounds: 3
-  doi: 10.1080/07391102.2024.2404545
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2024-wos-journal-of-biomolecular-structure-and-dy-033
   type: journal_review
   year: 2024
@@ -2728,18 +2330,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.107925
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: 'DL-SPhos : Prediction of Serine Phosphorylation Sites Using Transformer Language
     Model'
   review_round: 1
-  doi: 10.1016/j.compbiomed.2024.107925
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2023-elsevier-computers-in-biology-and-medicine-007
   type: journal_review
   year: 2023
@@ -2759,18 +2354,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.107925
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: 'DL-SPhos : Prediction of Serine Phosphorylation Sites Using Transformer Language
     Model'
   review_round: 0
-  doi: 10.1016/j.compbiomed.2024.107925
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2023-elsevier-computers-in-biology-and-medicine-008
   type: journal_review
   year: 2023
@@ -2790,18 +2378,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.108052
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: Reconstruction of Cell-specific Models Capturing the Influence of Metabolism on DNA
     methylation in Cancer
   review_round: 1
-  doi: 10.1016/j.compbiomed.2024.108052
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2023-elsevier-computers-in-biology-and-medicine-012
   type: journal_review
   year: 2023
@@ -2821,17 +2402,10 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.108385
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: Classifying Alkaliphilic Proteins using Embeddings from Protein Language Model
   review_round: 0
-  doi: 10.1016/j.compbiomed.2024.108385
-  doi_confidence: 1.0
+  topic_area: structural_drug_discovery
 - id: 2023-elsevier-computers-in-biology-and-medicine-013
   type: journal_review
   year: 2023
@@ -2851,18 +2425,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.108407
-    description: DOI matched via CrossRef (title similarity 0.99)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: Assessing the Reproducibility of Machine- learning-based Biomarker Discovery in Parkinson's
     Disease
   review_round: 0
-  doi: 10.1016/j.compbiomed.2024.108407
-  doi_confidence: 0.995
+  topic_area: disease_biology
 - id: 2023-elsevier-computers-in-biology-and-medicine-014
   type: journal_review
   year: 2023
@@ -2882,13 +2449,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 1
     description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
-  - type: elsevier_reviewer_hub
-    review_round: 1
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 1)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: 'Identification of telomere-associated gene signatures to predict prognosis and drug
     sensitivity in glioma Unlocking the Potential: Scopolin from'
   review_round: 1
+  topic_area: cancer_biology
 - id: 2023-elsevier-computers-in-biology-and-medicine-017
   type: journal_review
   year: 2023
@@ -2908,13 +2473,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: Convolvulus pluricaulis as a Novel Inhibitor of Gamma Secretase Activating Protein
     for Alzheimer's Disease Treatment
   review_round: 0
+  topic_area: disease_biology
 - id: 2023-elsevier-computers-in-biology-and-medicine-018
   type: journal_review
   year: 2023
@@ -2934,13 +2497,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: E-pharmacophore and Deep learning based high throughput virtual screening for identification
     of CDPK1 inhibitors of Cryptosporidium Parvum
   review_round: 0
+  topic_area: structural_drug_discovery
 - id: 2023-elsevier-computers-in-biology-and-medicine-019
   type: journal_review
   year: 2023
@@ -2960,18 +2521,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2024.108052
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: Reconstruction of Cell-specific Models Capturing the Influence of Metabolism on DNA
     methylation in Cancer
   review_round: 0
-  doi: 10.1016/j.compbiomed.2024.108052
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2023-elsevier-computers-in-biology-and-medicine-135
   type: journal_review
   year: 2023
@@ -2991,18 +2545,11 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2023.107246
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
   cv_line: Peer reviewer, Computers in Biology and Medicine, 2023.
   manuscript_title: 'GCNfold: A novel lightweight model with valid extractors for RNA secondary structure
     prediction'
   review_round: 0
-  doi: 10.1016/j.compbiomed.2023.107246
-  doi_confidence: 1.0
+  topic_area: ai_ml_methods
 - id: 2023-wos-issn-2504-2289-127
   type: journal_review
   year: 2023
@@ -3025,22 +2572,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: BDCC-2254689
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/bdcc7010051
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: BDCC-2254689
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2504-2289, 2023.
   manuscript_title: Classification of Microbiome Data from Type 2 Diabetes Mellitus Individuals with Deep
     Learning Image Recognition
   review_rounds: 2
   source_manuscript_id: BDCC-2254689
   manuscript_status: accepted
-  doi: 10.3390/bdcc7010051
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2023-wos-issn-2504-2289-128
   type: journal_review
   year: 2023
@@ -3063,17 +2601,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: BDCC-2202775
     description: Title and status from MDPI reviewer dashboard export
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: BDCC-2202775
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2504-2289, 2023.
   manuscript_title: Detect COVID-19 fake news by combining biomedical information extraction and machine
     learning-based prediction
   review_rounds: 2
   source_manuscript_id: BDCC-2202775
   manuscript_status: rejected
+  topic_area: other
 - id: 2023-wos-issn-2504-2289-129
   type: journal_review
   year: 2023
@@ -3096,22 +2630,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: BDCC-2200378
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/bdcc7020068
-    description: DOI matched via CrossRef (title similarity 0.93)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: BDCC-2200378
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2504-2289, 2023.
   manuscript_title: An Overview on the Challenges and Limitations in the Use of Cloud Computing in Healthcare
     Corporations
   review_rounds: 1
   source_manuscript_id: BDCC-2200378
   manuscript_status: accepted
-  doi: 10.3390/bdcc7020068
-  doi_confidence: 0.929
+  topic_area: other
 - id: 2023-wos-issn-2504-2289-130
   type: journal_review
   year: 2023
@@ -3184,21 +2709,12 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: virtualworlds-2284557
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/virtualworlds2020007
-    description: DOI matched via CrossRef (title similarity 0.86)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: virtualworlds-2284557
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2813-2084, 2023.
   manuscript_title: 'Perspective: Metaverse in Medical Education, Research and Patient Care'
   review_rounds: 1
   source_manuscript_id: virtualworlds-2284557
   manuscript_status: accepted
-  doi: 10.3390/virtualworlds2020007
-  doi_confidence: 0.855
+  topic_area: other
 - id: 2023-wos-issn-2813-2084-114
   type: journal_review
   year: 2023
@@ -3221,21 +2737,12 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: virtualworlds-2223689
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/virtualworlds2010005
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: virtualworlds-2223689
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2813-2084, 2023.
   manuscript_title: Eliciting Co-Creation Best Practices of Virtual Reality Reusable e-Resources
   review_rounds: 1
   source_manuscript_id: virtualworlds-2223689
   manuscript_status: accepted
-  doi: 10.3390/virtualworlds2010005
-  doi_confidence: 1.0
+  topic_area: other
 - id: 2023-mdpi-issn-2813-2084-126
   type: journal_review
   year: 2023
@@ -3291,22 +2798,13 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: ijerph-2169383
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/ijerph20065028
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: ijerph-2169383
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, Int. J. of Environmental Research and Public Health, 2023.
   manuscript_title: Scanning Electron Microscope Examination as an Alternative to Classical Microbiology
     in the Diagnostics of Catheter-Related Sepsis?
   review_rounds: 1
   source_manuscript_id: ijerph-2169383
   manuscript_status: accepted
-  doi: 10.3390/ijerph20065028
-  doi_confidence: 1.0
+  topic_area: other
 - id: 2023-mdpi-int-j-of-environmental-research-and-publ-132
   type: journal_review
   year: 2023
@@ -3341,17 +2839,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2023.2298390
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023.
   manuscript_title: 'Molecular insights into sarcopenia: ferroptosis-related genes as diagnostic and therapeutic
     targets'
   review_rounds: 1
-  doi: 10.1080/07391102.2023.2298390
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2023-wos-journal-of-biomolecular-structure-and-dy-003
   type: journal_review
   year: 2023
@@ -3370,17 +2862,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2024.2316790
-    description: DOI matched via CrossRef (title similarity 0.99)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023.
   manuscript_title: Discovery of novel inhibitor via Molecular Dynamics Simulations against D-Alanyl-D-Alanine
     Carboxypeptidase of Enterobacter cloacae
   review_rounds: 1
-  doi: 10.1080/07391102.2024.2316790
-  doi_confidence: 0.992
+  topic_area: structural_drug_discovery
 - id: 2023-wos-journal-of-biomolecular-structure-and-dy-004
   type: journal_review
   year: 2023
@@ -3399,17 +2885,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2023.2289045
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023.
   manuscript_title: 'Probable targets and mechanism of ginsenoside Rg1 for non-alcoholic fatty liver disease:
     a study integrating network pharmacology, molecular docking, and molecular dynamics simulation'
   review_rounds: 2
-  doi: 10.1080/07391102.2023.2289045
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2023-wos-journal-of-biomolecular-structure-and-dy-009
   type: journal_review
   year: 2023
@@ -3428,17 +2908,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2023.2265491
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023.
   manuscript_title: 'Exploring therapeutic targets and drug candidates for obesity: a combined network
     pharmacology, bioinformatics approach'
   review_rounds: 1
-  doi: 10.1080/07391102.2023.2265491
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2023-wos-journal-of-biomolecular-structure-and-dy-010
   type: journal_review
   year: 2023
@@ -3457,12 +2931,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023.
   manuscript_title: 'Identification and validation of ferroptosis-Related genes in sarcopenia: A bioinformatics
     approach'
   review_rounds: 1
+  topic_area: disease_biology
 - id: 2023-wos-journal-of-biomolecular-structure-and-dy-011
   type: journal_review
   year: 2023
@@ -3481,17 +2954,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2023.2256409
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023.
   manuscript_title: RAGE acted as a new anti-inflammatory target for Icariin’s treatment against vascular
     dementia based on network pharmacology directed verification
   review_rounds: 1
-  doi: 10.1080/07391102.2023.2256409
-  doi_confidence: 0.997
+  topic_area: disease_biology
 - id: 2023-wos-journal-of-biomolecular-structure-and-dy-015
   type: journal_review
   year: 2023
@@ -3510,17 +2977,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2023.2220801
-    description: DOI matched via CrossRef (title similarity 0.99)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023.
   manuscript_title: Network pharmacology-based screening of active constituents of Avicennia marina and
     their clinical biochemistry related mechanism against breast cancer
   review_rounds: 2
-  doi: 10.1080/07391102.2023.2220801
-  doi_confidence: 0.993
+  topic_area: cancer_biology
 - id: 2023-wos-journal-of-biomolecular-structure-and-dy-016
   type: journal_review
   year: 2023
@@ -3539,12 +3000,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2023.
   manuscript_title: Structural and functional characterization of Mycobacterium tuberculosis Rv0309 as
     a putative cell-wall associated protein using bioinformatics analysis tools
   review_rounds: 3
+  topic_area: structural_drug_discovery
 - id: 2023-wos-journal-of-biomolecular-structure-and-dy-115
   type: journal_review
   year: 2023
@@ -3584,21 +3044,12 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: genes-2053455
     description: Title and status from MDPI reviewer dashboard export
-  - type: crossref_lookup
-    url: https://doi.org/10.3390/genes13122362
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: genes-2053455
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, Genes, 2022.
   manuscript_title: A Framework for Comparison and Assessment of Synthetic RNA-Seq Data
   review_rounds: 1
   source_manuscript_id: genes-2053455
   manuscript_status: accepted
-  doi: 10.3390/genes13122362
-  doi_confidence: 1.0
+  topic_area: bioinformatics_methods
 - id: 2022-mdpi-genes-124
   type: journal_review
   year: 2022
@@ -3654,11 +3105,6 @@ reviews:
   - type: mdpi_dashboard
     manuscript_id: biology-1961612
     description: Title and status from MDPI reviewer dashboard export
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  - type: mdpi_dashboard
-    manuscript_id: biology-1961612
-    description: Title and status from MDPI reviewer dashboard export
   cv_line: Peer reviewer, ISSN:2079-7737, 2022.
   manuscript_title: Machine learning assisted analysis on TCR profiling data from COVID-19-convalescent
     and healthy individuals unveils cross-reactivity between SARS-CoV-2 and a wide spectrum of pathogens
@@ -3666,6 +3112,7 @@ reviews:
   review_rounds: 1
   source_manuscript_id: biology-1961612
   manuscript_status: accepted
+  topic_area: immunology_signaling
 - id: 2022-mdpi-issn-2079-7737-123
   type: journal_review
   year: 2022
@@ -3700,17 +3147,11 @@ reviews:
     value: Web of Science Researcher Profile Sync
   - type: wos_reviewer_cv
     description: Title from Web of Science Researcher CV JSON export
-  - type: crossref_lookup
-    url: https://doi.org/10.1080/07391102.2022.2033135
-    description: DOI matched via CrossRef (title similarity 0.98)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
   cv_line: Peer reviewer, Journal of Biomolecular Structure and Dynamics, 2022.
   manuscript_title: Inhibition and Disintegration of Bacillus Subtilis Biofilm with Small Molecule Inhibitors
     Identified Through Virtual Screening for Targeting TasA(28-261), the Major Protein Component of ECM
   review_rounds: 2
-  doi: 10.1080/07391102.2022.2033135
-  doi_confidence: 0.976
+  topic_area: structural_drug_discovery
 - id: 2022-wos-journal-of-biomolecular-structure-and-dy-110
   type: journal_review
   year: 2022
@@ -3845,13 +3286,7 @@ reviews:
   evidence:
   - type: wos_import
     description: New entry from wos import (no matching ORCID entry)
-  - type: crossref_lookup
-    url: https://doi.org/10.1007/s00044-022-02876-0
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: wos_reviewer_cv
-    description: Title from Web of Science Researcher CV JSON export
-  doi: 10.1007/s00044-022-02876-0
-  doi_confidence: 1.0
+  topic_area: cancer_biology
 - id: 2023-elsevier-online-view-enhancement-for-exploration-
   type: journal_review
   year: 2023
@@ -3871,14 +3306,7 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.compbiomed.2023.107217
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  doi: 10.1016/j.compbiomed.2023.107217
-  doi_confidence: 1.0
+  topic_area: other
 - id: 2023-elsevier-genomic-interaction-systems-biology-empl
   type: journal_review
   year: 2023
@@ -3899,9 +3327,7 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
+  topic_area: bioinformatics_methods
 - id: 2022-elsevier-ligandbased-drug-design-of-ted347-could-
   type: journal_review
   year: 2022
@@ -3921,9 +3347,7 @@ reviews:
   - type: elsevier_reviewer_hub
     review_round: 0
     description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
+  topic_area: cancer_biology
 - id: 2022-elsevier-inhibition-of-mpges1-with-transferulic-a
   type: journal_review
   year: 2022
@@ -3940,9 +3364,7 @@ reviews:
   evidence:
   - type: elsevier_import
     description: New entry from elsevier import (no matching ORCID entry)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
+  topic_area: structural_drug_discovery
 - id: 2021-elsevier-a-study-of-tools-for-differential-coexpr
   type: journal_review
   year: 2021
@@ -3958,14 +3380,7 @@ reviews:
   evidence:
   - type: elsevier_import
     description: New entry from elsevier import (no matching ORCID entry)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.imu.2021.100740
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  doi: 10.1016/j.imu.2021.100740
-  doi_confidence: 1.0
+  topic_area: bioinformatics_methods
 - id: 2025-elsevier-genetic-and-molecular-insights-into-diab
   type: journal_review
   year: 2025
@@ -3982,14 +3397,7 @@ reviews:
   evidence:
   - type: elsevier_import
     description: New entry from elsevier import (no matching ORCID entry)
-  - type: crossref_lookup
-    url: https://doi.org/10.1016/j.humgen.2025.201500
-    description: DOI matched via CrossRef (title similarity 1.00)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-  doi: 10.1016/j.humgen.2025.201500
-  doi_confidence: 1.0
+  topic_area: disease_biology
 - id: 2023-elsevier-historical-sketch-of-jammu-and-kashmir-p
   type: journal_review
   year: 2023
@@ -4006,42 +3414,4 @@ reviews:
   evidence:
   - type: elsevier_import
     description: New entry from elsevier import (no matching ORCID entry)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-- id: 2023-elsevier-genomic-interaction-systems-biology-empl
-  type: journal_review
-  year: 2023
-  date: 2023-02
-  role: reviewer
-  journal: Computers in Biology and Medicine
-  manuscript_title: Genomic Interaction Systems Biology Employed to Uncover the Underlying Mechanisms
-    of Antimicrobial Resistance and Fates in the Facultative Anaerobic Bacterial Strain Streptococcus
-    Pneumoniae
-  review_round: 0
-  publisher_org: Elsevier
-  verified_by:
-  - elsevier_hub
-  cv_line: Peer reviewer, Computers in Biology and Medicine, 2023-02.
-  evidence:
-  - type: elsevier_import
-    description: New entry from elsevier import (no matching ORCID entry)
-  - type: elsevier_reviewer_hub
-    review_round: 0
-    description: Title from Elsevier Reviewer Hub Review History Report (revision 0)
-- id: 2022-elsevier-inhibition-of-mpges1-with-transferulic-a
-  type: journal_review
-  year: 2022
-  date: 2022-01
-  role: reviewer
-  journal: Computers in Biology and Medicine
-  manuscript_title: Inhibition of mPGES-1 with trans-Ferulic acid and catechin derivatives from Zingiber
-    capitatum Roxb rhizome reduces pyrexia via downregulating PGE2
-  review_round: 0
-  publisher_org: Elsevier
-  verified_by:
-  - elsevier_hub
-  cv_line: Peer reviewer, Computers in Biology and Medicine, 2022-01.
-  evidence:
-  - type: elsevier_import
-    description: New entry from elsevier import (no matching ORCID entry)
+  topic_area: other

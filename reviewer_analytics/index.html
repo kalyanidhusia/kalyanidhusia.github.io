@@ -173,6 +173,71 @@
     .doi-link:hover{ text-decoration:none; filter:brightness(0.95); }
     .doi-empty{ color:#c8c8c0; }
 
+    /* Topic-area labels */
+    .topic-pill{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:10px;
+      font-size:11px;
+      background:#eef0f4;
+      color:#3a4553;
+      border:1px solid rgba(0,0,0,0.06);
+      white-space:nowrap;
+    }
+    .topic-pill.cancer_biology{ background:#f4e4dd; color:#8b3a1a; border-color:#e8ccbe; }
+    .topic-pill.disease_biology{ background:#e6f0f7; color:#1e6091; border-color:#c4ddec; }
+    .topic-pill.ai_ml_methods{ background:#efeaf7; color:#5c4a89; border-color:#dbcfec; }
+    .topic-pill.structural_drug_discovery{ background:#fbf1de; color:#8a5a1a; border-color:#f0dcb1; }
+    .topic-pill.immunology_signaling{ background:#e6f5ef; color:#2a6d5a; border-color:#c4e5d7; }
+    .topic-pill.bioinformatics_methods{ background:#f7e6e6; color:#7a3a3a; border-color:#ecc4c4; }
+    .topic-pill.other{ background:#eef0f4; color:#52606d; border-color:#dde1e8; }
+
+    /* Status pills */
+    .status-pill{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:10px;
+      font-size:11px;
+      font-weight:500;
+      white-space:nowrap;
+    }
+    .status-pill.published{ background:#e6f5ef; color:#2a6d5a; border:1px solid #c4e5d7; }
+    .status-pill.not_published{ background:#fbf1de; color:#8a5a1a; border:1px solid #f0dcb1; }
+    .status-pill.deposit_verified{ background:#eef0f4; color:#52606d; border:1px solid #dde1e8; }
+
+    /* Status legend (footer under table) */
+    .status-legend{
+      display:inline-block;
+      margin-right:16px;
+      margin-top:4px;
+    }
+    .status-legend .status-pill{ margin-right:4px; }
+
+    /* Untitled-toggle button */
+    .toggle-link{
+      background:none;
+      border:none;
+      color:var(--accent);
+      cursor:pointer;
+      font-family:inherit;
+      font-size:14px;
+      padding:0;
+      text-decoration:underline;
+    }
+    .toggle-link:hover{ filter:brightness(0.9); }
+    .toggle-help{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      font-style:italic;
+      margin-top:6px;
+      max-width:60ch;
+    }
+    /* Rows that are the untitled ones — hidden by default */
+    tr.untitled-row{ display:none; }
+    tr.untitled-row.revealed{ display:table-row; background:#fbfbf8; }
+    tr.untitled-row.revealed td{ opacity:0.75; }
+
     .status{ padding:30px; text-align:center; color:var(--muted); font-size:14px; }
     .status.error{
       background:#fbeae5;
@@ -269,37 +334,57 @@
 
     <section class="section">
       <h2>Full service record</h2>
-      <p class="lead">Every entry — filter by year, type, or search by journal, title, or DOI.</p>
+      <p class="lead">
+        Each row is one review action. Reviews shown by default have a manuscript title on record;
+        entries where the title is not yet retrievable from any source are hidden but can be revealed
+        below.
+      </p>
       <div class="table-controls">
-        <input type="text" id="filter-text" placeholder="Search journal, title, or DOI…" aria-label="Search">
+        <input type="text" id="filter-text" placeholder="Search journal, topic, title, or DOI…" aria-label="Search">
         <select id="filter-year" aria-label="Year"><option value="">All years</option></select>
-        <select id="filter-type" aria-label="Type">
-          <option value="">All types</option>
-          <option value="journal_review">Journal reviews</option>
-          <option value="grant_review">Grant reviews</option>
-          <option value="editorial">Editorial</option>
-          <option value="guest_editor">Guest editor</option>
-          <option value="judge">Judging</option>
-        </select>
+        <select id="filter-topic" aria-label="Topic area"><option value="">All topics</option></select>
         <span class="filter-count" id="filter-count"></span>
       </div>
       <div class="table-wrap">
         <table id="reviews-table">
           <thead>
             <tr>
-              <th style="width:70px">Year</th>
-              <th style="width:180px">Journal / program</th>
-              <th style="width:90px">Type</th>
+              <th style="width:60px">Year</th>
+              <th style="width:150px">Journal</th>
+              <th style="width:130px">Topic area</th>
               <th>Title</th>
-              <th style="width:110px">DOI</th>
-              <th style="width:140px">Verified by</th>
+              <th style="width:90px">DOI</th>
+              <th style="width:130px">Verified by</th>
+              <th style="width:110px">Status</th>
             </tr>
           </thead>
           <tbody id="reviews-body">
-            <tr><td colspan="6" class="status">Loading reviews.yaml…</td></tr>
+            <tr><td colspan="7" class="status">Loading reviews.yaml…</td></tr>
           </tbody>
         </table>
       </div>
+
+      <div id="untitled-toggle-row" style="margin-top:14px;">
+        <button type="button" id="toggle-untitled" class="toggle-link">
+          <span id="toggle-label">Show 0 additional verified reviews (title pending)</span>
+        </button>
+        <span class="toggle-help">
+          These are reviews recorded in ORCID or Web of Science whose manuscript title
+          has not yet been retrieved from a publisher source (mostly older Elsevier /
+          Springer / RSC reviews outside current Reviewer Hub export windows).
+        </span>
+      </div>
+
+      <p class="lead" style="margin-top:20px;font-size:13px;">
+        <strong>What the Status column means:</strong>
+        <span class="status-legend"><span class="status-pill published">Published</span>
+        a peer-reviewed publication was confirmed via CrossRef (DOI on file).</span>
+        <span class="status-legend"><span class="status-pill not_published">Not published to date</span>
+        the manuscript title is on record, but no matching publication has been indexed —
+        the paper may still be under revision or was declined.</span>
+        <span class="status-legend"><span class="status-pill deposit_verified">Deposit-verified</span>
+        the review is recorded in ORCID or Web of Science, but title retrieval is pending.</span>
+      </p>
     </section>
 
     <div id="load-error" class="status error" style="display:none;"></div>
@@ -477,27 +562,60 @@
       });
     }
 
+    // Topic label + status pill helpers
+    const TOPIC_LABELS = {
+      cancer_biology: "Cancer biology",
+      disease_biology: "Disease biology",
+      ai_ml_methods: "AI/ML methods",
+      structural_drug_discovery: "Structural bio & drug discovery",
+      immunology_signaling: "Immunology & signaling",
+      bioinformatics_methods: "Bioinformatics methods",
+      other: "Other",
+    };
+
+    function statusFor(r) {
+      // Only journal_review entries get a status; specials handled separately
+      if (r.type !== 'journal_review') return null;
+      if (r.doi) return { key: 'published', label: 'Published' };
+      if (r.manuscript_title) return { key: 'not_published', label: 'Not published to date' };
+      return { key: 'deposit_verified', label: 'Deposit-verified' };
+    }
+
     let allReviews = [];
     function renderTable(list) {
       const body = document.getElementById('reviews-body');
-      if (!list.length) { body.innerHTML = '<tr><td colspan="6" class="status">No matches.</td></tr>'; document.getElementById('filter-count').textContent = '0 shown'; return; }
+      const toggleRow = document.getElementById('untitled-toggle-row');
+      const revealed = toggleRow && toggleRow.dataset.revealed === '1';
+
+      if (!list.length) {
+        body.innerHTML = '<tr><td colspan="7" class="status">No matches.</td></tr>';
+        document.getElementById('filter-count').textContent = '0 shown';
+        return;
+      }
       body.innerHTML = list.map(r => {
         const badges = (r.verified_by || []).map(v => `<span class="badge ${v}">${v}</span>`).join('');
-        const type = (r.type || '').replace('_', ' ');
         const name = r.journal || r.program || r.event || r.editorial_board || '—';
+        const isJournalReview = r.type === 'journal_review';
+        const isUntitled = isJournalReview && !r.manuscript_title;
 
-        // Title cell — full text if known, else a subtle dash with a hover tooltip
+        let topicCell;
+        if (isJournalReview && r.topic_area) {
+          const label = TOPIC_LABELS[r.topic_area] || r.topic_area;
+          topicCell = `<span class="topic-pill ${r.topic_area}">${escapeHtml(label)}</span>`;
+        } else {
+          topicCell = '<span class="doi-empty">—</span>';
+        }
+
         let titleCell;
         if (r.manuscript_title) {
           titleCell = `<span class="title-text">${escapeHtml(r.manuscript_title)}</span>`;
-        } else if (r.type === 'journal_review') {
+        } else if (isJournalReview) {
           const src = r.publisher_org || 'this source';
           titleCell = `<span class="title-empty" title="Manuscript title not exported by ${escapeHtml(src)} to ORCID">—</span>`;
         } else {
           titleCell = '<span class="title-empty">—</span>';
         }
 
-        // DOI cell — clickable link if available
         let doiCell;
         if (r.doi) {
           doiCell = `<a href="https://doi.org/${escapeHtml(r.doi)}" target="_blank" rel="noopener" class="doi-link" title="${escapeHtml(r.doi)}">doi ↗</a>`;
@@ -505,16 +623,43 @@
           doiCell = '<span class="doi-empty">—</span>';
         }
 
-        return `<tr>
+        let statusCell;
+        const st = statusFor(r);
+        if (st) {
+          statusCell = `<span class="status-pill ${st.key}">${st.label}</span>`;
+        } else {
+          const nonReviewLabel = (r.type || '').replace('_', ' ');
+          statusCell = `<span class="doi-empty" style="font-size:12px;">${nonReviewLabel}</span>`;
+        }
+
+        // Apply .revealed class immediately if user has toggled untitled visible
+        const rowClass = isUntitled
+          ? (revealed ? ' class="untitled-row revealed"' : ' class="untitled-row"')
+          : '';
+        return `<tr${rowClass}>
           <td>${r.year || ''}</td>
           <td>${escapeHtml(name)}</td>
-          <td style="color:var(--muted);font-size:12px;">${type}</td>
+          <td>${topicCell}</td>
           <td class="title-cell">${titleCell}</td>
           <td class="doi-cell">${doiCell}</td>
           <td>${badges}</td>
+          <td>${statusCell}</td>
         </tr>`;
       }).join('');
-      document.getElementById('filter-count').textContent = `${list.length} shown`;
+
+      // Count visible rows: skip untitled unless revealed
+      const visibleCount = list.filter(r => revealed || r.type !== 'journal_review' || r.manuscript_title).length;
+      document.getElementById('filter-count').textContent = `${visibleCount} shown`;
+
+      // Update toggle-button label based on current untitled count in this filtered set
+      const untitledCount = list.filter(r => r.type === 'journal_review' && !r.manuscript_title).length;
+      const toggleLabel = document.getElementById('toggle-label');
+      if (toggleLabel) {
+        toggleLabel.textContent = revealed
+          ? `Hide ${untitledCount} additional verified reviews (title pending)`
+          : `Show ${untitledCount} additional verified reviews (title pending)`;
+      }
+      if (toggleRow) toggleRow.style.display = untitledCount ? '' : 'none';
     }
 
     function escapeHtml(str) {
@@ -530,12 +675,13 @@
     function applyFilters() {
       const q = document.getElementById('filter-text').value.toLowerCase().trim();
       const year = document.getElementById('filter-year').value;
-      const type = document.getElementById('filter-type').value;
+      const topic = document.getElementById('filter-topic').value;
       const filtered = allReviews.filter(r => {
         if (year && String(r.year) !== year) return false;
-        if (type && r.type !== type) return false;
+        if (topic && r.topic_area !== topic) return false;
         if (q) {
-          const hay = `${r.journal || ''} ${r.program || ''} ${r.event || ''} ${r.editorial_board || ''} ${r.manuscript_title || ''} ${r.issn || ''} ${r.doi || ''}`.toLowerCase();
+          const topicLabel = (TOPIC_LABELS[r.topic_area] || '').toLowerCase();
+          const hay = `${r.journal || ''} ${r.program || ''} ${r.event || ''} ${r.editorial_board || ''} ${r.manuscript_title || ''} ${r.issn || ''} ${r.doi || ''} ${topicLabel}`.toLowerCase();
           if (!hay.includes(q)) return false;
         }
         return true;
@@ -544,12 +690,40 @@
     }
 
     function setupFilters(reviews) {
+      // Year dropdown
       const years = [...new Set(reviews.map(r => r.year).filter(Boolean))].sort((a, b) => b - a);
       const yearSel = document.getElementById('filter-year');
       years.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; yearSel.appendChild(o); });
-      ['filter-text','filter-year','filter-type'].forEach(id => {
+
+      // Topic dropdown — populated from topics that actually appear in the data
+      const topicsPresent = [...new Set(reviews.map(r => r.topic_area).filter(Boolean))];
+      const topicSel = document.getElementById('filter-topic');
+      // Sort by our canonical label order
+      const canonicalOrder = ['cancer_biology', 'disease_biology', 'ai_ml_methods',
+                              'structural_drug_discovery', 'immunology_signaling',
+                              'bioinformatics_methods', 'other'];
+      canonicalOrder.filter(k => topicsPresent.includes(k)).forEach(k => {
+        const o = document.createElement('option');
+        o.value = k;
+        o.textContent = TOPIC_LABELS[k];
+        topicSel.appendChild(o);
+      });
+
+      ['filter-text', 'filter-year', 'filter-topic'].forEach(id => {
         document.getElementById(id).addEventListener(id === 'filter-text' ? 'input' : 'change', applyFilters);
       });
+
+      // Untitled-toggle button
+      const btn = document.getElementById('toggle-untitled');
+      const toggleRow = document.getElementById('untitled-toggle-row');
+      if (btn && toggleRow) {
+        btn.addEventListener('click', () => {
+          const currentlyRevealed = toggleRow.dataset.revealed === '1';
+          toggleRow.dataset.revealed = currentlyRevealed ? '0' : '1';
+          // Re-render — renderTable reads dataset.revealed and applies the class itself
+          applyFilters();
+        });
+      }
     }
 
     function sortForTable(reviews) {
