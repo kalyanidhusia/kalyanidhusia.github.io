@@ -152,7 +152,26 @@
     .badge.orcid{ color:#2a6d5a; background:#e6f5ef; border-color:#c4e5d7; }
     .badge.wos{ color:#8a5a1a; background:#fbf1de; border-color:#f0dcb1; }
     .badge.letter{ color:#5c4a89; background:#efeaf7; border-color:#dbcfec; }
+    .badge.frontiers{ color:#1e6091; background:#e6f0f7; border-color:#c4ddec; }
+    .badge.mdpi_dashboard{ color:#7a3a3a; background:#f7e6e6; border-color:#ecc4c4; }
+    .badge.elsevier_hub{ color:#a34d1f; background:#fbead9; border-color:#f0cca8; }
     .badge.self{ color:var(--muted); }
+
+    /* Title + DOI cells */
+    .title-cell{ line-height:1.4; }
+    .title-text{ color:var(--text); font-size:13px; }
+    .title-empty{ color:#c8c8c0; cursor:help; }
+    .doi-cell{ font-size:12px; }
+    .doi-link{
+      font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+      color:var(--accent);
+      background:var(--accent-soft);
+      padding:2px 6px;
+      border-radius:4px;
+      font-size:11px;
+    }
+    .doi-link:hover{ text-decoration:none; filter:brightness(0.95); }
+    .doi-empty{ color:#c8c8c0; }
 
     .status{ padding:30px; text-align:center; color:var(--muted); font-size:14px; }
     .status.error{
@@ -250,9 +269,9 @@
 
     <section class="section">
       <h2>Full service record</h2>
-      <p class="lead">Every entry — filter by year, type, or search by journal name / ISSN.</p>
+      <p class="lead">Every entry — filter by year, type, or search by journal, title, or DOI.</p>
       <div class="table-controls">
-        <input type="text" id="filter-text" placeholder="Search journal or ISSN…" aria-label="Search">
+        <input type="text" id="filter-text" placeholder="Search journal, title, or DOI…" aria-label="Search">
         <select id="filter-year" aria-label="Year"><option value="">All years</option></select>
         <select id="filter-type" aria-label="Type">
           <option value="">All types</option>
@@ -269,14 +288,15 @@
           <thead>
             <tr>
               <th style="width:70px">Year</th>
-              <th>Journal / program</th>
-              <th style="width:110px">Type</th>
-              <th style="width:110px">ISSN</th>
-              <th style="width:160px">Verified by</th>
+              <th style="width:180px">Journal / program</th>
+              <th style="width:90px">Type</th>
+              <th>Title</th>
+              <th style="width:110px">DOI</th>
+              <th style="width:140px">Verified by</th>
             </tr>
           </thead>
           <tbody id="reviews-body">
-            <tr><td colspan="5" class="status">Loading reviews.yaml…</td></tr>
+            <tr><td colspan="6" class="status">Loading reviews.yaml…</td></tr>
           </tbody>
         </table>
       </div>
@@ -460,14 +480,51 @@
     let allReviews = [];
     function renderTable(list) {
       const body = document.getElementById('reviews-body');
-      if (!list.length) { body.innerHTML = '<tr><td colspan="5" class="status">No matches.</td></tr>'; document.getElementById('filter-count').textContent = '0 shown'; return; }
+      if (!list.length) { body.innerHTML = '<tr><td colspan="6" class="status">No matches.</td></tr>'; document.getElementById('filter-count').textContent = '0 shown'; return; }
       body.innerHTML = list.map(r => {
         const badges = (r.verified_by || []).map(v => `<span class="badge ${v}">${v}</span>`).join('');
         const type = (r.type || '').replace('_', ' ');
         const name = r.journal || r.program || r.event || r.editorial_board || '—';
-        return `<tr><td>${r.year || ''}</td><td>${name}</td><td style="color:var(--muted);font-size:12px;">${type}</td><td style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);">${r.issn || ''}</td><td>${badges}</td></tr>`;
+
+        // Title cell — full text if known, else a subtle dash with a hover tooltip
+        let titleCell;
+        if (r.manuscript_title) {
+          titleCell = `<span class="title-text">${escapeHtml(r.manuscript_title)}</span>`;
+        } else if (r.type === 'journal_review') {
+          const src = r.publisher_org || 'this source';
+          titleCell = `<span class="title-empty" title="Manuscript title not exported by ${escapeHtml(src)} to ORCID">—</span>`;
+        } else {
+          titleCell = '<span class="title-empty">—</span>';
+        }
+
+        // DOI cell — clickable link if available
+        let doiCell;
+        if (r.doi) {
+          doiCell = `<a href="https://doi.org/${escapeHtml(r.doi)}" target="_blank" rel="noopener" class="doi-link" title="${escapeHtml(r.doi)}">doi ↗</a>`;
+        } else {
+          doiCell = '<span class="doi-empty">—</span>';
+        }
+
+        return `<tr>
+          <td>${r.year || ''}</td>
+          <td>${escapeHtml(name)}</td>
+          <td style="color:var(--muted);font-size:12px;">${type}</td>
+          <td class="title-cell">${titleCell}</td>
+          <td class="doi-cell">${doiCell}</td>
+          <td>${badges}</td>
+        </tr>`;
       }).join('');
       document.getElementById('filter-count').textContent = `${list.length} shown`;
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
     function applyFilters() {
@@ -478,7 +535,7 @@
         if (year && String(r.year) !== year) return false;
         if (type && r.type !== type) return false;
         if (q) {
-          const hay = `${r.journal || ''} ${r.program || ''} ${r.event || ''} ${r.editorial_board || ''} ${r.issn || ''}`.toLowerCase();
+          const hay = `${r.journal || ''} ${r.program || ''} ${r.event || ''} ${r.editorial_board || ''} ${r.manuscript_title || ''} ${r.issn || ''} ${r.doi || ''}`.toLowerCase();
           if (!hay.includes(q)) return false;
         }
         return true;
