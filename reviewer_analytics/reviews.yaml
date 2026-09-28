@@ -1,5 +1,5 @@
 # Master peer review record for Kalyani Dhusia (ORCID 0000-0002-8803-1295)
-# Auto-generated. 137 entries: 1 editorial + 1 grant review + 135 journal reviews.
+# Auto-generated. 139 entries: 1 editorial + 1 grant review + 135 journal reviews.
 # ORCID export date: 2026-09-28. Fill unnamed ISSN journals by hand as you resolve them.
 
 reviews:
@@ -22,6 +22,23 @@ reviews:
     cv_line: |-
       Review Editor, Editorial Board of Biological Modeling and Simulation, Frontiers in Molecular Biosciences (Sept 2023 – 2025).
     notes: WoS-verified editorial service record.
+
+  - id: 2026-mdpi-ai-ml-bioinformatics-special-issue
+    type: guest_editor
+    year: 2026
+    role: Guest Editor
+    journal: Journal of AI (MDPI)
+    issue_title: "Machine Learning in Bioinformatics: Current Research and Development"
+    publisher_org: MDPI
+    journal_url: "https://www.mdpi.com/journal/ai/special_issues/6NS0U8I5Z4"
+    verified_by:
+      - self
+    evidence:
+      - type: url
+        description: MDPI Special Issue page
+        url: "https://www.mdpi.com/journal/ai/special_issues/6NS0U8I5Z4"
+    cv_line: |-
+      Guest Editor, Special Issue "Machine Learning in Bioinformatics: Current Research and Development", Journal of AI, MDPI.
 
   - id: 2026-arinbre-pilot
     type: grant_review
@@ -49,6 +66,7 @@ reviews:
       affiliation: "UAMS, Physiology & Cell Biology"
     assignment_email_date: 2025-12-19
     reviews_completed_by: 2026-01-09
+    sample_proposal_reviewed: AI-Powered Histopathological Analysis of Brain Tumors
     verified_by:
       - letter
     evidence:
@@ -62,6 +80,22 @@ reviews:
       Peer Reviewer, NIH IDeA-funded Arkansas INBRE Pilot Project Program (2026 cycle, UAMS). Reviewed 9 proposals under NIH-style criteria.
     notes: |-
       No grant number to cite; evidence is the panel convener's assignment email retained on file. AR INBRE is an NIH NIGMS-funded IDeA program (P20).
+
+  - id: 2025-uams-pa-student-research-day
+    type: judge
+    year: 2025
+    date: 2025-04-09
+    role: Judge
+    event: "Poster Session, PA Student Research Day"
+    host_institution: "College of Health Professions, University of Arkansas for Medical Sciences (UAMS)"
+    verified_by:
+      - self
+    evidence:
+      - type: event
+        description: Judged poster session at UAMS PA Student Research Day
+        date: 2025-04-09
+    cv_line: |-
+      Judge, Poster Session, PA Student Research Day, College of Health Professions, University of Arkansas for Medical Sciences, April 9, 2025.
 
   - id: 2026-elsevier-computational-biology-and-chemistry-089
     type: journal_review

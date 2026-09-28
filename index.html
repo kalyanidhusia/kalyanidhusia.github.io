@@ -17,12 +17,14 @@
   <link rel="stylesheet" href="fontawesome/css/all.css">
   <style>
     :root{
-      /* Customize these with your current palette */
-      --bg: [PASTE_OLD_BG];
-      --panel: [PASTE_OLD_PANEL];
-      --text: [PASTE_OLD_TEXT];
-      --muted: [PASTE_OLD_MUTED];
-      --accent: [PASTE_OLD_ACCENT];
+      /* Site palette — warm off-white with terracotta accent */
+      --bg: #fafaf7;
+      --panel: #ffffff;
+      --text: #1f2933;
+      --muted: #52606d;
+      --accent: #b04a2f;
+      --accent-soft: #f4e4dd;
+      --accent-2: #c78d3a;   /* mustard, for secondary highlights */
       --line: rgba(0,0,0,.10);
       --radius: 14px;
       --max: 980px;
@@ -272,12 +274,46 @@
     <!-- Service & peer review -->
     <section id="service" class="section">
       <h2>Service & peer review</h2>
-      <div class="card">
-        <ul>
-          <li>AR INBRE NIH pilot grant reviewer</li>
-          <li>Journal reviewer across bioinformatics & immunology (see ORCID)</li>
-          <li>Mentorship & workshops in computational methods and reproducibility</li>
-        </ul>
+      <p class="lead">
+        139 documented service entries since 2019 — journal manuscript reviews,
+        grant panel service, editorial roles, and judging. 60 reviews are
+        dual-verified across ORCID and Web of Science.
+      </p>
+
+      <div class="tiles" style="margin-top:14px;">
+        <div class="tile"><h3 style="color:var(--accent);">139</h3><p>Total service entries</p></div>
+        <div class="tile"><h3 style="color:var(--accent);">135</h3><p>Manuscript reviews</p></div>
+        <div class="tile"><h3 style="color:var(--accent);">60</h3><p>WoS-verified reviews</p></div>
+        <div class="tile"><h3 style="color:var(--accent);">8</h3><p>Active review years</p></div>
+      </div>
+
+      <div class="two-col" style="margin-top:14px;">
+        <div class="card">
+          <h3>Editorial & panel roles</h3>
+          <ul>
+            <li><strong>Review Editor</strong>, Biological Modeling and Simulation, <em>Frontiers in Molecular Biosciences</em> (Sept 2023 – 2025)</li>
+            <li><strong>Guest Editor</strong>, Special Issue "Machine Learning in Bioinformatics: Current Research and Development", <em>Journal of AI</em> (MDPI)</li>
+            <li><strong>Grant Reviewer</strong>, Arkansas INBRE Pilot Awards, 2026 cycle (NIH IDeA / P20)</li>
+            <li><strong>Judge</strong>, PA Student Research Day Poster Session, College of Health Professions, UAMS (April 2025)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Journal reviewing</h3>
+          <p style="margin:0 0 8px;color:var(--muted);">Consistent reviewer for:</p>
+          <ul>
+            <li><em>Journal of Biomolecular Structure and Dynamics</em> (27 reviews)</li>
+            <li><em>Computers in Biology and Medicine</em> (18 reviews)</li>
+            <li><em>Biomolecules</em>, <em>Genes</em>, <em>Cancers</em> (MDPI)</li>
+            <li><em>Computational Biology and Chemistry</em> (Elsevier)</li>
+            <li>Plus JOSS software review and others across Elsevier, MDPI, Springer Nature, Frontiers</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="inline-links" style="margin-top:16px;">
+        <a class="btn" href="reviewer_analytics/">See the full service record →</a>
+        <a class="link" href="https://orcid.org/0000-0002-8803-1295" target="_blank" rel="noopener">ORCID</a>
+        <a class="link" href="https://www.webofscience.com/wos/op/peer-reviews/summary" target="_blank" rel="noopener">Web of Science</a>
       </div>
     </section>
 

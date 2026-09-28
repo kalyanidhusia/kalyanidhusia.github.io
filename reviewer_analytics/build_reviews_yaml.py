@@ -51,7 +51,10 @@ def make_slug(year, source_norm, journal_hint, idx):
 
 # Parse all ORCID XMLs
 entries = []
-files = sorted(glob.glob("peer_reviews/*.xml"))
+files = sorted(glob.glob("0000-0002-8803-1295/peer_reviews/*.xml"))
+if not files:
+    # Fall back to the flat layout in case the folder was moved up one level
+    files = sorted(glob.glob("peer_reviews/*.xml"))
 counter_by_journal = Counter()
 
 for i, path in enumerate(files, start=1):
@@ -134,6 +137,7 @@ arinbre = {
     },
     "assignment_email_date": "2025-12-19",
     "reviews_completed_by": "2026-01-09",
+    "sample_proposal_reviewed": "AI-Powered Histopathological Analysis of Brain Tumors",
     "verified_by": ["letter"],
     "evidence": [
         {"type": "email", "description": "Reviewer assignment email from Dr. Jerry Ware",
@@ -177,8 +181,49 @@ frontiers_editorial = {
     "notes": "WoS-verified editorial service record.",
 }
 
-# Combine
-master = [frontiers_editorial, arinbre] + entries
+# UAMS Poster Session Judge (research day service)
+uams_judge = {
+    "id": "2025-uams-pa-student-research-day",
+    "type": "judge",
+    "year": 2025,
+    "date": "2025-04-09",
+    "role": "Judge",
+    "event": "Poster Session, PA Student Research Day",
+    "host_institution": "College of Health Professions, University of Arkansas for Medical Sciences (UAMS)",
+    "verified_by": ["self"],
+    "evidence": [
+        {"type": "event", "description": "Judged poster session at UAMS PA Student Research Day",
+         "date": "2025-04-09"},
+    ],
+    "cv_line": (
+        "Judge, Poster Session, PA Student Research Day, College of Health Professions, "
+        "University of Arkansas for Medical Sciences, April 9, 2025."
+    ),
+}
+
+# MDPI Guest Editor role
+mdpi_guest_editor = {
+    "id": "2026-mdpi-ai-ml-bioinformatics-special-issue",
+    "type": "guest_editor",
+    "year": 2026,
+    "role": "Guest Editor",
+    "journal": "Journal of AI (MDPI)",
+    "issue_title": "Machine Learning in Bioinformatics: Current Research and Development",
+    "publisher_org": "MDPI",
+    "journal_url": "https://www.mdpi.com/journal/ai/special_issues/6NS0U8I5Z4",
+    "verified_by": ["self"],
+    "evidence": [
+        {"type": "url", "description": "MDPI Special Issue page",
+         "url": "https://www.mdpi.com/journal/ai/special_issues/6NS0U8I5Z4"},
+    ],
+    "cv_line": (
+        "Guest Editor, Special Issue \"Machine Learning in Bioinformatics: Current "
+        "Research and Development\", Journal of AI, MDPI."
+    ),
+}
+
+# Combine — special-service entries first, then journal reviews
+master = [frontiers_editorial, mdpi_guest_editor, arinbre, uams_judge] + entries
 
 # Write YAML manually (avoid pyyaml dependency, keep it deterministic)
 def yaml_val(v, indent=0):
