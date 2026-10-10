@@ -2,6 +2,8 @@
 .DS_Store
 **/.DS_Store
 
+*.old
+
 # Python
 __pycache__/
 *.pyc
@@ -11,3 +13,4 @@ __pycache__/
 .vscode/
 .idea/
 *.swp
+reviewer_analytics/sources_local/
