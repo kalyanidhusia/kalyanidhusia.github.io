@@ -1,15 +1,15 @@
-# Dr. Kalyani Dhusia – Digital Portfolios & Computational Resources
+## Dr. Kalyani Dhusia – Digital Portfolio
 
 Welcome! This repository serves as a central hub connecting to live digital platforms, computational tutorials, faculty collaboration portals, and analytical dashboards.
 
 ---
 
-## 🌐 Live Web Portals & Resources
+## 🌐 Live Web Portal
 
 Access the live sites directly in your browser:
 
-* **Primary Portfolio:** [kalyanidhusia.github.io](https://kalyanidhusia.github.io/)[cite: 1]
-* **Shayara Writings (Creative & Personal Essays):** [kalyanidhusia.github.io/shayara-writings/#knight](https://kalyanidhusia.github.io/shayara-writings/#knight)[cite: 1]
+* **Primary Portfolio:** [kalyanidhusia.github.io](https://kalyanidhusia.github.io/)
+* **Shayara Writings (Creative & Personal Essays):** [kalyanidhusia.github.io/shayara-writings/](https://kalyanidhusia.github.io/shayara-writings/)
 * **Student Training & Grant Resources:** [kalyanidhusia.github.io/student_training](https://kalyanidhusia.github.io/student_training/)
 * **Faculty & Inter-Institutional Collaboration:** [kalyanidhusia.github.io/faculty_collaboration](https://kalyanidhusia.github.io/faculty_collaboration/)
 * **Reviewer Analytics Dashboard:** [kalyanidhusia.github.io/reviewer_analytics](https://kalyanidhusia.github.io/reviewer_analytics/)
