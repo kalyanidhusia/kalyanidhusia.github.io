@@ -46,9 +46,10 @@ header .tag{color:var(--muted);font-size:.9rem}
 .hearts .val{letter-spacing:2px}
 .hearts .off{opacity:.2}
 
-.stage{position:relative;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
-#board{display:block;width:100%;touch-action:none}
-.overlay{position:absolute;inset:0;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px;overflow-y:auto}
+.stage{position:relative;display:grid;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+.stage>*{grid-area:1/1}
+#board{display:block;width:100%;touch-action:none;align-self:start}
+.overlay{position:relative;min-height:100%;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px}
 .overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
 .overlay p{margin:0;font-size:1rem}
 .overlay .muted{color:var(--muted);font-size:.9rem}
@@ -222,6 +223,326 @@ PAD = """<div class="pad" id="pad">
 
 GAMES = {}
 
+# ============================================================ POLYMERASE RUNNER
+GAMES["poly"] = dict(
+  title="Polymerase Runner", tag="Read the template, build the mRNA",
+  codep="PR",
+  extra_css="""
+.basepad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.basepad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1.3rem;font-weight:700;min-width:58px;padding:12px 0}
+.basepad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.basepad .jumpb{min-width:96px;border-color:var(--accent);color:var(--accent);font-size:1rem}
+.basepad #tu-btn.u{border-color:var(--violet);color:var(--violet)}
+.pairkey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.pairkey b{color:var(--ink)}
+""",
+  hud=STD_HUD.replace("{L1}","Strand built").replace("{V1}","0 / 20")
+            .replace("{L2}","Score").replace("{V2}","0")
+            .replace("{L3}","Slips"),
+  stage_inner=flashcard(
+    "Transcription · DNA → mRNA",
+    "You are RNA polymerase — read the DNA, write the message.",
+    "Genes are instructions stored in DNA, written in four bases: A, T, G, C. To use a gene, the enzyme <strong>RNA polymerase</strong> slides along the DNA template and builds a matching strand letter by letter, using the pairing rules <strong>A–T</strong> (2 hydrogen bonds) and <strong>G–C</strong> (3). RNA has one twist: <strong>uracil (U) takes thymine's place</strong>, so A pairs with U. The strand you build is <strong>mRNA</strong> — the message the ribosome will read next.",
+    ["Pair any base correctly and say how many hydrogen bonds hold it (A–T/U: 2, G–C: 3).",
+     "Explain what changes in RNA: uracil replaces thymine, so A pairs with U.",
+     "Describe RNA polymerase's job and what the finished mRNA is for."],
+    ["A template base slides into your clamp — <strong>tap the base that pairs with it</strong>.",
+     "After 10 pairs you cross into the <strong>transcription zone</strong>: your T shatters into violet <strong>U</strong>, and A pairs with U from then on.",
+     "<strong>Jump</strong> the 5 protein roadblocks on the template. Your first 2 wrong picks are free practice; after that, 3 slips end the run."],
+    "Real polymerases hit roadblocks too — DNA-binding proteins stall them, and they really do pause and restart.",
+    "Start transcribing"),
+  controls="""<div class="basepad" id="basepad">
+  <button data-b="A" aria-label="Pair A">A</button>
+  <button data-b="T" id="tu-btn" aria-label="Pair T or U">T</button>
+  <button data-b="G" aria-label="Pair G">G</button>
+  <button data-b="C" aria-label="Pair C">C</button>
+  <button data-b="jump" class="jumpb" aria-label="Jump">Jump</button>
+</div>
+<div class="pairkey"><span><b>A–T</b> / <b>A–U</b> · 2 H-bonds</span><span><b>G–C</b> · 3 H-bonds</span></div>
+<p class="ctrl-note">Tap the pairing base · desktop: A T G C (or U) keys, space = jump</p>""",
+  js=r"""
+/* Speed — tunable without editing code:
+   URL params  ?speed=60&accel=2&max=120   or console: PRspeed({speed:60,accel:2,max:120})
+   speed = starting scroll px/s, accel = px/s gained per correct pair, max = speed cap */
+var qs=new URLSearchParams(location.search);
+function qn(name,def,min){var v=parseInt(qs.get(name),10);return isNaN(v)?def:Math.max(min,v);}
+var V0=qn("speed",70,30),VACC=qn("accel",3,0),VMAX=Math.max(V0,qn("max",140,40));
+var W=360,H=240,dpr=1,clampX=120;
+var GAP=64,N=20,RNA_AT=10;
+/* strand layout: a gap that holds a roadblock is double width, so the
+   obstacle sits a full GAP from the base before it and after it */
+var OBS_AFTER=[4,7,11,14,17],BX=[],OBX={},ZONEX=0;
+(function(){var x=0;
+  for(var i=0;i<N;i++){BX[i]=x;x+=GAP;
+    if(OBS_AFTER.indexOf(i)>=0){OBX[i]=BX[i]+GAP;x+=GAP;}}
+  ZONEX=(BX[RNA_AT-1]+BX[RNA_AT])/2;})();
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var g=null,raf=null,last=0;
+var PCOL={A:"#2F8C72",T:"#C98F2C",G:"#4A69C4",C:"#B05A92",U:"#8A4BD9"};
+function makeGene(){
+  var pool=["A","A","T","G","C","A","G","C","T","G"],out=[];
+  for(var i=0;i<N;i++)out.push(pool[Math.floor(Math.random()*pool.length)]);
+  if(out.slice(0,RNA_AT).indexOf("A")<0)out[3]="A";
+  var c=0;for(i=RNA_AT;i<N;i++)if(out[i]==="A")c++;
+  if(c<2){out[RNA_AT+1]="A";out[RNA_AT+5]="A";}
+  return out;
+}
+function wantFor(b,rna){
+  if(b==="A")return rna?"U":"T";
+  if(b==="T")return "A";
+  if(b==="G")return "C";
+  return "G";
+}
+function reset(){
+  g={gene:makeGene(),pairs:[],n:0,x:-GAP*2.2,v:V0,phase:"scroll",score:0,
+     hearts:3,practice:2,rna:false,jumpT:-9,running:false,over:false,
+     obstacles:OBS_AFTER.map(function(i){return {i:i,done:false,cleared:false};}),
+     shards:[],confetti:null,hintShown:0};
+  var tb=$("#tu-btn");tb.textContent="T";tb.classList.remove("u");
+  renderHUD();
+}
+function renderHUD(){
+  $("#s1").textContent=g.n+" / "+N;
+  $("#s2").textContent=g.score;
+  var h="";for(var i=0;i<3;i++)h+='<span class="'+(i<(3-g.hearts)?"":"off")+'" style="color:var(--bad)">●</span>';
+  $("#hearts").innerHTML=h;
+}
+function airborne(now){return (now-g.jumpT)<520;}
+function mistake(msg){
+  if(g.practice>0){g.practice--;setBanner(msg+" · practice, no heart lost ("+g.practice+" left)","no");return;}
+  g.hearts--;renderHUD();setBanner(msg,"no");
+  if(g.hearts<=0)endGame(false,"Three slips — transcription aborted. That happens in real cells too. Check the table before you tap: A pairs with T in DNA and U in RNA (2 hydrogen bonds); G pairs with C (3 bonds).");
+}
+function pick(b){
+  if(!g.running||g.phase!=="await")return;
+  var tb=g.gene[g.n],want=wantFor(tb,g.rna&&g.n>=RNA_AT);
+  var chosen=(g.rna&&b==="T")?"U":b;
+  if(chosen===want){
+    g.pairs.push(want);g.n++;
+    var bonds=(tb==="G"||tb==="C")?3:2;
+    g.score+=50;setBanner(tb+"–"+want+" · "+bonds+" hydrogen bonds ✓","ok");
+    renderHUD();
+    if(g.n>=N)return endGame(true,null);
+    g.phase="scroll";g.v=Math.min(VMAX,g.v+VACC);
+  }else{
+    mistake(chosen+" doesn’t pair with "+tb+" — "+tb+" pairs with "+want);
+  }
+}
+function jump(){
+  if(!g.running||g.phase!=="scroll")return;
+  var now=performance.now();
+  if(!airborne(now))g.jumpT=now;
+}
+function makeShards(x,y){
+  var out=[];
+  for(var i=0;i<26;i++)out.push({x:x,y:y,vx:(Math.random()-0.5)*220,vy:-60-Math.random()*160,life:0.9});
+  return out;
+}
+function endGame(won,msg){
+  g.over=true;g.running=false;g.phase="done";renderHUD();
+  if(won&&!reducedMotion()){
+    g.confetti=makeConfetti(W,H);
+    cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
+  }
+  var ov=$("#overlay");
+  setTimeout(function(){
+    ov.hidden=false;
+    ov.innerHTML= won?
+      '<h2>mRNA complete!</h2>'+
+      '<p><strong>'+g.score+' points</strong> · your transcript, 5′→3′:</p>'+
+      '<p style="font-family:var(--mono);font-size:1.05rem;letter-spacing:2px;color:var(--violet);margin:0">'+g.pairs.slice(RNA_AT).join("")+'</p>'+
+      '<div class="facts">'+
+      '<div>You just did what <strong>RNA polymerase</strong> does: read the DNA template and write a complementary strand, letter by letter.</div>'+
+      '<div><strong>U replaced T</strong> the moment you entered the transcription zone — RNA’s signature move. A–U still uses 2 hydrogen bonds; G–C uses 3.</div>'+
+      '<div>If your transcript encoded a viral protein, it could be the starting blueprint for a <strong>hypothetical vaccine candidate</strong>. A real one also needs a cap, a tail, and years of engineering and testing — that part is the career.</div>'+
+      '<div>Simplification to know: a real polymerase uses RNA rules (U, not T) from the very first base — the DNA warm-up zone exists so you learn both pairing tables.</div>'+
+      '</div><button class="btn" id="start-btn">Transcribe another gene</button>'
+      :
+      '<h2>The polymerase fell off the template</h2><p>'+msg+'</p>'+
+      '<p class="muted">Score: '+g.score+' · '+g.n+' of '+N+' bases paired. Every run uses a new gene — try again.</p>'+
+      '<button class="btn" id="start-btn">Try again</button>';
+    $("#start-btn").addEventListener("click",start);
+  },won&&!reducedMotion()?2000:600);
+}
+function start(){
+  reset();$("#overlay").hidden=true;
+  g.running=true;last=performance.now();
+  cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
+}
+function loop(now){
+  var dt=Math.min(0.05,(now-last)/1000);last=now;
+  if(g.running&&g.phase==="scroll"){
+    g.x+=g.v*dt;
+    if(!g.rna&&g.x>ZONEX){
+      g.rna=true;
+      var tb=$("#tu-btn");tb.textContent="U";tb.classList.add("u");
+      g.shards=makeShards(clampX,H-110);
+      setBanner("TRANSCRIPTION ZONE — uracil (U) replaces thymine (T)","vi");
+    }
+    for(var k=0;k<g.obstacles.length;k++){
+      var o=g.obstacles[k],ox=OBX[o.i];
+      if(o.done)continue;
+      if(g.x>ox-14&&g.x<ox+16){
+        if(airborne(now)){o.done=true;o.cleared=true;g.score+=25;setBanner("Roadblock cleared +25","ok");renderHUD();}
+        else{o.done=true;mistake("A protein roadblock stalled you — jump next time");}
+      }else if(g.x>=ox+16){o.done=true;o.cleared=true;}
+    }
+    if(g.x>=BX[g.n]){g.x=BX[g.n];g.phase="await";}
+  }
+  if(g.shards.length){
+    g.shards.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=420*dt;p.life-=dt;});
+    g.shards=g.shards.filter(function(p){return p.life>0;});
+  }
+  if(g.confetti&&g.confetti.length)g.confetti=stepConfetti(g.confetti,H,dt);
+  draw(now);
+  if(g.running||g.shards.length||(g.confetti&&g.confetti.length))raf=requestAnimationFrame(loop);
+}
+function tile(x,y,letter,alpha){
+  ctx.globalAlpha=alpha==null?1:alpha;
+  ctx.fillStyle=PCOL[letter]||"#9AA5B1";
+  rrp(ctx,x-16,y-16,32,32,8);ctx.fill();
+  ctx.fillStyle="#fff";ctx.font="700 17px ui-sans-serif,system-ui";ctx.textAlign="center";
+  ctx.fillText(letter,x,y+6);
+  ctx.globalAlpha=1;
+}
+function draw(now){
+  now=now||performance.now();
+  var dark=isDark();
+  ctx.fillStyle=dark?"#1F2228":"#FFFFFF";ctx.fillRect(0,0,W+4,H+4);
+  var strandY=H-52;
+  // RNA zone tint + divider
+  var zx=clampX+(ZONEX-g.x);
+  if(zx<W){
+    ctx.fillStyle=dark?"rgba(176,140,232,.08)":"rgba(138,75,217,.06)";
+    ctx.fillRect(Math.max(0,zx),0,W-Math.max(0,zx),H);
+  }
+  if(zx>-60&&zx<W+60){
+    ctx.strokeStyle=dark?"#B08CE8":"#8A4BD9";ctx.setLineDash([6,5]);ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(zx,10);ctx.lineTo(zx,H-16);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=dark?"#B08CE8":"#8A4BD9";ctx.font="700 11px ui-sans-serif,system-ui";ctx.textAlign="left";
+    ctx.fillText("TRANSCRIPTION ZONE · RNA rules",zx+7,20);
+  }
+  // template backbone
+  ctx.strokeStyle=dark?"rgba(232,234,237,.35)":"rgba(31,41,51,.3)";ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(0,strandY+30);ctx.lineTo(W,strandY+30);ctx.stroke();
+  // bases + pairs
+  for(var i=0;i<N;i++){
+    var sx=clampX+(BX[i]-g.x);
+    if(sx<-44||sx>W+44)continue;
+    tile(sx,strandY+6,g.gene[i]);
+    if(i<g.n){
+      var pl=g.pairs[i],bonds=(g.gene[i]==="G"||g.gene[i]==="C")?3:2;
+      tile(sx,strandY-52,pl);
+      ctx.strokeStyle=dark?"rgba(232,234,237,.5)":"rgba(31,41,51,.4)";ctx.lineWidth=2;
+      for(var b=0;b<bonds;b++){
+        var bx=sx-8+b*(bonds===2?16:8);
+        ctx.beginPath();ctx.moveTo(bx,strandY-34);ctx.lineTo(bx,strandY-12);ctx.stroke();
+      }
+    }
+  }
+  // obstacles
+  g.obstacles.forEach(function(o){
+    if(o.done&&o.cleared)return;
+    var ox=clampX+(OBX[o.i]-g.x);
+    if(ox<-40||ox>W+40)return;
+    ctx.fillStyle=dark?"#5A646E":"#9AA5B1";
+    rrp(ctx,ox-15,strandY+2,30,22,8);ctx.fill();
+    ctx.fillStyle=dark?"#1F2228":"#FFFFFF";ctx.font="700 12px ui-sans-serif,system-ui";ctx.textAlign="center";
+    ctx.fillText("!",ox,strandY+18);
+    if(!o.done&&ox>clampX&&ox<clampX+130&&g.phase==="scroll"){
+      ctx.fillStyle=dark?"#D98378":"#A83E32";ctx.font="700 12px ui-sans-serif,system-ui";
+      ctx.fillText("JUMP!",ox,strandY-10);
+    }
+  });
+  // player clamp
+  var p=Math.max(0,Math.min(1,(now-g.jumpT)/520));
+  var hop=(p>0&&p<1)?Math.sin(Math.PI*p)*46:0;
+  var cy=-hop;
+  ctx.strokeStyle=dark?"#D68264":"#B04A2F";ctx.lineWidth=3;
+  ctx.fillStyle=dark?"rgba(214,130,100,.12)":"rgba(176,74,47,.07)";
+  rrp(ctx,clampX-24,strandY-76+cy,48,110,12);ctx.fill();ctx.stroke();
+  ctx.fillStyle=dark?"#D68264":"#B04A2F";ctx.font="700 12px ui-sans-serif,system-ui";ctx.textAlign="center";
+  ctx.fillText("YOU",clampX,strandY-84+cy);
+  // dashed slot when waiting
+  if(g.phase==="await"){
+    ctx.strokeStyle=dark?"#D68264":"#B04A2F";ctx.setLineDash([5,4]);ctx.lineWidth=2;
+    rrp(ctx,clampX-18,strandY-70,36,36,8);ctx.stroke();ctx.setLineDash([]);
+    if(g.n<2){
+      var want=wantFor(g.gene[g.n],g.rna&&g.n>=RNA_AT);
+      ctx.fillStyle=dark?"rgba(232,234,237,.55)":"rgba(31,41,51,.45)";
+      ctx.font="700 12px ui-sans-serif,system-ui";
+      ctx.fillText("tap "+want,clampX,strandY-78);
+    }
+  }
+  // shatter shards
+  if(g.shards.length){
+    ctx.fillStyle=dark?"#B08CE8":"#8A4BD9";
+    g.shards.forEach(function(p){ctx.globalAlpha=Math.max(0,p.life);ctx.fillRect(p.x-3,p.y-3,6,6);});
+    ctx.globalAlpha=1;
+  }
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth;
+  W=w;H=Math.max(215,Math.min(290,Math.round(w*0.6)));
+  clampX=Math.max(90,Math.min(150,Math.round(w*0.3)));
+  dpr=Math.min(window.devicePixelRatio||1,3);
+  canvas.style.height=H+"px";
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+document.getElementById("basepad").addEventListener("click",function(e){
+  var b=e.target.closest("[data-b]");if(!b)return;
+  if(b.dataset.b==="jump")jump();else pick(b.dataset.b);
+});
+document.addEventListener("keydown",function(e){
+  if(!g||!g.running)return;
+  var k=e.key.toLowerCase();
+  if(k===" "){e.preventDefault();jump();}
+  else if(k==="a")pick("A");
+  else if(k==="t"||k==="u")pick("T");
+  else if(k==="g")pick("G");
+  else if(k==="c")pick("C");
+});
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden&&g&&g.running){g.running=false;
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<h2>Paused</h2><button class="btn" id="start-btn">Restart</button>';
+    $("#start-btn").addEventListener("click",start);}
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+window.PRspeed=function(o){o=o||{};
+  if(o.speed)V0=Math.max(30,o.speed);
+  if(o.accel!=null)VACC=Math.max(0,o.accel);
+  if(o.max)VMAX=Math.max(V0,o.max);
+  if(g){g.v=Math.min(Math.max(V0,g.v),VMAX);}
+  return {speed:V0,accel:VACC,max:VMAX,current:g?Math.round(g.v):V0};
+};
+window.PRstate=function(){
+  var nd=null;
+  g.obstacles.forEach(function(o){if(!o.done){var d=OBX[o.i]-g.x;if(nd===null||d<nd)nd=d;}});
+  return {n:g.n,phase:g.phase,rna:g.rna,next:g.gene[g.n]||null,hearts:g.hearts,
+          score:g.score,over:g.over,won:g.n>=N,nextObs:nd};
+};
+sizeCanvas();reset();draw();
+$("#start-btn").addEventListener("click",start);
+""",
+  quiz=[
+   dict(stem="Transcription copies information from:",opts=["DNA into mRNA","Protein into DNA","Sugar into fat"],a=0,
+        explain="Transcription is the first step of the central dogma: DNA → RNA → protein. You played the DNA → RNA step."),
+   dict(stem="Which base appears in RNA but not in DNA?",opts=["Uracil (U)","Thymine (T)","Guanine (G)"],a=0,
+        explain="RNA swaps thymine for uracil — the moment your T button shattered into violet U."),
+   dict(stem="In DNA, A pairs with T. In RNA, A pairs with:",opts=["U","G","C"],a=0,
+        explain="Same partner slot, new letter: adenine pairs with uracil in RNA, still held by 2 hydrogen bonds."),
+   dict(stem="Which enzyme builds mRNA from a DNA template?",opts=["RNA polymerase","Ribosome","β-lactamase"],a=0,
+        explain="RNA polymerase is the runner you played. The ribosome comes next (Ribosome Snake!) — it reads the mRNA to build protein."),
+   dict(stem="Which base pair is held together by 3 hydrogen bonds?",opts=["G–C","A–T","A–U"],a=0,
+        explain="G–C pairs use 3 hydrogen bonds; A–T and A–U use 2. That's why G–C-rich DNA is harder to pull apart."),
+   dict(stem="What is the finished mRNA for?",opts=["It carries the gene's message to the ribosome, which builds the protein","It becomes part of the cell wall","It stores fat"],a=0,
+        explain="mRNA is the working copy of a gene. The ribosome reads it three letters at a time and builds the protein — the next game in the arcade."),
+  ],
+  simplification="Simplified on purpose: the warm-up zone pairs DNA with DNA so you learn both pairing tables — a real RNA polymerase builds RNA (with U) from the very first base, inside a transcription bubble.")
+
 # ============================================================ FOLD-TRIS
 GAMES["fold"] = dict(
   title="Fold-Tris", tag="Bury the oily core, fold the protein",
@@ -237,6 +558,7 @@ GAMES["fold"] = dict(
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+#board{margin:0 auto}
 """,
   hud=STD_HUD.replace("{L1}","Layers buried").replace("{V1}","0 / 6")
             .replace("{L2}","Score").replace("{V2}","0")
@@ -267,7 +589,11 @@ GAMES["fold"] = dict(
 </div>
 <p class="ctrl-note">Tap buttons · desktop: arrow keys move, up = rotate, space = drop</p>""",
   js=r"""
-var COLS=9,ROWS=13,CORE_LO=3,CORE_HI=5,cell=30,dpr=1;
+/* Board fit — tunable without editing code:
+   URL params  ?rows=12&cell=36&reserve=220   or console: FTfit({rows:12,cell:36,reserve:220}) */
+var qs=new URLSearchParams(location.search);
+var COLS=9,ROWS=Math.max(8,Math.min(16,parseInt(qs.get("rows"),10)||13)),CORE_LO=3,CORE_HI=5,cell=30,dpr=1;
+var RESERVE=Math.max(0,parseInt(qs.get("reserve"),10)||235),CELLMAX=Math.max(18,parseInt(qs.get("cell"),10)||40);
 var canvas=$("#board"),ctx=canvas.getContext("2d");
 var g=null,timer=null,lastFall=0,fallMs=700;
 var SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[0,1]],[[0,0],[1,0],[0,1]]];
@@ -404,12 +730,21 @@ function loop(now){
 }
 function sizeCanvas(){
   var w=canvas.parentElement.clientWidth;
-  cell=Math.floor(w/COLS);
+  var top=canvas.parentElement.getBoundingClientRect().top;
+  var availH=Math.max(260,window.innerHeight-Math.max(60,top)-RESERVE);
+  cell=Math.max(18,Math.min(Math.floor(w/COLS),Math.floor(availH/ROWS),CELLMAX));
   dpr=Math.min(window.devicePixelRatio||1,3);
-  canvas.style.height=(cell*ROWS)+"px";
-  canvas.width=Math.round(w*dpr);canvas.height=Math.round(cell*ROWS*dpr);
+  canvas.style.width=(cell*COLS)+"px";canvas.style.height=(cell*ROWS)+"px";
+  canvas.width=Math.round(cell*COLS*dpr);canvas.height=Math.round(cell*ROWS*dpr);
   ctx.setTransform(dpr,0,0,dpr,0,0);
 }
+window.FTfit=function(o){o=o||{};
+  if(o.rows)ROWS=Math.max(8,Math.min(16,o.rows));
+  if(o.cell)CELLMAX=Math.max(18,o.cell);
+  if(o.reserve!=null)RESERVE=Math.max(0,o.reserve);
+  sizeCanvas();reset();draw();
+  return {rows:ROWS,cellPx:cell,boardPx:cell*ROWS,reserve:RESERVE,fitsViewport:(canvas.getBoundingClientRect().bottom<=window.innerHeight)};
+};
 function colorOf(c,dark){
   if(c.mis)return dark?"#5A646E":"#9AA5B1";
   return c.t==="H"?"#C98F2C":"#4A69C4";
@@ -1169,6 +1504,7 @@ $("#start-btn").addEventListener("click",start);
   simplification="Simplified on purpose: antibiotics don’t bounce off paddles — they block wall-building chemistry as the bacterium grows. The mechanism, the resistance enzyme, and the inhibitor combo are the true parts.")
 
 EXPORT_DESC = {
+ "poly":"Play transcription: pair bases by hydrogen bonds, shatter T into U at the transcription zone, and build an mRNA.",
  "fold":"Play protein folding: bury the hydrophobic core, avoid aggregation, meet the chaperones.",
  "phago":"Play innate immunity: patrol the tissue, grab the antibody power-up, engulf opsonized pathogens.",
  "drug":"Play pharmacokinetics: dose against clearance and stay inside the therapeutic window.",
@@ -1188,7 +1524,7 @@ for key, G in GAMES.items():
       '<title>%s</title>\n<meta name="description" content="%s">\n'
       '<style>[hidden]{display:none!important}img{max-width:100%%}</style>\n'
       '</head>\n<body>\n' % (G["title"], EXPORT_DESC[key]) + content + '\n</body>\n</html>\n')
-    slug = {"fold":"fold-tris","phago":"phagocyte-patrol","drug":"drug-flight","lysis":"lysis-lab"}[key]
+    slug = {"poly":"polymerase-runner","fold":"fold-tris","phago":"phagocyte-patrol","drug":"drug-flight","lysis":"lysis-lab"}[key]
     open(d + "/" + slug + ".html", "w").write(export)
     # syntax check
     m = re.search(r'<script>\n(.*)\n</script>', html, re.S)

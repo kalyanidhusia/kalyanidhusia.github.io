@@ -52,9 +52,10 @@ header .tag{color:var(--muted);font-size:.9rem}
 .hearts .val{letter-spacing:2px}
 .hearts .off{opacity:.2}
 
-.stage{position:relative;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
-#board{display:block;width:100%;touch-action:none}
-.overlay{position:absolute;inset:0;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px;overflow-y:auto}
+.stage{position:relative;display:grid;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+.stage>*{grid-area:1/1}
+#board{display:block;width:100%;touch-action:none;align-self:start}
+.overlay{position:relative;min-height:100%;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px}
 .overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
 .overlay p{margin:0;font-size:1rem}
 .overlay .muted{color:var(--muted);font-size:.9rem}

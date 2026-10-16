@@ -52,9 +52,10 @@ header .tag{color:var(--muted);font-size:.9rem}
 .hearts .val{letter-spacing:2px}
 .hearts .off{opacity:.2}
 
-.stage{position:relative;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
-#board{display:block;width:100%;touch-action:none}
-.overlay{position:absolute;inset:0;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px;overflow-y:auto}
+.stage{position:relative;display:grid;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+.stage>*{grid-area:1/1}
+#board{display:block;width:100%;touch-action:none;align-self:start}
+.overlay{position:relative;min-height:100%;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px}
 .overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
 .overlay p{margin:0;font-size:1rem}
 .overlay .muted{color:var(--muted);font-size:.9rem}
@@ -110,6 +111,7 @@ footer{margin-top:30px;color:var(--muted);font-size:.82rem;max-width:60ch}
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+#board{margin:0 auto}
 </style>
 <div class="wrap">
 <header><h1>Fold-Tris</h1> <span class="tag">Bury the oily core, fold the protein</span></header>
@@ -166,7 +168,11 @@ function drawConfetti(ctx,list){
 function rrp(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
 var QUIZ=[{"stem": "A protein is:", "opts": ["A kind of DNA", "A chain of amino acids folded into a 3D shape", "A single round molecule with no structure"], "a": 1, "explain": "Proteins are amino-acid chains, and their folded 3D shape is what lets them work — catalyze reactions, carry signals, build structure."}, {"stem": "What mainly drives a protein to fold?", "opts": ["Hydrophobic (oily) residues burying away from water", "Gravity pulling the chain down", "Sunlight"], "a": 0, "explain": "The hydrophobic effect: in a watery cell, oily residues cluster inward and water-loving residues face out. That's the rule you played."}, {"stem": "Where do hydrophobic residues belong in a folded protein?", "opts": ["On the water-facing surface", "Buried in the core", "Outside the cell"], "a": 1, "explain": "H residues hide in the dry core; P residues face the water. A protein with oily residues exposed is unstable — your misfolded rows."}, {"stem": "Misfolded proteins that clump together are called:", "opts": ["Aggregates — associated with diseases such as Alzheimer's", "Vitamins", "Enzymes"], "a": 0, "explain": "Aggregation of misfolded protein is a real failure mode, linked to neurodegenerative diseases. Cells fight it constantly."}, {"stem": "What do chaperone proteins do?", "opts": ["Digest food", "Help other proteins fold and rescue misfolded ones", "Copy DNA"], "a": 1, "explain": "Chaperones catch misfolding chains, unfold them, and give them another chance — your one-per-game rescue button is their job description."}, {"stem": "What determines how a protein folds?", "opts": ["Its amino-acid sequence", "The time of day", "The cell's color"], "a": 0, "explain": "Sequence determines structure; structure determines function. That chain of logic runs through all of molecular biology — and through AlphaFold."}];var CODEP="FT";
 
-var COLS=9,ROWS=13,CORE_LO=3,CORE_HI=5,cell=30,dpr=1;
+/* Board fit — tunable without editing code:
+   URL params  ?rows=12&cell=36&reserve=220   or console: FTfit({rows:12,cell:36,reserve:220}) */
+var qs=new URLSearchParams(location.search);
+var COLS=9,ROWS=Math.max(8,Math.min(16,parseInt(qs.get("rows"),10)||13)),CORE_LO=3,CORE_HI=5,cell=30,dpr=1;
+var RESERVE=Math.max(0,parseInt(qs.get("reserve"),10)||235),CELLMAX=Math.max(18,parseInt(qs.get("cell"),10)||40);
 var canvas=$("#board"),ctx=canvas.getContext("2d");
 var g=null,timer=null,lastFall=0,fallMs=700;
 var SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[0,1]],[[0,0],[1,0],[0,1]]];
@@ -303,12 +309,21 @@ function loop(now){
 }
 function sizeCanvas(){
   var w=canvas.parentElement.clientWidth;
-  cell=Math.floor(w/COLS);
+  var top=canvas.parentElement.getBoundingClientRect().top;
+  var availH=Math.max(260,window.innerHeight-Math.max(60,top)-RESERVE);
+  cell=Math.max(18,Math.min(Math.floor(w/COLS),Math.floor(availH/ROWS),CELLMAX));
   dpr=Math.min(window.devicePixelRatio||1,3);
-  canvas.style.height=(cell*ROWS)+"px";
-  canvas.width=Math.round(w*dpr);canvas.height=Math.round(cell*ROWS*dpr);
+  canvas.style.width=(cell*COLS)+"px";canvas.style.height=(cell*ROWS)+"px";
+  canvas.width=Math.round(cell*COLS*dpr);canvas.height=Math.round(cell*ROWS*dpr);
   ctx.setTransform(dpr,0,0,dpr,0,0);
 }
+window.FTfit=function(o){o=o||{};
+  if(o.rows)ROWS=Math.max(8,Math.min(16,o.rows));
+  if(o.cell)CELLMAX=Math.max(18,o.cell);
+  if(o.reserve!=null)RESERVE=Math.max(0,o.reserve);
+  sizeCanvas();reset();draw();
+  return {rows:ROWS,cellPx:cell,boardPx:cell*ROWS,reserve:RESERVE,fitsViewport:(canvas.getBoundingClientRect().bottom<=window.innerHeight)};
+};
 function colorOf(c,dark){
   if(c.mis)return dark?"#5A646E":"#9AA5B1";
   return c.t==="H"?"#C98F2C":"#4A69C4";
