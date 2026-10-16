@@ -17,13 +17,11 @@ All modules are single-file HTML (no build step, no dependencies, no tracking, z
 
 **Concept.** RNA polymerase reads a DNA template and synthesizes mRNA: bases pair by hydrogen bonds (A–T with 2, C–G with 3), and thymine (T) is replaced by uracil (U) in RNA.
 
-**Mechanic → biology.** The player is the polymerase clamp, matching incoming template bases into a dashed slot; at the RNA zone, T visibly shatters into violet U. Wrong pairings are rejected with the pairing rule restated. Completing the transcript triggers a celebration explaining what an mRNA can become (carefully worded: a transcript encoding a viral protein "could be the starting blueprint for a *hypothetical* vaccine candidate — a real one also needs a cap, a tail, and years of engineering and testing").
+**Mechanic → biology.** The player is the polymerase clamp: each template base slides into a dashed slot and must be answered with its pairing partner (correct pairs restate the hydrogen-bond count; wrong picks restate the rule). After 10 pairs the run crosses the **transcription zone** — the T button shatters into violet U, and A pairs with U from then on. Five "protein roadblock" obstacles must be jumped (real polymerases stall at DNA-binding proteins). The first 2 wrong picks are free practice; 3 slips end the run. Completing the 20-base strand shows the built mRNA sequence and a carefully worded celebration: a transcript encoding a viral protein "could be the starting blueprint for a *hypothetical* vaccine candidate — a real one also needs a cap, a tail, and years of engineering and testing."
 
-**Objectives.** Explain base pairing and H-bond counts; state the T→U substitution; describe what RNA polymerase does.
+**Objectives.** Pair any base and give its H-bond count (A–T/U: 2, G–C: 3); state the T→U substitution; describe RNA polymerase's job and what mRNA is for.
 
-**Named simplification.** Transcription bubble geometry, directionality (5′→3′ detail), and speed are not modeled; the pairing rules and T→U substitution are the true part.
-
-*This module ships with the full Module 1 lesson page (reading + game + quiz).*
+**Named simplification.** The warm-up zone pairs DNA with DNA so both pairing tables get learned — a real polymerase uses RNA rules (U) from the first base, inside a transcription bubble; directionality and speed are not modeled.
 
 ## Module 2 — Ribosome Snake (Translation)
 
