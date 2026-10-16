@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fold-Tris</title>
+<meta name="description" content="Play protein folding: bury the hydrophobic core, avoid aggregation, meet the chaperones.">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+/* THEME — swap these tokens when the custom theme arrives. Mobile-first. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2933; --muted:#52606D;
+  --line:rgba(0,0,0,.10); --accent:#B04A2F; --accent-soft:#F4E4DD;
+  --good:#2F7D52; --bad:#A83E32; --violet:#8A4BD9;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+    --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+    --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+  --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+  --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  font-size:1.1rem;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:560px;margin:0 auto}
+header{padding-block:18px 10px}
+header h1{font-size:1.5rem;font-weight:700;margin:0}
+header .tag{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+
+.statbar{display:flex;gap:8px;margin:10px 0 8px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 14px;min-width:0}
+.stat .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.stat .val{font-family:var(--mono);font-size:1.25rem;font-weight:600;line-height:1.3}
+.stat.grow{flex:1}
+.hearts .val{letter-spacing:2px}
+.hearts .off{opacity:.2}
+
+.stage{position:relative;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+#board{display:block;width:100%;touch-action:none}
+.overlay{position:absolute;inset:0;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px;overflow-y:auto}
+.overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
+.overlay p{margin:0;font-size:1rem}
+.overlay .muted{color:var(--muted);font-size:.9rem}
+.overlay .learn{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.overlay .learn b{display:block;margin-bottom:6px}
+.overlay .learn ul{margin:0;padding-left:20px}
+.overlay .learn li{margin:.25em 0}
+.overlay ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:1rem}
+.overlay ol li{display:flex;gap:10px}
+.overlay ol .n{color:var(--accent);font-weight:700;flex:none}
+.facts{display:flex;flex-direction:column;gap:8px;font-size:.93rem}
+.facts div{padding-left:12px;border-left:3px solid var(--accent-soft)}
+.btn{border:none;border-radius:999px;padding:13px 26px;font-weight:700;font-size:1.05rem;background:var(--accent);color:#fff;align-self:flex-start}
+.btn.sm{padding:9px 18px;font-size:.92rem}
+.banner{min-height:1.6em;text-align:center;font-weight:700;font-size:1rem;margin-top:10px}
+.banner.ok{color:var(--good)} .banner.no{color:var(--bad)} .banner.vi{color:var(--violet)}
+
+.pad{display:grid;grid-template-columns:repeat(3,76px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:14px}
+.pad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1.5rem;line-height:1;padding:0}
+.pad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.pad .up{grid-column:2}
+.ctrl-note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:8px}
+@media (min-width:700px){.pad{display:none}.ctrl-note.hide-desktop{display:none}}
+
+.quiz{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:20px;margin-top:28px}
+.quiz h2{font-size:1.25rem;margin:0 0 4px}
+.quiz .meta{font-size:.85rem;color:var(--muted)}
+.q-dots{display:flex;gap:6px;margin:14px 0}
+.q-dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.q-dots span.cur{background:var(--accent)}
+.q-dots span.ok{background:var(--good)}
+.q-dots span.no{background:var(--bad)}
+.q .stem{font-weight:700;margin-bottom:12px}
+.q label{display:flex;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:1rem;cursor:pointer;align-items:flex-start}
+.q input{margin-top:4px;accent-color:var(--accent)}
+.q.graded label.right{border-color:var(--good);background:var(--accent-soft)}
+.q.graded label.wrong-pick{border-color:var(--bad)}
+.q .verdict{font-weight:700;margin-top:6px}
+.q .verdict.ok{color:var(--good)} .q .verdict.no{color:var(--bad)}
+.q .explain{color:var(--muted);font-size:.92rem;border-left:3px solid var(--line);padding:2px 12px;margin-top:8px}
+.qbtn{border:none;border-radius:999px;padding:12px 22px;font-weight:700;background:var(--accent);color:#fff;margin-top:10px}
+.score-final{background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:1rem}
+.score-final .code{font-family:var(--mono);display:block;margin-top:6px}
+footer{margin-top:30px;color:var(--muted);font-size:.82rem;max-width:60ch}
+
+.foldpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.foldpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1.25rem;min-width:64px;padding:12px 0}
+.foldpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.foldpad .wide{min-width:96px;font-size:1rem;font-weight:700}
+.chap{margin-top:10px;text-align:center}
+.chap button{border:2px solid var(--violet);color:var(--violet);background:var(--surface);border-radius:999px;padding:9px 18px;font-weight:700;font-size:.95rem}
+.chap button:disabled{opacity:.4}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+</style>
+<div class="wrap">
+<header><h1>Fold-Tris</h1> <span class="tag">Bury the oily core, fold the protein</span></header>
+<div class="statbar">
+  <div class="stat grow"><div class="lbl">Layers buried</div><div class="val" id="s1">0 / 6</div></div>
+  <div class="stat"><div class="lbl">Score</div><div class="val" id="s2">0</div></div>
+  <div class="stat hearts"><div class="lbl">Misfolds</div><div class="val" id="hearts">●●●</div></div>
+</div>
+<div class="stage"><canvas id="board" aria-label="Fold-Tris board"></canvas>
+<div class="overlay" id="overlay"><p class="eyebrow">Protein folding · the hydrophobic effect</p><h2>A protein folds to hide its oily parts from water.</h2><p>Proteins are chains of amino acids. Some residues are <strong>hydrophobic (H)</strong> — oily, water-fearing — and some are <strong>polar (P)</strong> — water-loving. In the cell's watery interior, the chain folds so H residues bury into the <strong>core</strong> and P residues face the water. That buried core is what makes a protein stable and functional.</p><div class="learn"><b>After playing you can…</b><ul><li>Explain what drives protein folding: hydrophobic residues burying away from water.</li><li>Predict where a residue belongs: H inside the core, P on the surface.</li><li>Connect misfolding and aggregation to real diseases, and say what chaperones do.</li></ul></div><ol><li><span class="n">1</span><span>Pieces of H (gold) and P (blue) residues fall into the protein.</span></li><li><span class="n">2</span><span>Steer and rotate so <strong>H lands in the shaded core</strong> (middle columns) and <strong>P at the water-facing edges</strong>.</span></li><li><span class="n">3</span><span>A complete, correctly placed layer buries — bury 6 to fold the domain. Wrongly placed full layers <strong>misfold</strong> and pile up; three means aggregation.</span></li></ol><p class="muted">One chaperone rescue per game removes your worst misfolded layer — real cells have chaperone proteins that do exactly this.</p><button class="btn" id="start-btn">Start folding</button></div></div>
+<div class="banner" id="banner"></div>
+<div class="foldpad" id="foldpad">
+  <button data-k="left" aria-label="Move left">←</button>
+  <button data-k="rot" class="wide">Rotate</button>
+  <button data-k="right" aria-label="Move right">→</button>
+  <button data-k="drop" class="wide">Drop</button>
+</div>
+<div class="chap"><button id="chap-btn">Chaperone rescue · 1 left</button></div>
+<div class="legend">
+  <span><i style="background:#C98F2C"></i>H — hydrophobic (oily)</span>
+  <span><i style="background:#4A69C4"></i>P — polar (water-loving)</span>
+  <span><i style="background:#9AA5B1"></i>misfolded layer</span>
+</div>
+<p class="ctrl-note">Tap buttons · desktop: arrow keys move, up = rotate, space = drop</p><div class="quiz" id="quiz"><h2>Check what you learned</h2><p class="meta">6 questions · pass at 5 · retakes allowed</p><div class="q-dots" id="q-dots"></div><div id="q-stage"></div><div id="q-final"></div></div>
+<footer>Part of the AI in Biomedicine student training pathway · AR INBRE, supported
+by NIGMS of the NIH under award P20 GM103429. Educational content, not medical advice.
+Simplified on purpose: real folding is three-dimensional and cooperative, not falling blocks — the placement rule (H in, P out) is the true part.</footer>
+<script>
+(function(){
+"use strict";
+
+var $=function(s){return document.querySelector(s);};
+var bannerTimer=null;
+function setBanner(msg,cls){
+  var b=$("#banner");b.textContent=msg;b.className="banner "+(cls||"");
+  clearTimeout(bannerTimer);bannerTimer=setTimeout(function(){b.textContent="";},2800);
+}
+function reducedMotion(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
+function isDark(){try{return (document.documentElement.dataset.theme==="dark")||(!document.documentElement.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);}catch(e){return false;}}
+function makeConfetti(W,H){
+  var pal=["#2F8C72","#C98F2C","#4A69C4","#B05A92","#8A4BD9","#B04A2F"],out=[];
+  for(var i=0;i<110;i++)out.push({x:Math.random()*W,y:-10-Math.random()*80,
+    vx:(Math.random()-0.5)*60,vy:60+Math.random()*110,rot:Math.random()*6.3,vr:(Math.random()-0.5)*8,c:pal[i%6]});
+  return out;
+}
+function stepConfetti(list,H,dt){
+  list.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=240*dt;p.rot+=p.vr*dt;});
+  return list.filter(function(p){return p.y<H+40;});
+}
+function drawConfetti(ctx,list){
+  list.forEach(function(p){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+    ctx.fillStyle=p.c;ctx.fillRect(-4,-2.5,8,5);ctx.restore();});
+}
+function rrp(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+var QUIZ=[{"stem": "A protein is:", "opts": ["A kind of DNA", "A chain of amino acids folded into a 3D shape", "A single round molecule with no structure"], "a": 1, "explain": "Proteins are amino-acid chains, and their folded 3D shape is what lets them work — catalyze reactions, carry signals, build structure."}, {"stem": "What mainly drives a protein to fold?", "opts": ["Hydrophobic (oily) residues burying away from water", "Gravity pulling the chain down", "Sunlight"], "a": 0, "explain": "The hydrophobic effect: in a watery cell, oily residues cluster inward and water-loving residues face out. That's the rule you played."}, {"stem": "Where do hydrophobic residues belong in a folded protein?", "opts": ["On the water-facing surface", "Buried in the core", "Outside the cell"], "a": 1, "explain": "H residues hide in the dry core; P residues face the water. A protein with oily residues exposed is unstable — your misfolded rows."}, {"stem": "Misfolded proteins that clump together are called:", "opts": ["Aggregates — associated with diseases such as Alzheimer's", "Vitamins", "Enzymes"], "a": 0, "explain": "Aggregation of misfolded protein is a real failure mode, linked to neurodegenerative diseases. Cells fight it constantly."}, {"stem": "What do chaperone proteins do?", "opts": ["Digest food", "Help other proteins fold and rescue misfolded ones", "Copy DNA"], "a": 1, "explain": "Chaperones catch misfolding chains, unfold them, and give them another chance — your one-per-game rescue button is their job description."}, {"stem": "What determines how a protein folds?", "opts": ["Its amino-acid sequence", "The time of day", "The cell's color"], "a": 0, "explain": "Sequence determines structure; structure determines function. That chain of logic runs through all of molecular biology — and through AlphaFold."}];var CODEP="FT";
+
+var COLS=9,ROWS=13,CORE_LO=3,CORE_HI=5,cell=30,dpr=1;
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var g=null,timer=null,lastFall=0,fallMs=700;
+var SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[0,1]],[[0,0],[1,0],[0,1]]];
+function newPiece(){
+  var sh=SHAPES[Math.floor(Math.random()*SHAPES.length)];
+  var cells=sh.map(function(c){return {dx:c[0],dy:c[1],t:Math.random()<0.34?"H":"P"};});
+  return {x:Math.floor(COLS/2),y:0,cells:cells};
+}
+function reset(){
+  g={grid:[],piece:newPiece(),next:newPiece(),layers:0,score:0,misfolds:0,
+     chaperone:1,over:false,confetti:null,running:false};
+  for(var y=0;y<ROWS;y++){g.grid.push(new Array(COLS).fill(null));}
+  fallMs=700;renderHUD();
+}
+function renderHUD(){
+  $("#s1").textContent=g.layers+" / 6";
+  $("#s2").textContent=g.score;
+  var h="";for(var i=0;i<3;i++)h+='<span class="'+(i<g.misfolds?"":"off")+'" style="color:var(--bad)">●</span>';
+  $("#hearts").innerHTML=h;
+  var cb=$("#chap-btn");
+  cb.textContent="Chaperone rescue · "+g.chaperone+" left";
+  cb.disabled=!g.chaperone||!g.running;
+}
+function cellsOf(p){return p.cells.map(function(c){return {x:p.x+c.dx,y:p.y+c.dy,t:c.t};});}
+function fits(p){
+  return cellsOf(p).every(function(c){
+    return c.x>=0&&c.x<COLS&&c.y<ROWS&&(c.y<0||!g.grid[c.y][c.x]);
+  });
+}
+function move(dx){var p={x:g.piece.x+dx,y:g.piece.y,cells:g.piece.cells};if(fits(p))g.piece=p;}
+function rotate(){
+  var cells=g.piece.cells.map(function(c){return {dx:-c.dy,dy:c.dx,t:c.t};});
+  var p={x:g.piece.x,y:g.piece.y,cells:cells};
+  if(fits(p))g.piece=p;
+}
+function softDrop(){var p={x:g.piece.x,y:g.piece.y+1,cells:g.piece.cells};
+  if(fits(p)){g.piece=p;return true;}return false;}
+function hardDrop(){while(softDrop()){}lock();}
+function lock(){
+  var top=false;
+  cellsOf(g.piece).forEach(function(c){
+    if(c.y<0){top=true;return;}
+    g.grid[c.y][c.x]={t:c.t,mis:false};
+  });
+  if(top)return endGame(false,"The chain overflowed — aggregation. Misfolded, clumped proteins are behind diseases such as Alzheimer's and Parkinson's.");
+  scanRows();
+  if(g.over)return;
+  g.piece=g.next;g.next=newPiece();
+  if(!fits(g.piece))return endGame(false,"The chain overflowed — aggregation. Misfolded, clumped proteins are behind diseases such as Alzheimer's and Parkinson's.");
+}
+function rowFull(y){return g.grid[y].every(function(c){return c;});}
+function rowValid(y){
+  for(var x=0;x<COLS;x++){
+    var c=g.grid[y][x],inCore=x>=CORE_LO&&x<=CORE_HI;
+    if(c.t==="H"&&!inCore)return "a hydrophobic residue is facing the water";
+    if(c.t==="P"&&inCore)return "a polar residue is trapped in the oily core";
+  }
+  return null;
+}
+function clearRow(y){
+  g.grid.splice(y,1);g.grid.unshift(new Array(COLS).fill(null));
+}
+function scanRows(){
+  for(var y=ROWS-1;y>=0;y--){
+    if(!rowFull(y))continue;
+    var already=g.grid[y].some(function(c){return c.mis;});
+    if(already)continue;
+    var why=rowValid(y);
+    if(!why){
+      clearRow(y);g.layers++;g.score+=100;
+      setBanner("Layer buried — the core stays dry","ok");
+      fallMs=Math.max(380,fallMs-45);
+      y++; // recheck same index after collapse
+      if(g.layers>=6)return endGame(true,null);
+    }else{
+      g.grid[y].forEach(function(c){c.mis=true;});
+      g.misfolds++;
+      setBanner("Misfolded: "+why,"no");
+      if(g.misfolds>=3)return endGame(false,"Three misfolded layers clumped together — aggregation. In cells, aggregates of misfolded protein are cleared by quality control; when that fails, disease can follow.");
+    }
+  }
+  renderHUD();
+}
+function chaperone(){
+  if(!g.chaperone||!g.running)return;
+  for(var y=ROWS-1;y>=0;y--){
+    if(g.grid[y].some(function(c){return c&&c.mis;})){
+      g.grid.splice(y,1);g.grid.unshift(new Array(COLS).fill(null));
+      g.chaperone--;g.misfolds=Math.max(0,g.misfolds-1);
+      setBanner("Chaperone rescue — the misfolded layer was unfolded and released","vi");
+      renderHUD();return;
+    }
+  }
+  setBanner("No misfolded layer to rescue — chaperones act on misfolds","vi");
+}
+function endGame(won,msg){
+  g.over=true;g.running=false;renderHUD();
+  if(won&&!reducedMotion()){
+    g.confetti=makeConfetti(COLS*cell,ROWS*cell);
+    cancelAnimationFrame(timer);timer=requestAnimationFrame(loop);
+  }
+  var ov=$("#overlay");
+  setTimeout(function(){
+    ov.hidden=false;
+    ov.innerHTML= won?
+      '<h2>Folded! The domain is stable.</h2>'+
+      '<p><strong>'+g.score+' points</strong> · 6 layers buried with the oily core hidden from water.</p>'+
+      '<div class="facts">'+
+      '<div>You just used the <strong>hydrophobic effect</strong> — the main force that folds real proteins: oily residues cluster inside, polar residues face the water.</div>'+
+      '<div>The amino-acid <strong>sequence</strong> decided what you could build — sequence determines structure, and structure determines function.</div>'+
+      '<div>Your chaperone rescue is real: chaperone proteins catch and refold misfolded chains in every cell.</div>'+
+      '<div>Simplification to know: real folding is 3D, fast, and cooperative — not falling blocks. The placement rule is the true part.</div>'+
+      '</div><button class="btn" id="start-btn">Fold another domain</button>'
+      :
+      '<h2>Aggregation</h2><p>'+msg+'</p>'+
+      '<p class="muted">Score: '+g.score+' · '+g.layers+' layers buried. Try again — watch where H and P land before you drop.</p>'+
+      '<button class="btn" id="start-btn">Try again</button>';
+    $("#start-btn").addEventListener("click",start);
+  },won&&!reducedMotion()?2000:600);
+}
+function start(){
+  reset();$("#overlay").hidden=true;
+  g.running=true;lastFall=performance.now();
+  cancelAnimationFrame(timer);timer=requestAnimationFrame(loop);
+}
+function loop(now){
+  if(g.running&&now-lastFall>=fallMs){
+    lastFall=now;
+    if(!softDrop())lock();
+  }
+  if(g.confetti&&g.confetti.length)g.confetti=stepConfetti(g.confetti,ROWS*cell,0.016);
+  draw();
+  if(g.running||(g.confetti&&g.confetti.length))timer=requestAnimationFrame(loop);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth;
+  cell=Math.floor(w/COLS);
+  dpr=Math.min(window.devicePixelRatio||1,3);
+  canvas.style.height=(cell*ROWS)+"px";
+  canvas.width=Math.round(w*dpr);canvas.height=Math.round(cell*ROWS*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function colorOf(c,dark){
+  if(c.mis)return dark?"#5A646E":"#9AA5B1";
+  return c.t==="H"?"#C98F2C":"#4A69C4";
+}
+function draw(){
+  var dark=isDark(),W=COLS*cell,H=ROWS*cell;
+  ctx.fillStyle=dark?"#1F2228":"#FFFFFF";ctx.fillRect(0,0,canvas.width,canvas.height);
+  // water edges + core tint
+  ctx.fillStyle=dark?"rgba(74,105,196,.12)":"rgba(74,105,196,.07)";
+  ctx.fillRect(0,0,CORE_LO*cell,H);ctx.fillRect((CORE_HI+1)*cell,0,W-(CORE_HI+1)*cell,H);
+  ctx.fillStyle=dark?"rgba(201,143,44,.14)":"rgba(201,143,44,.1)";
+  ctx.fillRect(CORE_LO*cell,0,(CORE_HI-CORE_LO+1)*cell,H);
+  var ink=dark?"rgba(232,234,237,.5)":"rgba(31,41,51,.45)";
+  ctx.fillStyle=ink;ctx.font="700 11px "+"ui-sans-serif,system-ui";ctx.textAlign="center";
+  ctx.fillText("water",CORE_LO*cell/2,14);
+  ctx.fillText("CORE",W/2,14);
+  ctx.fillText("water",(CORE_HI+1)*cell+(W-(CORE_HI+1)*cell)/2,14);
+  if(!g)return;
+  function drawCell(x,y,c,ghost){
+    var px=x*cell,py=y*cell;
+    ctx.globalAlpha=ghost?0.35:1;
+    ctx.fillStyle=colorOf(c,dark);
+    rrp(ctx,px+2,py+2,cell-4,cell-4,6);ctx.fill();
+    if(cell>=24){
+      ctx.fillStyle=c.mis?(dark?"#D98378":"#A83E32"):"#fff";
+      ctx.font="700 "+Math.round(cell*0.42)+"px ui-sans-serif,system-ui";ctx.textAlign="center";
+      ctx.fillText(c.t,px+cell/2,py+cell*0.66);
+    }
+    ctx.globalAlpha=1;
+  }
+  for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++)if(g.grid[y][x])drawCell(x,y,g.grid[y][x]);
+  if(g.running)cellsOf(g.piece).forEach(function(c){if(c.y>=0)drawCell(c.x,c.y,{t:c.t});});
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+document.getElementById("foldpad").addEventListener("click",function(e){
+  var b=e.target.closest("[data-k]");if(!b||!g.running)return;
+  var k=b.dataset.k;
+  if(k==="left")move(-1);else if(k==="right")move(1);
+  else if(k==="rot")rotate();else if(k==="drop")hardDrop();
+  draw();
+});
+$("#chap-btn").addEventListener("click",chaperone);
+document.addEventListener("keydown",function(e){
+  if(!g||!g.running)return;
+  if(e.key==="ArrowLeft"){e.preventDefault();move(-1);}
+  else if(e.key==="ArrowRight"){e.preventDefault();move(1);}
+  else if(e.key==="ArrowUp"){e.preventDefault();rotate();}
+  else if(e.key==="ArrowDown"){e.preventDefault();if(!softDrop())lock();}
+  else if(e.key===" "){e.preventDefault();hardDrop();}
+  draw();
+});
+var tS=null;
+canvas.addEventListener("touchstart",function(e){if(e.touches.length)tS={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()};},{passive:true});
+canvas.addEventListener("touchend",function(e){
+  if(!tS||!g||!g.running)return;
+  var dx=e.changedTouches[0].clientX-tS.x,dy=e.changedTouches[0].clientY-tS.y;
+  if(Math.abs(dx)<16&&Math.abs(dy)<16){rotate();}
+  else if(Math.abs(dx)>Math.abs(dy)){move(dx>0?1:-1);}
+  else if(dy>0){hardDrop();}
+  tS=null;draw();
+},{passive:true});
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden&&g&&g.running){g.running=false;
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<h2>Paused</h2><button class="btn" id="start-btn">Restart</button>';
+    $("#start-btn").addEventListener("click",start);}
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();reset();draw();
+$("#start-btn").addEventListener("click",start);
+
+/* ---------- shared quiz engine ---------- */
+var qi=0,qres=[];
+function qDots(){
+  var d=$("#q-dots");d.innerHTML="";
+  QUIZ.forEach(function(_,i){
+    var s=document.createElement("span");
+    if(i<qres.length)s.className=qres[i]?"ok":"no";
+    else if(i===qi)s.className="cur";
+    d.appendChild(s);
+  });
+}
+function qRender(){
+  var q=QUIZ[qi],st=$("#q-stage");
+  st.innerHTML='<div class="q"><div class="stem">Q'+(qi+1)+'. '+q.stem+'</div>'+
+    q.opts.map(function(o,i){return '<label><input type="radio" name="qq" value="'+i+'" id="qq'+qi+'o'+i+'"><span>'+o+'</span></label>';}).join("")+
+    '<div class="fb"></div><button class="qbtn" id="q-check">Check answer</button></div>';
+  $("#q-check").addEventListener("click",qCheck);
+  qDots();
+}
+function qCheck(){
+  var q=QUIZ[qi],sel=document.querySelector('input[name="qq"]:checked');
+  var el=$("#q-stage .q"),fb=el.querySelector(".fb");
+  if(!sel){fb.innerHTML='<div class="verdict no">Pick an answer first.</div>';return;}
+  var pick=+sel.value,ok=pick===q.a;
+  qres.push(ok);el.classList.add("graded");
+  el.querySelectorAll("label").forEach(function(l,i){
+    l.querySelector("input").disabled=true;
+    if(i===q.a)l.classList.add("right");else if(i===pick)l.classList.add("wrong-pick");
+  });
+  fb.innerHTML='<div class="verdict '+(ok?"ok":"no")+'">'+(ok?"Correct.":"Not quite — see the highlighted answer.")+'</div><div class="explain">'+q.explain+'</div>';
+  var btn=el.querySelector(".qbtn");
+  btn.textContent=qi===QUIZ.length-1?"See my score":"Next question";
+  btn.removeEventListener("click",qCheck);
+  btn.addEventListener("click",function(){
+    if(qi===QUIZ.length-1)qFinish();else{qi++;qRender();}
+  });
+  qDots();
+}
+function qFinish(){
+  var score=qres.filter(Boolean).length,pass=score>=5;
+  var s=(CODEP+"|"+score+"|"+new Date().toISOString().slice(0,10));
+  var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;
+  $("#q-stage").innerHTML="";
+  $("#q-final").innerHTML='<div class="score-final"><strong>'+score+' / 6'+(pass?' — passed':'')+'</strong>'+
+    (pass?' Concept locked in.':' Replay the game, reread the win-screen facts, and try again — attempts are unlimited.')+
+    '<span class="code">verification code: '+CODEP+'-'+score+'-'+h.toString(36).toUpperCase()+'</span>'+
+    '<button class="qbtn" id="q-retry">Try again</button></div>';
+  $("#q-retry").addEventListener("click",function(){qi=0;qres=[];$("#q-final").innerHTML="";qRender();});
+  qDots();
+}
+
+qRender();
+})();
+</script>
+
+</body>
+</html>

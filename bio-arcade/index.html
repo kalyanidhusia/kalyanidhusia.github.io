@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bio Arcade — AR INBRE</title>
+<meta name="description" content="Six short browser games that each teach one biomedical concept: flashcard, play, quiz. Built under AR INBRE for Arkansas undergraduates.">
+<style>
+/* ============================================================
+   THEME — swap these tokens to restyle the whole hub.
+   Matches kalyanidhusia.github.io/student_training/ by default.
+   ============================================================ */
+:root{
+  --bg:#FAFAF7;
+  --ink:#1F2933;
+  --muted:#52606D;
+  --accent:#B04A2F;
+  --accent-soft:#F4E4DD;
+  --violet:#8A4BD9;
+  --line:rgba(0,0,0,.10);
+  --card:#FFFFFF;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#15181C; --ink:#ECEFF2; --muted:#9AA5B1;
+    --accent:#D97757; --accent-soft:#3A2A24; --violet:#A97BE8;
+    --line:rgba(255,255,255,.14); --card:#1D2126;
+  }
+}
+/* ============================================================ */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:720px;margin:0 auto;padding:28px 16px 48px}
+header h1{font-size:1.7rem;line-height:1.25;margin:0 0 6px}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 10px}
+.lede{color:var(--muted);margin:0 0 8px;max-width:58ch}
+.loop{display:inline-block;background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:5px 14px;font-size:.85rem;margin:10px 0 26px}
+.loop b{color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:560px){.grid{grid-template-columns:1fr 1fr}}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;min-width:0;
+}
+.card .mod{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.card h2{font-size:1.12rem;margin:0;line-height:1.3}
+.card .teach{font-size:.9rem;color:var(--muted);margin:0;flex:1}
+.card .teach b{color:var(--ink);font-weight:600}
+.meta{font-size:.78rem;color:var(--muted)}
+.play{
+  display:inline-block;align-self:flex-start;background:var(--accent);color:#fff;
+  text-decoration:none;border-radius:999px;padding:9px 22px;font-weight:600;font-size:.92rem;
+  touch-action:manipulation;
+}
+.play:active{transform:translateY(1px)}
+.rna{color:var(--violet);font-weight:700}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+footer p{margin:4px 0}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">AR INBRE · Student Training</p>
+    <h1>Bio Arcade</h1>
+    <p class="lede">Six short games. Each one teaches a single biomedical concept — the game mechanic <em>is</em> the biology, not decoration on top of it.</p>
+    <span class="loop"><b>Learn</b> (flashcard) → <b>Play</b> (the mechanic is the concept) → <b>Check</b> (6-question quiz, pass at 5)</span>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <span class="mod">Module 1 · Central Dogma I</span>
+      <h2>Polymerase Runner</h2>
+      <p class="teach"><b>Transcription:</b> RNA polymerase reads DNA and builds <span class="rna">mRNA</span> — T becomes U, bases pair by hydrogen bonds. Includes the full Module&nbsp;1 lesson.</p>
+      <span class="meta">~10 min with lesson · phone-friendly</span>
+      <a class="play" href="games/polymerase-runner/">Open module</a>
+    </div>
+
+    <div class="card">
+      <span class="mod">Module 2 · Central Dogma II</span>
+      <h2>Ribosome Snake</h2>
+      <p class="teach"><b>Translation:</b> the ribosome reads codons AUG → stop, tRNAs deliver amino acids, and release factors end the chain at UAA / UAG / UGA.</p>
+      <span class="meta">~6 min · phone-friendly</span>
+      <a class="play" href="games/ribosome-snake/">Play</a>
+    </div>
+
+    <div class="card">
+      <span class="mod">Module 3 · Protein Folding</span>
+      <h2>Fold-Tris</h2>
+      <p class="teach"><b>The hydrophobic effect:</b> oily residues bury in the core, polar ones face water — and misfolding leads to aggregation unless chaperones step in.</p>
+      <span class="meta">~6 min · phone-friendly</span>
+      <a class="play" href="games/fold-tris/">Play</a>
+    </div>
+
+    <div class="card">
+      <span class="mod">Module 4 · Immunology</span>
+      <h2>Phagocyte Patrol</h2>
+      <p class="teach"><b>Phagocytosis &amp; opsonization:</b> you are a macrophage; antibody tags turn hard-to-catch pathogens into easy meals — innate and adaptive immunity as a team.</p>
+      <span class="meta">~6 min · phone-friendly</span>
+      <a class="play" href="games/phagocyte-patrol/">Play</a>
+    </div>
+
+    <div class="card">
+      <span class="mod">Module 5 · Pharmacology</span>
+      <h2>Drug Flight</h2>
+      <p class="teach"><b>Pharmacokinetics:</b> dose timing keeps a drug inside its therapeutic window — too high is toxic, too low does nothing, and the liver and kidneys clear it.</p>
+      <span class="meta">~5 min · phone-friendly</span>
+      <a class="play" href="games/drug-flight/">Play</a>
+    </div>
+
+    <div class="card">
+      <span class="mod">Module 6 · Microbiology</span>
+      <h2>Lysis Lab</h2>
+      <p class="teach"><b>Antibiotics &amp; resistance:</b> wall-targeting drugs burst bacteria but spare your wall-less cells — until β-lactamase appears, and clavulanate counters it.</p>
+      <span class="meta">~6 min · phone-friendly</span>
+      <a class="play" href="games/lysis-lab/">Play</a>
+    </div>
+  </div>
+
+  <footer>
+    <p><b>Arkansas INBRE</b> — supported by the National Institute of General Medical Sciences of the NIH under grant P20&nbsp;GM103429.</p>
+    <p>Educational content, not medical advice. Each game states its simplifications; the mechanics model one concept, not full biological reality.</p>
+    <p>Part of the <a href="https://kalyanidhusia.github.io/student_training/">AR INBRE student training</a> materials · v1.0</p>
+  </footer>
+</div>
+</body>
+</html>

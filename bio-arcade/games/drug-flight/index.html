@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drug Flight</title>
+<meta name="description" content="Play pharmacokinetics: dose against clearance and stay inside the therapeutic window.">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+/* THEME — swap these tokens when the custom theme arrives. Mobile-first. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2933; --muted:#52606D;
+  --line:rgba(0,0,0,.10); --accent:#B04A2F; --accent-soft:#F4E4DD;
+  --good:#2F7D52; --bad:#A83E32; --violet:#8A4BD9;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+    --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+    --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+  --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+  --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  font-size:1.1rem;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:560px;margin:0 auto}
+header{padding-block:18px 10px}
+header h1{font-size:1.5rem;font-weight:700;margin:0}
+header .tag{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+
+.statbar{display:flex;gap:8px;margin:10px 0 8px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 14px;min-width:0}
+.stat .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.stat .val{font-family:var(--mono);font-size:1.25rem;font-weight:600;line-height:1.3}
+.stat.grow{flex:1}
+.hearts .val{letter-spacing:2px}
+.hearts .off{opacity:.2}
+
+.stage{position:relative;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+#board{display:block;width:100%;touch-action:none}
+.overlay{position:absolute;inset:0;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px;overflow-y:auto}
+.overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
+.overlay p{margin:0;font-size:1rem}
+.overlay .muted{color:var(--muted);font-size:.9rem}
+.overlay .learn{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.overlay .learn b{display:block;margin-bottom:6px}
+.overlay .learn ul{margin:0;padding-left:20px}
+.overlay .learn li{margin:.25em 0}
+.overlay ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:1rem}
+.overlay ol li{display:flex;gap:10px}
+.overlay ol .n{color:var(--accent);font-weight:700;flex:none}
+.facts{display:flex;flex-direction:column;gap:8px;font-size:.93rem}
+.facts div{padding-left:12px;border-left:3px solid var(--accent-soft)}
+.btn{border:none;border-radius:999px;padding:13px 26px;font-weight:700;font-size:1.05rem;background:var(--accent);color:#fff;align-self:flex-start}
+.btn.sm{padding:9px 18px;font-size:.92rem}
+.banner{min-height:1.6em;text-align:center;font-weight:700;font-size:1rem;margin-top:10px}
+.banner.ok{color:var(--good)} .banner.no{color:var(--bad)} .banner.vi{color:var(--violet)}
+
+.pad{display:grid;grid-template-columns:repeat(3,76px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:14px}
+.pad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1.5rem;line-height:1;padding:0}
+.pad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.pad .up{grid-column:2}
+.ctrl-note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:8px}
+@media (min-width:700px){.pad{display:none}.ctrl-note.hide-desktop{display:none}}
+
+.quiz{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:20px;margin-top:28px}
+.quiz h2{font-size:1.25rem;margin:0 0 4px}
+.quiz .meta{font-size:.85rem;color:var(--muted)}
+.q-dots{display:flex;gap:6px;margin:14px 0}
+.q-dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.q-dots span.cur{background:var(--accent)}
+.q-dots span.ok{background:var(--good)}
+.q-dots span.no{background:var(--bad)}
+.q .stem{font-weight:700;margin-bottom:12px}
+.q label{display:flex;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:1rem;cursor:pointer;align-items:flex-start}
+.q input{margin-top:4px;accent-color:var(--accent)}
+.q.graded label.right{border-color:var(--good);background:var(--accent-soft)}
+.q.graded label.wrong-pick{border-color:var(--bad)}
+.q .verdict{font-weight:700;margin-top:6px}
+.q .verdict.ok{color:var(--good)} .q .verdict.no{color:var(--bad)}
+.q .explain{color:var(--muted);font-size:.92rem;border-left:3px solid var(--line);padding:2px 12px;margin-top:8px}
+.qbtn{border:none;border-radius:999px;padding:12px 22px;font-weight:700;background:var(--accent);color:#fff;margin-top:10px}
+.score-final{background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:1rem}
+.score-final .code{font-family:var(--mono);display:block;margin-top:6px}
+footer{margin-top:30px;color:var(--muted);font-size:.82rem;max-width:60ch}
+</style>
+<div class="wrap">
+<header><h1>Drug Flight</h1> <span class="tag">Keep the dose in the therapeutic window</span></header>
+<div class="statbar">
+  <div class="stat grow"><div class="lbl">Dose intervals survived</div><div class="val" id="s1">0 / 15</div></div>
+  <div class="stat"><div class="lbl">Score</div><div class="val" id="s2">0</div></div>
+  <div class="stat hearts"><div class="lbl">Safety margin</div><div class="val" id="hearts">●●●</div></div>
+</div>
+<div class="stage"><canvas id="board" aria-label="Drug Flight board"></canvas>
+<div class="overlay" id="overlay"><p class="eyebrow">Pharmacokinetics · the therapeutic window</p><h2>A drug only works inside its window.</h2><p>After a dose, drug concentration in your blood <strong>rises</strong> (absorption), then is constantly <strong>pulled down</strong> as the liver metabolizes and the kidneys excrete it — together called <strong>clearance</strong>. The <strong>therapeutic window</strong> is the concentration range between <em>too low to work</em> and <em>high enough to be toxic</em>. Dosing is the art of staying inside it over time.</p><div class="learn"><b>After playing you can…</b><ul><li>Explain why drug levels rise and fall: absorption versus clearance (liver and kidneys).</li><li>Define the therapeutic window: below it, no effect; above it, toxicity.</li><li>Say why dose timing matters — a missed dose drops you out of the window.</li></ul></div><ol><li><span class="n">1</span><span>Your dot is the drug concentration. <strong>Gravity is clearance</strong> — it never stops pulling you down.</span></li><li><span class="n">2</span><span>Tap (or press space) to take a <strong>dose</strong> — each tap is an absorption boost upward.</span></li><li><span class="n">3</span><span>Fly through the gaps — each gap is the <strong>therapeutic window</strong> between the toxic zone above and the no-effect zone below. Liver and kidney pillars mark each clearance interval.</span></li></ol><p class="muted">Survive 15 dose intervals to reach steady state. Three crashes end the run.</p><button class="btn" id="start-btn">Take first dose</button></div></div>
+<div class="banner" id="banner"></div>
+<p class="ctrl-note">Tap the board to dose · desktop: space or click</p><div class="quiz" id="quiz"><h2>Check what you learned</h2><p class="meta">6 questions · pass at 5 · retakes allowed</p><div class="q-dots" id="q-dots"></div><div id="q-stage"></div><div id="q-final"></div></div>
+<footer>Part of the AI in Biomedicine student training pathway · AR INBRE, supported
+by NIGMS of the NIH under award P20 GM103429. Educational content, not medical advice.
+Simplified on purpose: real concentrations follow smooth exponential pharmacokinetic curves and windows differ per drug and patient — the rise-fall-window logic is the true part.</footer>
+<script>
+(function(){
+"use strict";
+
+var $=function(s){return document.querySelector(s);};
+var bannerTimer=null;
+function setBanner(msg,cls){
+  var b=$("#banner");b.textContent=msg;b.className="banner "+(cls||"");
+  clearTimeout(bannerTimer);bannerTimer=setTimeout(function(){b.textContent="";},2800);
+}
+function reducedMotion(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
+function isDark(){try{return (document.documentElement.dataset.theme==="dark")||(!document.documentElement.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);}catch(e){return false;}}
+function makeConfetti(W,H){
+  var pal=["#2F8C72","#C98F2C","#4A69C4","#B05A92","#8A4BD9","#B04A2F"],out=[];
+  for(var i=0;i<110;i++)out.push({x:Math.random()*W,y:-10-Math.random()*80,
+    vx:(Math.random()-0.5)*60,vy:60+Math.random()*110,rot:Math.random()*6.3,vr:(Math.random()-0.5)*8,c:pal[i%6]});
+  return out;
+}
+function stepConfetti(list,H,dt){
+  list.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=240*dt;p.rot+=p.vr*dt;});
+  return list.filter(function(p){return p.y<H+40;});
+}
+function drawConfetti(ctx,list){
+  list.forEach(function(p){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+    ctx.fillStyle=p.c;ctx.fillRect(-4,-2.5,8,5);ctx.restore();});
+}
+function rrp(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+var QUIZ=[{"stem": "The therapeutic window of a drug is:", "opts": ["The hours a pharmacy is open", "The concentration range between too-low-to-work and high-enough-to-be-toxic", "The shape of the pill"], "a": 1, "explain": "Below the window a drug does nothing; above it, it harms. Dosing exists to keep blood concentration inside that range — the gap you flew through."}, {"stem": "What constantly pulls drug concentration down?", "opts": ["Clearance — the liver metabolizing and the kidneys excreting the drug", "Sunlight", "Exercise only"], "a": 0, "explain": "Clearance never stops — that was the gravity in the game. It's why one dose wears off and why dosing is repeated."}, {"stem": "A drug concentration above the window causes:", "opts": ["Faster healing", "Nothing", "Toxicity — side effects and harm"], "a": 2, "explain": "More is not better. The red zone is real: overdoses are concentrations above the therapeutic window."}, {"stem": "Why are doses taken on a schedule (e.g., every 8 hours)?", "opts": ["Tradition", "To keep concentration inside the window as clearance pulls it down", "Pills expire hourly"], "a": 1, "explain": "The schedule is matched to how fast the liver and kidneys clear the drug — a timed series of boosts against a constant pull, exactly your gameplay."}, {"stem": "In the game, gravity represented:", "opts": ["Clearance by liver and kidneys", "Absorption", "The placebo effect"], "a": 0, "explain": "Every metaphor in the game maps: tap = dose (absorption), gravity = clearance, gap = therapeutic window."}, {"stem": "What happens when a dose is missed?", "opts": ["Concentration falls below the window and the drug stops working", "The drug becomes stronger", "Nothing changes"], "a": 0, "explain": "Concentration keeps falling with clearance, drops out of the window, and the effect is lost — which is why adherence matters so much in real treatment."}];var CODEP="DF";
+
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=430,dpr=1;
+var g=null,timer=null,lastT=0;
+var GRAV=1150,IMP=-330,SPEED0=115;
+function reset(){
+  g={y:H/2,vy:0,pipes:[],t:0,passed:0,score:0,hearts:3,speed:SPEED0,
+     over:false,running:false,confetti:null,inv:0,nextX:W+60,gap:150,count:0};
+  renderHUD();
+}
+function renderHUD(){
+  $("#s1").textContent=g.passed+" / 15";
+  $("#s2").textContent=g.score;
+  var h="";for(var i=0;i<3;i++)h+='<span class="'+(i<g.hearts?"":"off")+'" style="color:var(--bad)">●</span>';
+  $("#hearts").innerHTML=h;
+}
+var TOX=56,LOW=56;
+function spawnPipe(){
+  var gapY=TOX+30+Math.random()*(H-TOX-LOW-60-g.gap);
+  g.pipes.push({x:g.nextX,gapY:gapY,gapH:g.gap,organ:(g.count%2?"KIDNEY":"LIVER"),passed:false});
+  g.count++;g.nextX=0;
+}
+function hurt(msg){
+  if(g.inv>0)return;
+  g.hearts--;g.inv=1.4;setBanner(msg,"no");renderHUD();
+  if(g.hearts<=0){endGame(false,msg);return;}
+  g.y=H/2;g.vy=0;
+}
+function step(dt){
+  g.t+=dt;if(g.inv>0)g.inv-=dt;
+  g.vy+=GRAV*dt;g.y+=g.vy*dt;
+  g.speed=Math.min(175,SPEED0+g.passed*4);
+  g.gap=Math.max(118,150-g.passed*2);
+  g.pipes.forEach(function(p){p.x-=g.speed*dt;});
+  if(!g.pipes.length||g.pipes[g.pipes.length-1].x<W-230){g.nextX=W+40;spawnPipe();}
+  g.pipes=g.pipes.filter(function(p){return p.x>-70;});
+  var bx=86,r=13;
+  if(g.y-r<TOX)hurt("Overdose — concentration rose above the therapeutic window into the toxic zone");
+  if(g.y+r>H-LOW)hurt("Too low — below the window the drug simply stops working");
+  if(g.over)return;
+  g.pipes.forEach(function(p){
+    var inX=bx+r>p.x&&bx-r<p.x+46;
+    if(inX&&(g.y-r<p.gapY||g.y+r>p.gapY+p.gapH)){
+      hurt("Cleared by the "+p.organ.toLowerCase()+" — concentration crashed out of the window");
+    }else if(!p.passed&&p.x+46<bx-r){
+      p.passed=true;g.passed++;g.score+=10;renderHUD();
+      if(g.passed>=15)endGame(true,null);
+    }
+  });
+}
+function dose(){
+  if(!g||!g.running)return;
+  g.vy=IMP;
+}
+function endGame(won,msg){
+  g.over=true;g.running=false;
+  if(won&&!reducedMotion()){
+    g.confetti=makeConfetti(W,H);
+    cancelAnimationFrame(timer);timer=requestAnimationFrame(loop);
+  }
+  setTimeout(function(){
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML= won?
+      '<h2>Steady state — 15 intervals in the window.</h2>'+
+      '<p><strong>'+g.score+' points.</strong> You kept the concentration effective and safe, dose after dose.</p>'+
+      '<div class="facts">'+
+      '<div>Gravity was <strong>clearance</strong>: the liver metabolizes drugs and the kidneys excrete them, pulling concentration down around the clock.</div>'+
+      '<div>Each tap was a <strong>dose</strong>; the gap was the <strong>therapeutic window</strong> — above it toxicity, below it no effect.</div>'+
+      '<div>That’s why prescriptions say “every 8 hours”: the schedule is timed to clearance, keeping levels inside the window.</div>'+
+      '<div>Simplification to know: real concentrations follow smooth exponential curves, and windows differ per drug and per patient — pharmacokinetic models (Module 4) compute them.</div>'+
+      '</div><button class="btn" id="start-btn">Fly again</button>'
+      :
+      '<h2>Out of the window</h2><p>'+msg+'</p>'+
+      '<p class="muted">Intervals survived: '+g.passed+'. Small, timely doses beat big panicked ones — just like real dosing.</p>'+
+      '<button class="btn" id="start-btn">Try again</button>';
+    $("#start-btn").addEventListener("click",start);
+  },won&&!reducedMotion()?2000:600);
+}
+function start(){
+  reset();$("#overlay").hidden=true;
+  g.running=true;lastT=performance.now();
+  cancelAnimationFrame(timer);timer=requestAnimationFrame(loop);
+}
+function loop(now){
+  var dt=Math.min(0.033,(now-lastT)/1000);lastT=now;
+  if(g.running)step(dt);
+  if(g.confetti&&g.confetti.length)g.confetti=stepConfetti(g.confetti,H,dt);
+  draw();
+  if(g.running||(g.confetti&&g.confetti.length))timer=requestAnimationFrame(loop);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth;
+  W=w;
+  dpr=Math.min(window.devicePixelRatio||1,3);
+  canvas.style.height=H+"px";
+  canvas.width=Math.round(w*dpr);canvas.height=Math.round(H*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function draw(){
+  var dark=isDark();
+  ctx.fillStyle=dark?"#1F2228":"#FFFFFF";ctx.fillRect(0,0,canvas.width,canvas.height);
+  // zones
+  ctx.fillStyle=dark?"rgba(217,131,120,.2)":"rgba(168,62,50,.12)";
+  ctx.fillRect(0,0,W,TOX);
+  ctx.fillStyle=dark?"rgba(154,165,177,.14)":"rgba(82,96,109,.1)";
+  ctx.fillRect(0,H-LOW,W,LOW);
+  var ink=dark?"rgba(232,234,237,.6)":"rgba(31,41,51,.55)";
+  ctx.fillStyle=ink;ctx.font="700 11px ui-sans-serif,system-ui";ctx.textAlign="left";
+  ctx.fillText("TOXIC — above the window",12,20);
+  ctx.fillText("TOO LOW — no effect",12,H-LOW+20);
+  if(!g)return;
+  // pipes
+  g.pipes.forEach(function(p){
+    ctx.fillStyle=dark?"#3A251D":"#F0D9CE";
+    rrp(ctx,p.x,TOX,46,p.gapY-TOX,8);ctx.fill();
+    rrp(ctx,p.x,p.gapY+p.gapH,46,H-LOW-(p.gapY+p.gapH),8);ctx.fill();
+    // window band
+    ctx.fillStyle=dark?"rgba(95,176,132,.16)":"rgba(47,125,82,.12)";
+    ctx.fillRect(p.x,p.gapY,46,p.gapH);
+    ctx.save();
+    ctx.translate(p.x+23,p.gapY-10);
+    ctx.fillStyle=ink;ctx.font="700 10px ui-sans-serif";ctx.textAlign="center";
+    ctx.fillText(p.organ,0,0);
+    ctx.restore();
+  });
+  // y-axis hint
+  ctx.save();ctx.translate(14,H/2);ctx.rotate(-Math.PI/2);
+  ctx.fillStyle=dark?"rgba(232,234,237,.35)":"rgba(31,41,51,.3)";
+  ctx.font="10px ui-sans-serif";ctx.textAlign="center";
+  ctx.fillText("drug concentration →",0,0);ctx.restore();
+  // drug dot
+  ctx.globalAlpha=g.inv>0?(Math.floor(g.inv*10)%2?0.35:1):1;
+  ctx.fillStyle=dark?"#D68264":"#B04A2F";
+  ctx.beginPath();ctx.arc(86,g.y,13,0,7);ctx.fill();
+  ctx.fillStyle="#fff";ctx.font="700 9px ui-sans-serif";ctx.textAlign="center";
+  ctx.fillText("drug",86,g.y+3);
+  ctx.globalAlpha=1;
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+canvas.addEventListener("pointerdown",function(e){e.preventDefault();dose();});
+document.addEventListener("keydown",function(e){
+  if(e.key===" "||e.code==="Space"){if(g&&g.running){e.preventDefault();dose();}}
+});
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden&&g&&g.running){g.running=false;
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<h2>Paused</h2><button class="btn" id="start-btn">Restart</button>';
+    $("#start-btn").addEventListener("click",start);}
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();reset();draw();
+$("#start-btn").addEventListener("click",start);
+
+/* ---------- shared quiz engine ---------- */
+var qi=0,qres=[];
+function qDots(){
+  var d=$("#q-dots");d.innerHTML="";
+  QUIZ.forEach(function(_,i){
+    var s=document.createElement("span");
+    if(i<qres.length)s.className=qres[i]?"ok":"no";
+    else if(i===qi)s.className="cur";
+    d.appendChild(s);
+  });
+}
+function qRender(){
+  var q=QUIZ[qi],st=$("#q-stage");
+  st.innerHTML='<div class="q"><div class="stem">Q'+(qi+1)+'. '+q.stem+'</div>'+
+    q.opts.map(function(o,i){return '<label><input type="radio" name="qq" value="'+i+'" id="qq'+qi+'o'+i+'"><span>'+o+'</span></label>';}).join("")+
+    '<div class="fb"></div><button class="qbtn" id="q-check">Check answer</button></div>';
+  $("#q-check").addEventListener("click",qCheck);
+  qDots();
+}
+function qCheck(){
+  var q=QUIZ[qi],sel=document.querySelector('input[name="qq"]:checked');
+  var el=$("#q-stage .q"),fb=el.querySelector(".fb");
+  if(!sel){fb.innerHTML='<div class="verdict no">Pick an answer first.</div>';return;}
+  var pick=+sel.value,ok=pick===q.a;
+  qres.push(ok);el.classList.add("graded");
+  el.querySelectorAll("label").forEach(function(l,i){
+    l.querySelector("input").disabled=true;
+    if(i===q.a)l.classList.add("right");else if(i===pick)l.classList.add("wrong-pick");
+  });
+  fb.innerHTML='<div class="verdict '+(ok?"ok":"no")+'">'+(ok?"Correct.":"Not quite — see the highlighted answer.")+'</div><div class="explain">'+q.explain+'</div>';
+  var btn=el.querySelector(".qbtn");
+  btn.textContent=qi===QUIZ.length-1?"See my score":"Next question";
+  btn.removeEventListener("click",qCheck);
+  btn.addEventListener("click",function(){
+    if(qi===QUIZ.length-1)qFinish();else{qi++;qRender();}
+  });
+  qDots();
+}
+function qFinish(){
+  var score=qres.filter(Boolean).length,pass=score>=5;
+  var s=(CODEP+"|"+score+"|"+new Date().toISOString().slice(0,10));
+  var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;
+  $("#q-stage").innerHTML="";
+  $("#q-final").innerHTML='<div class="score-final"><strong>'+score+' / 6'+(pass?' — passed':'')+'</strong>'+
+    (pass?' Concept locked in.':' Replay the game, reread the win-screen facts, and try again — attempts are unlimited.')+
+    '<span class="code">verification code: '+CODEP+'-'+score+'-'+h.toString(36).toUpperCase()+'</span>'+
+    '<button class="qbtn" id="q-retry">Try again</button></div>';
+  $("#q-retry").addEventListener("click",function(){qi=0;qres=[];$("#q-final").innerHTML="";qRender();});
+  qDots();
+}
+
+qRender();
+})();
+</script>
+
+</body>
+</html>

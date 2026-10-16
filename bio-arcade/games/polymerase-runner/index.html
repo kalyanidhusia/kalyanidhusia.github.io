@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI in Biomedicine — Student Training</title>
+<meta name="description" content="Self-paced AI-in-biomedicine prep course for the AR INBRE computing-first student pathway.">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+/* Layout: left module rail on desktop, chip bar on phone; 68ch reading column.
+   Two-voice palette: biology = viridian, computation = indigo. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2933; --muted:#52606D;
+  --line:rgba(0,0,0,.10); --bio:#B04A2F; --bio-soft:#F4E4DD; --code:#3E5C76;
+  --code-soft:#E7EDF3; --good:#2F7D52; --bad:#A83E32; --warn:#8A5A14;
+  --warn-soft:#F6EDD9;
+  --display:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+    --line:rgba(255,255,255,.14); --bio:#D68264; --bio-soft:#3A251D; --code:#8FA8C2;
+    --code-soft:#242C36; --good:#5FB084; --bad:#D98378; --warn:#D7A95B;
+    --warn-soft:#2E2819; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+  --line:rgba(255,255,255,.14); --bio:#D68264; --bio-soft:#3A251D; --code:#8FA8C2;
+  --code-soft:#242C36; --good:#5FB084; --bad:#D98378; --warn:#D7A95B;
+  --warn-soft:#2E2819; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--body); font-size:1.05rem; line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+}
+a{color:var(--bio)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--bio);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+.shell{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:40px;padding-block:0 60px}
+.site-head{grid-column:1/-1;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-block:22px 6px;border-bottom:1px solid var(--line);min-width:0}
+.site-head .name{font-family:var(--display);font-weight:700;font-size:1.25rem;text-decoration:none;color:var(--ink)}
+.site-head .sub{color:var(--muted);font-size:.85rem}
+.site-head .spacer{flex:1}
+.progress-pill{font-family:var(--mono);font-size:.74rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+
+/* rail */
+.rail{padding-top:28px;min-width:0}
+.rail h2{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:700}
+.rail nav{display:flex;flex-direction:column;gap:2px;max-width:100%}
+.rail a{display:flex;gap:9px;align-items:baseline;padding:7px 10px;border-radius:8px;text-decoration:none;color:var(--ink);font-size:.92rem;line-height:1.35}
+.rail a .n{font-family:var(--mono);font-size:.74rem;color:var(--muted);min-width:1.4em}
+.rail a.current{background:var(--bio-soft);color:var(--bio);font-weight:700}
+.rail a.locked{color:var(--muted)}
+.rail a .tick{margin-left:auto;color:var(--good);font-weight:700}
+.rail .instructor-link{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+main{min-width:0;padding-top:28px}
+
+/* hero / home */
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--bio);font-weight:700;margin:0 0 8px}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,4.6vw,2.9rem);line-height:1.1;margin:.2em 0 .4em;text-wrap:balance}
+.hero .lede{max-width:62ch;color:var(--muted);font-size:1.08rem}
+.who{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0}
+.who span{font-size:.82rem;border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:var(--muted)}
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:30px}
+.mod-card{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--surface);display:flex;flex-direction:column;gap:8px;min-width:0}
+.mod-card .mn{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+.mod-card h3{font-family:var(--display);font-weight:700;font-size:1.06rem;margin:0;line-height:1.3;color:var(--bio)}
+.mod-card p{margin:0;font-size:.9rem;color:var(--muted)}
+.mod-card .foot{margin-top:auto;padding-top:8px;font-size:.84rem}
+.mod-card .foot a{font-weight:700;text-decoration:none}
+.mod-card.locked{opacity:.75}
+.mod-card .status{font-size:.78rem;color:var(--warn)}
+.mod-card .done{font-size:.84rem;color:var(--good);font-weight:700}
+
+/* lesson */
+.lesson{max-width:70ch}
+.crumb{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.lesson h1{font-family:var(--display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.3rem);line-height:1.15;margin:.3em 0 .35em;text-wrap:balance}
+.lesson .objectives{border:1px solid var(--line);border-radius:14px;padding:14px 18px;background:var(--surface);font-size:.95rem;margin:18px 0 26px}
+.lesson .objectives strong{display:block;margin-bottom:6px}
+.lesson .objectives ul{margin:0;padding-left:20px}
+.lesson h2{font-family:var(--display);font-weight:700;font-size:1.35rem;margin:1.8em 0 .5em;line-height:1.25}
+.lesson h3{font-size:1.05rem;margin:1.4em 0 .4em}
+.lesson p{margin:.8em 0}
+.lesson ul,.lesson ol{padding-left:22px}
+.lesson li{margin:.35em 0}
+.aside{border-left:4px solid var(--bio);background:var(--bio-soft);border-radius:0 10px 10px 0;padding:12px 16px;margin:1.2em 0;font-size:.95rem}
+.aside.code-voice{border-left-color:var(--code);background:var(--code-soft)}
+.aside .tag{font-family:var(--mono);font-size:.74rem;font-weight:600;display:block;margin-bottom:4px;color:var(--bio)}
+.aside.code-voice .tag{color:var(--code)}
+pre.snippet{font-family:var(--mono);font-size:.82rem;line-height:1.55;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;margin:1em 0}
+.bridge-wrap{overflow-x:auto;margin:1.2em 0}
+table.bridge{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+table.bridge th{text-align:left;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:8px 12px;border-bottom:2px solid var(--line)}
+table.bridge td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.bridge td:first-child{color:var(--bio);font-weight:700}
+table.bridge td:nth-child(2){color:var(--code);font-weight:700}
+table.bridge td:last-child{color:var(--muted);font-size:.88rem}
+
+.video-slot{border:2px dashed var(--line);border-radius:14px;padding:22px;margin:1.4em 0;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.video-slot .play{width:54px;height:54px;border-radius:50%;background:var(--bio-soft);color:var(--bio);display:grid;place-items:center;font-size:1.3rem;flex:none}
+.video-slot .vt{min-width:0}
+.video-slot .vt strong{display:block}
+.video-slot .vt span{color:var(--muted);font-size:.88rem}
+
+/* ===== Polymerase Runner ===== */
+.game-card{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:18px 20px;margin:1.6em 0}
+.game-card .gh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.game-card .gh h3{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
+.game-card .gh .meta{font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+.game-stage{position:relative;border-radius:10px;overflow:hidden;background:#FAFAF7;border:1px solid rgba(0,0,0,.10)}
+#game-canvas{display:block;width:100%;height:auto;touch-action:manipulation}
+.game-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;background:rgba(250,250,247,.96);color:#1F2933;padding:18px}
+.game-overlay h4{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:0;text-wrap:balance}
+.game-overlay ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:.95rem;text-align:left;max-width:42ch}
+.game-overlay ol li{display:flex;gap:10px;align-items:baseline}
+.game-overlay ol .k{font-family:var(--mono);font-weight:600;font-size:.8rem;color:#B04A2F;flex:none;min-width:1.2em}
+.game-overlay p{margin:0;font-size:.88rem;max-width:46ch;line-height:1.5;color:#52606D}
+.game-overlay button{border:none;border-radius:999px;padding:11px 22px;font-weight:700;background:#B04A2F;color:#fff}
+.gbtn.hint{border-color:#B04A2F;color:#B04A2F;animation:hintpulse 0.9s ease-in-out infinite}
+@keyframes hintpulse{0%,100%{box-shadow:0 0 0 0 rgba(176,74,47,.0)}50%{box-shadow:0 0 0 5px rgba(176,74,47,.28)}}
+.game-controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 0 2px}
+.gbtn{font-family:var(--mono);font-weight:600;font-size:1.05rem;min-width:52px;padding:10px 0;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+.gbtn:active{transform:translateY(1px)}
+.gbtn.jump{min-width:96px}
+.gbtn.toxic{border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.game-teach{font-size:.9rem;color:var(--muted);margin-top:10px}
+.game-teach strong{color:var(--ink)}
+
+/* quiz — one question at a time */
+.quiz{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:22px 24px;margin:2.2em 0 1em}
+.quiz-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.quiz-head h2{margin:0!important;font-size:1.3rem}
+.quiz-head .meta{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.q-dots{display:flex;gap:6px;margin:16px 0 4px}
+.q-dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.q-dots span.cur{background:var(--bio);transform:scale(1.2)}
+.q-dots span.ok{background:var(--good)}
+.q-dots span.no{background:var(--bad)}
+.q{margin:14px 0 4px}
+.q .stem{font-weight:700;margin-bottom:12px;font-size:1.02rem}
+.q .opts{display:flex;flex-direction:column;gap:8px}
+.q label{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;cursor:pointer;font-size:.95rem}
+.q label:hover{border-color:var(--bio)}
+.q input[type=radio]{margin-top:3px;accent-color:var(--bio)}
+.q.graded label{cursor:default}
+.q.graded label.right{border-color:var(--good);background:var(--bio-soft)}
+.q.graded label.wrong-pick{border-color:var(--bad)}
+.q .explain{margin-top:10px;font-size:.9rem;color:var(--muted);border-left:3px solid var(--line);padding:4px 12px}
+.q .verdict{font-weight:700;margin-top:12px}
+.q .verdict.ok{color:var(--good)} .q .verdict.no{color:var(--bad)}
+.quiz-id{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 6px}
+.quiz-id div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.quiz-id label{font-size:.82rem;font-weight:700}
+.quiz-id input{font:inherit;padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);min-width:0}
+.quiz-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.btn{border:none;border-radius:999px;padding:11px 20px;font-weight:700;background:var(--bio);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink);font-weight:400}
+.score-card{border-radius:14px;padding:16px 18px;margin-top:18px;font-size:.98rem;background:var(--bio-soft)}
+.score-card.fail{background:var(--warn-soft)}
+.score-card .big{font-family:var(--display);font-weight:700;font-size:1.5rem}
+.score-card .sync{font-size:.88rem;color:var(--muted);margin-top:6px}
+.score-code{font-family:var(--mono);font-size:.95rem;background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:8px 12px;display:inline-flex;gap:10px;align-items:center;margin-top:8px;max-width:100%}
+.score-code button{border:none;background:var(--bio-soft);color:var(--bio);border-radius:6px;padding:3px 10px;font-size:.8rem;font-weight:700}
+
+/* instructor */
+.inst-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table.inst{border-collapse:collapse;width:100%;min-width:620px;font-size:.9rem}
+table.inst th{text-align:left;padding:10px 14px;border-bottom:2px solid var(--line);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+table.inst td{padding:9px 14px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.empty-note{color:var(--muted);border:2px dashed var(--line);border-radius:14px;padding:22px;margin-top:16px}
+
+.compliance{margin-top:46px;border-top:1px solid var(--line);padding-top:14px;font-size:.82rem;color:var(--muted);max-width:70ch}
+
+@media (max-width:760px){
+  .shell{grid-template-columns:1fr;gap:0}
+  .rail{padding-top:16px}
+  .rail nav{flex-direction:row;overflow-x:auto;padding-bottom:8px}
+  .rail a{flex:none;border:1px solid var(--line)}
+  .rail a .tick{margin-left:6px}
+  .rail .instructor-link{border-top:none;margin-top:0;padding-top:0}
+  .quiz-id{grid-template-columns:1fr}
+}
+</style>
+
+<div class="shell">
+<header class="site-head">
+  <a class="name" href="#home">AI in Biomedicine</a>
+  <span class="sub">Pre-internship course · AR INBRE Data Science Core</span>
+  <span class="spacer"></span>
+  <span class="progress-pill" id="progress-pill">0 of 8 modules</span>
+</header>
+
+<aside class="rail">
+  <h2>Modules</h2>
+  <nav id="rail-nav"></nav>
+  <div class="instructor-link" id="instructor-link" hidden>
+    <a href="#instructor" style="font-size:.88rem">Instructor: results</a>
+  </div>
+</aside>
+
+<main id="main">
+
+<!-- ============ HOME ============ -->
+<section id="view-home">
+  <div class="hero">
+    <p class="eyebrow">Student training hub · Computing-first pathway</p>
+    <h1>You already speak the language. Biology is a data network.</h1>
+    <p class="lede">An eight-module course for computer science students with
+    no biology background. You will learn to treat living systems as
+    high-dimensional, noisy, interconnected data — and to build AI tools for
+    biomedicine that are commercializable, publishable, and compliant with
+    NIH policy. Each module is a short read, a lecture video, a playable
+    idea, and a scored six-question exercise.</p>
+    <div class="who">
+      <span>No biology prerequisite</span>
+      <span>Python + basic ML assumed</span>
+      <span>Prepares you for the 8-week summer internship</span>
+    </div>
+  </div>
+  <div class="mod-grid" id="mod-grid"></div>
+  <p class="compliance">This course is supported by the Arkansas IDeA Network of
+  Biomedical Research Excellence (AR INBRE), funded by the National Institute of
+  General Medical Sciences of the NIH under award P20 GM103429. Course content
+  is educational; it is not medical advice.</p>
+</section>
+
+<!-- ============ MODULE 1 ============ -->
+<section id="view-m1" hidden>
+<article class="lesson">
+  <p class="crumb">Module 1 of 8</p>
+  <h1>Biology is a data network, and you are not an imposter</h1>
+
+  <div class="objectives">
+    <strong>By the end of this module you can</strong>
+    <ul>
+      <li>Explain the central dogma as an information-flow architecture, and say where the software metaphor breaks.</li>
+      <li>Describe the bioinformatics blindspot: how a model with excellent metrics can be biologically worthless.</li>
+      <li>Use an AI assistant as a domain translator between medical vocabulary and computational structures.</li>
+      <li>State the three guardrails every project in this course must satisfy.</li>
+    </ul>
+  </div>
+
+  <div class="video-slot">
+    <div class="play">▶</div>
+    <div class="vt">
+      <strong>Lecture 1 · Why computation is the scarce skill in biomedicine</strong>
+      <span>Video link will appear here. Until then, the written lesson below covers the full content.</span>
+    </div>
+  </div>
+
+  <h2>1.1 The imposter has it backwards</h2>
+  <p>Most CS students assume biomedicine belongs to people who spent years
+  memorizing pathways and pipetting in wet labs. Look at what modern biomedical
+  research actually produces: a single sequencing run emits tens of gigabytes;
+  one mass-spectrometry experiment measures thousands of proteins across dozens
+  of samples; a hospital generates millions of time-stamped clinical events.
+  The bottleneck in biomedicine is no longer generating data. It is making
+  sense of data — at scales no human reads unaided.</p>
+  <p>That is your home turf. Dimensionality, graphs, noise, caching,
+  distributed state, schema design: the mental tools you already own are the
+  ones the field is short of. What you are missing is smaller than you think:
+  the domain's vocabulary, its data realities, and a sense of what a finding
+  must survive to matter clinically. That is what these eight modules install.</p>
+
+  <h2>1.2 The central dogma, read as an architecture diagram</h2>
+  <p>The one piece of biology everyone must know is the <em>central dogma</em>:
+  information flows from DNA to RNA to protein. DNA is the stable, heritable
+  store, written in a four-letter alphabet — A, C, G, T — where A pairs with T
+  and C pairs with G across the double helix. Transcription copies a stretch of
+  it into RNA, a short-lived working copy that uses U in place of T.
+  Translation reads RNA to assemble a protein, the molecule that actually
+  does things: catalyzes reactions, carries signals, builds structure.</p>
+  <p>Here is the same sentence in your vocabulary, with the places where the
+  metaphor breaks — the breaks matter more than the metaphor.</p>
+
+  <div class="bridge-wrap">
+  <table class="bridge">
+    <tr><th>Biology</th><th>Behaves like</th><th>Where the metaphor breaks</th></tr>
+    <tr><td>Genome (DNA)</td><td>Source repository, replicated per cell</td><td>Mutations are uncontrolled writes; "the same code" differs between tumor cells of one patient</td></tr>
+    <tr><td>Transcription (RNA)</td><td>A materialized view, rebuilt on demand</td><td>Which views get built depends on cell type, time, stress, neighbors — context is everything</td></tr>
+    <tr><td>Protein</td><td>The compiled, running executable</td><td>Behavior depends on 3D folding and chemical modification, invisible in the "source"</td></tr>
+    <tr><td>Pathway</td><td>A dependency graph with message passing</td><td>Dense feedback loops and redundancy; knocking out one node often changes little</td></tr>
+    <tr><td>Cell</td><td>A container running one image of the OS</td><td>Thousands of distinct runtime states from identical code (a neuron and a skin cell share a genome)</td></tr>
+    <tr><td>Ontology (GO, MeSH, UMLS)</td><td>A curated, versioned schema and namespace</td><td>Incomplete by design; terms are hypotheses that get revised</td></tr>
+  </table>
+  </div>
+
+  <p>This is why the course calls biology a <em>constraint network</em> rather
+  than source code. The genome does not execute line by line. Every measurement
+  you will touch — gene expression, protein abundance, a clinical lab value —
+  is one noisy projection of a system whose state depends on context you
+  usually cannot observe. Good biomedical AI respects that; bad biomedical AI
+  pretends the projection is the system.</p>
+
+  <!-- ===== Polymerase Runner ===== -->
+  <div class="game-card">
+    <div class="gh">
+      <h3>Play it: Polymerase Runner</h3>
+      <span class="meta">60 seconds of base pairing · keyboard or tap</span>
+    </div>
+    <div class="game-stage">
+      <canvas id="game-canvas" width="720" height="340" aria-label="Polymerase Runner game"></canvas>
+      <div class="game-overlay" id="game-overlay">
+        <h4>You are the polymerase — the clamp over the slot.</h4>
+        <ol>
+          <li><span class="k">1</span><span>A letter slides into your slot.</span></li>
+          <li><span class="k">2</span><span>Press its partner: <strong>A↔T</strong>, <strong>C↔G</strong> (keys or buttons below).</span></li>
+          <li><span class="k">3</span><span>See a <strong>✖</strong>? Press <strong>Jump</strong> to skip it.</span></li>
+        </ol>
+        <p>The first letters come slowly, with hints — mistakes are free while you learn. Three mutations after that and the strand is scrapped.</p>
+        <button id="game-start">Start replication</button>
+      </div>
+    </div>
+    <div class="game-controls" id="game-controls">
+      <button class="gbtn" data-base="A" id="gb-A">A</button>
+      <button class="gbtn" data-base="T" id="gb-T">T</button>
+      <button class="gbtn" data-base="C" id="gb-C">C</button>
+      <button class="gbtn" data-base="G" id="gb-G">G</button>
+      <button class="gbtn" data-base="U" id="gb-U" hidden>U</button>
+      <button class="gbtn jump" data-base="JUMP" id="gb-J">Jump</button>
+    </div>
+    <p class="game-teach"><strong>What you just did is real:</strong> matching
+    each base to its complement is the rule behind DNA replication, PCR, and
+    sequencing. Jumping a damaged base is <em>proofreading</em> — real
+    polymerases excise errors, which is why your genome survives being copied
+    trillions of times. And scoring how well two strands match, gaps and all,
+    is <em>sequence alignment</em> — the algorithm family (Needleman–Wunsch,
+    Smith–Waterman) you'll meet as code later in the course. Survive past
+    10 pairs for a surprise from transcription.</p>
+  </div>
+
+  <h2>1.3 The bioinformatics blindspot</h2>
+  <p>A true story shape you will meet repeatedly. A team trains a classifier to
+  detect cancer from tissue images collected at two hospitals. AUROC: 0.99.
+  Publication-ready — until someone notices that one hospital contributed most
+  of the cancer cases and the other most of the controls, and the scanners
+  differ. The model learned to recognize the scanner. On data from a third
+  hospital it performs at chance.</p>
+  <p>In omics the same failure wears different masks: <em>batch effects</em>
+  (samples processed on different days cluster by day, not by disease),
+  leakage through patient overlap between train and test splits, and models
+  that exploit missingness patterns rather than biology. The metric was never
+  wrong. The question it answered was.</p>
+  <div class="aside code-voice">
+    <span class="tag">engineering habit</span>
+    Before you celebrate a metric, name the shortcut: what is the cheapest
+    signal in this dataset that would produce this score without any biology?
+    Then test whether your model is using it. In Module 7 you will automate
+    exactly this as an adversarial audit.
+  </div>
+
+  <h2>1.4 AI as your bilingual teammate</h2>
+  <p>You will use AI assistants throughout this course in a specific role: an
+  on-demand interdisciplinary teammate that translates between medical language
+  and computational structure. The skill is asking for structure, with sources,
+  rather than asking for opinions. Compare:</p>
+  <pre class="snippet">Weak:   "Explain HER2-positive breast cancer."
+
+Strong: "I'm a CS student building a dataset schema. From this paper's
+        abstract (pasted below), extract: (1) the disease and subtype
+        studied, (2) sample types, (3) measured molecules, (4) sample
+        counts per group — as JSON. Quote the exact phrase supporting
+        each field. Mark any field the text does not state as null.
+        Do not guess."</pre>
+  <p>Three properties make the strong prompt professional: it demands a
+  <em>machine-usable structure</em>, it demands <em>evidence</em> (the exact
+  supporting phrase), and it makes <em>"not stated" a legal answer</em>.
+  Hold on to that last one. In consumer apps a wrong guess costs a shrug; in
+  biomedicine a confident unsupported claim is the cardinal defect. Every
+  system you build here treats "unknown" as a first-class output.</p>
+
+  <h2>1.5 Two working examples, one standard</h2>
+  <p><strong>Memory Lane Games</strong> builds simple, localized reminiscence
+  games for people living with dementia — photos and prompts tuned to a
+  player's own era and place. No diagnosis, no medical claims, no patient data
+  in a cloud. Yet care homes and families report real engagement and calmer
+  days, and the model scales globally because localization is content, not
+  code. It shows a path you will study in Module 6: a modest, well-guarded
+  interactive tool can deliver verified human impact and a business.</p>
+  <p><strong>Evidence navigators</strong> like omics research agents (Medea,
+  and the pxEnrich system built within this program) answer plain-language
+  questions about disease research from public datasets. Their defining rule:
+  the language model is never the database. Retrieval is deterministic, every
+  claim carries its source, and when evidence is insufficient the system says
+  so. The same rule governs your capstone, whichever form it takes.</p>
+
+  <h2>1.6 The three guardrails</h2>
+  <p>Because this program operates under NIH policy, every project in this
+  course enforces three rules from day one. They are graded, and they are also
+  what makes your work investable and publishable:</p>
+  <ol>
+    <li><strong>Zero-PII boundary.</strong> No personally identifiable or
+    patient data ever leaves the local environment. Public, de-identified
+    datasets only; identifiers stripped at ingestion.</li>
+    <li><strong>Deterministic output over hallucination.</strong> User-facing
+    answers come from retrieval over vetted content or static lookups. A
+    generative model may rephrase retrieved content; it may never originate
+    medical claims.</li>
+    <li><strong>Edge-case validation.</strong> Automated stress tests simulate
+    messy reality — erratic users, corrupted inputs, out-of-distribution data —
+    before anyone else touches the tool.</li>
+  </ol>
+
+  <!-- ============ QUIZ 1 ============ -->
+  <div class="quiz" id="quiz-m1">
+    <div class="quiz-head">
+      <h2>Module 1 exercise</h2>
+      <span class="meta">6 questions, one at a time · pass at 5 · retakes allowed</span>
+    </div>
+    <div class="q-dots" id="quiz-m1-dots"></div>
+    <div id="quiz-m1-stage"></div>
+    <div id="quiz-m1-finish" hidden>
+      <div class="quiz-id">
+        <div>
+          <label for="q-name">Your name</label>
+          <input id="q-name" autocomplete="name" placeholder="As your instructor knows you">
+        </div>
+        <div>
+          <label for="q-email">School email</label>
+          <input id="q-email" autocomplete="email" inputmode="email" placeholder="you@university.edu">
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button class="btn" id="quiz-m1-submit">See my score</button>
+      </div>
+    </div>
+    <div id="quiz-m1-result"></div>
+  </div>
+
+</article>
+</section>
+
+<!-- ============ INSTRUCTOR ============ -->
+<section id="view-instructor" hidden>
+  <article class="lesson">
+    <h1>Results</h1>
+    <p class="crumb">Visible to course editors only. Students see their own score and a verification code.</p>
+    <div id="inst-content"><p class="empty-note">Loading results…</p></div>
+  </article>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- course data ---------- */
+var MODULES=[
+ {id:"m1",title:"Biology is a data network",desc:"Dismantle imposter syndrome, read the central dogma as architecture, play Polymerase Runner, meet the bioinformatics blindspot and the three guardrails.",live:true},
+ {id:"m2",title:"Messy omics and the privacy firewall",desc:"Batch effects, missingness, and high-dimensional noise; building a local-only, zero-PII ingestion pipeline.",live:false},
+ {id:"m3",title:"Proteins in three dimensions",desc:"Structural biology for programmers: PDB, folding predictors, and graphs over molecules.",live:false},
+ {id:"m4",title:"Drugs as algorithms",desc:"Pharmacokinetics and pharmacodynamics as constraints over time; physics-informed screening.",live:false},
+ {id:"m5",title:"Guardrailed agents",desc:"Retrieval-grounded conversational tools for health literacy that cannot output unscripted medical advice.",live:false},
+ {id:"m6",title:"Games as instruments",desc:"Digital therapeutics and gameplay telemetry: measuring cognition and motor function without a clinic.",live:false},
+ {id:"m7",title:"Compliance and commercialization",desc:"SaMD and FDA pathways, NIH policy, adversarial self-audits, and what makes a prototype investable.",live:false},
+ {id:"m8",title:"Design your project",desc:"Capstone studio: frame one idea three ways — grant aim, paper, product — and pitch it without buzzwords.",live:false}
+];
+
+var QUIZZES={m1:{pass:5,questions:[
+ {stem:"Information in a cell flows in a famous order. Which one?",
+  opts:["Protein → RNA → DNA","DNA → RNA → protein","RNA → protein → DNA"],
+  a:1,explain:"That's the central dogma. DNA is the stored plan, RNA is the working copy, and protein is the machine that gets built. You just played it: replication copies DNA, transcription makes the RNA copy.",
+  yes:"Exactly right."},
+ {stem:"In DNA, the base A always pairs with:",
+  opts:["C","G","T"],
+  a:2,explain:"A–T and C–G. That one rule powers DNA replication, PCR testing, and every sequencing machine on Earth — and it's why Polymerase Runner is winnable.",
+  yes:"You've got the pairing rule."},
+ {stem:"RNA uses the same alphabet as DNA except one letter. Which swap?",
+  opts:["T is replaced by U","A is replaced by X","G is replaced by Q"],
+  a:0,explain:"When the game entered the transcription zone, T shattered into U — that's real. RNA uses uracil (U) where DNA uses thymine (T).",
+  yes:"The transcription zone taught you well."},
+ {stem:"A model detects cancer with 99% accuracy. All its cancer images came from Hospital 1, and all its healthy images from Hospital 2. What's the worry?",
+  opts:["99% isn't high enough to be useful","The model may have learned to recognize the hospital's scanner, not the disease","The images should have been in color"],
+  a:1,explain:"This is the bioinformatics blindspot. When the label and the data source travel together, the cheapest thing to learn is the source. The fix is in the data design, not a bigger model — and spotting this is a skill that makes you valuable in any lab.",
+  yes:"You just caught the classic trap."},
+ {stem:"Your class project uses health-related data. Which setup follows the zero-PII rule?",
+  opts:["Upload patient spreadsheets to a free cloud AI tool — it's just for class","Use public, de-identified datasets and process them on your own machine","Keep patient names in the file as long as you promise not to look"],
+  a:1,explain:"The rule is architectural: identifiable data never leaves local control, and you work with public, de-identified sources. It's what lets a student project become a real product without legal landmines.",
+  yes:"That's the compliant setup."},
+ {stem:"You build a health chatbot. A user asks something your vetted content doesn't cover. What should it do?",
+  opts:["Generate its best guess — it's probably fine","Say it doesn't have verified information on that, and point to a real source","Change the subject"],
+  a:1,explain:"“I don't know” is a feature, not a failure. In biomedicine, a confident unsupported answer is the worst bug a system can have — every tool in this course treats abstaining as a first-class output.",
+  yes:"That's the guardrail mindset."}
+]}};
+
+/* ---------- state ---------- */
+var state={scores:{}};
+try{var saved=localStorage.getItem("aib-progress");if(saved)state=JSON.parse(saved)||state;}catch(e){}
+if(!state.scores)state.scores={};
+function persist(){try{localStorage.setItem("aib-progress",JSON.stringify(state));}catch(e){}}
+
+var db=null,userNS=null,myId=null,canSync=false;
+var $=function(s,el){return (el||document).querySelector(s);};
+function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML;}
+
+/* ---------- rail + home ---------- */
+function renderRail(current){
+  var nav=$("#rail-nav");nav.innerHTML="";
+  MODULES.forEach(function(m,i){
+    var a=document.createElement("a");
+    a.href=m.live?("#"+m.id):"#home";
+    a.className=(current===m.id?"current ":"")+(m.live?"":"locked");
+    a.innerHTML='<span class="n">'+(i+1)+'</span><span>'+esc(m.title)+'</span>'+
+      (state.scores[m.id]&&state.scores[m.id].passed?'<span class="tick">✓</span>':'');
+    if(!m.live){a.setAttribute("aria-disabled","true");a.title="In development";}
+    nav.appendChild(a);
+  });
+  var done=MODULES.filter(function(m){return state.scores[m.id]&&state.scores[m.id].passed;}).length;
+  $("#progress-pill").textContent=done+" of "+MODULES.length+" modules";
+}
+
+function renderHome(){
+  var g=$("#mod-grid");g.innerHTML="";
+  MODULES.forEach(function(m,i){
+    var c=document.createElement("div");
+    c.className="mod-card"+(m.live?"":" locked");
+    var foot;
+    if(!m.live)foot='<span class="status">In development — opens before the summer term</span>';
+    else if(state.scores[m.id]&&state.scores[m.id].passed)foot='<span class="done">Passed · '+state.scores[m.id].best+'/6</span> &nbsp; <a href="#'+m.id+'">Review</a>';
+    else foot='<a href="#'+m.id+'">Start module</a>';
+    c.innerHTML='<span class="mn">Module '+(i+1)+'</span><h3>'+esc(m.title)+'</h3><p>'+esc(m.desc)+'</p><div class="foot">'+foot+'</div>';
+    g.appendChild(c);
+  });
+}
+
+/* ---------- quiz: one question at a time ---------- */
+var quizRun={mid:null,idx:0,picks:[],results:[]};
+
+function startQuiz(mid){
+  quizRun={mid:mid,idx:0,picks:[],results:[]};
+  $("#quiz-"+mid+"-finish").hidden=true;
+  $("#quiz-"+mid+"-result").innerHTML="";
+  renderDots(mid);
+  renderQuestion(mid);
+}
+
+function renderDots(mid){
+  var qz=QUIZZES[mid],d=$("#quiz-"+mid+"-dots");d.innerHTML="";
+  qz.questions.forEach(function(_,i){
+    var s=document.createElement("span");
+    if(i<quizRun.results.length)s.className=quizRun.results[i]?"ok":"no";
+    else if(i===quizRun.idx)s.className="cur";
+    d.appendChild(s);
+  });
+}
+
+function renderQuestion(mid){
+  var qz=QUIZZES[mid],qi=quizRun.idx,q=qz.questions[qi];
+  var stage=$("#quiz-"+mid+"-stage");
+  var opts=q.opts.map(function(o,oi){
+    return '<label><input type="radio" name="'+mid+'-q'+qi+'" value="'+oi+'" id="'+mid+'-q'+qi+'-o'+oi+'"><span>'+esc(o)+'</span></label>';
+  }).join("");
+  stage.innerHTML='<div class="q" data-qi="'+qi+'">'+
+    '<div class="stem">Question '+(qi+1)+' of '+qz.questions.length+' · '+esc(q.stem)+'</div>'+
+    '<div class="opts">'+opts+'</div><div class="feedback"></div>'+
+    '<div class="quiz-actions"><button class="btn" id="qcheck-'+mid+'">Check answer</button></div></div>';
+  $("#qcheck-"+mid).addEventListener("click",function(){checkQuestion(mid);});
+  renderDots(mid);
+}
+
+function checkQuestion(mid){
+  var qz=QUIZZES[mid],qi=quizRun.idx,q=qz.questions[qi];
+  var sel=document.querySelector('input[name="'+mid+'-q'+qi+'"]:checked');
+  var qEl=$("#quiz-"+mid+"-stage .q"),fb=qEl.querySelector(".feedback");
+  if(!sel){fb.innerHTML='<div class="verdict no">Pick an answer first.</div>';return;}
+  var pick=+sel.value,ok=pick===q.a;
+  quizRun.picks[qi]=pick;quizRun.results[qi]=ok;
+  qEl.classList.add("graded");
+  qEl.querySelectorAll("label").forEach(function(l,oi){
+    l.querySelector("input").disabled=true;
+    if(oi===q.a)l.classList.add("right");
+    else if(oi===pick)l.classList.add("wrong-pick");
+  });
+  fb.innerHTML='<div class="verdict '+(ok?'ok':'no')+'">'+(ok?esc(q.yes||'Correct.'):'Not quite — the highlighted answer is the one.')+'</div>'+
+    '<div class="explain">'+esc(q.explain)+'</div>';
+  var last=qi===qz.questions.length-1;
+  var btnRow=qEl.querySelector(".quiz-actions");
+  btnRow.innerHTML='<button class="btn" id="qnext-'+mid+'">'+(last?'Finish':'Next question')+'</button>';
+  $("#qnext-"+mid).addEventListener("click",function(){
+    if(last){
+      $("#quiz-"+mid+"-stage").innerHTML="";
+      $("#quiz-"+mid+"-finish").hidden=false;
+      renderDots(mid);
+      $("#q-name").focus();
+    }else{
+      quizRun.idx++;renderQuestion(mid);
+    }
+  });
+  renderDots(mid);
+}
+
+function scoreCode(name,mid,score){
+  var s=(name||"").trim().toLowerCase()+"|"+mid+"|"+score+"|arinbre-aib-1";
+  var h=5381;for(var i=0;i<s.length;i++){h=((h<<5)+h+s.charCodeAt(i))>>>0;}
+  return (mid+"-"+score+"-"+h.toString(36)).toUpperCase();
+}
+
+function finishQuiz(mid){
+  var qz=QUIZZES[mid];
+  var name=$("#q-name").value.trim(),email=$("#q-email").value.trim();
+  var result=$("#quiz-"+mid+"-result");
+  if(!name){result.innerHTML='<div class="score-card fail">Enter your name above so your score can be recorded.</div>';return;}
+  var score=quizRun.results.filter(Boolean).length;
+  var passed=score>=qz.pass;
+  var prev=state.scores[mid]||{attempts:0,best:0};
+  var rec={attempts:prev.attempts+1,best:Math.max(prev.best,score),passed:prev.passed||passed,last:score,ts:new Date().toISOString(),name:name,email:email};
+  state.scores[mid]=rec;persist();
+
+  var code=scoreCode(name,mid,score);
+  var syncLine='<div class="sync" id="sync-'+mid+'">'+
+    (canSync?'Saving your score to the course record…':'Score saved on this device. Send the verification code below to your instructor to log it.')+'</div>';
+  result.innerHTML='<div class="score-card '+(passed?'':'fail')+'">'+
+    '<span class="big">'+score+' / 6'+(passed?' — passed':'')+'</span>'+
+    (passed?'<div>Module 1 complete. Module 2 opens before the summer term.</div>'
+           :'<div>Pass mark is '+qz.pass+'. Reread the sections behind the questions you missed — or play another round of Polymerase Runner — then try again. Attempts are unlimited and only your best score counts.</div>')+
+    syncLine+
+    '<div class="score-code"><span>'+code+'</span><button type="button" id="copy-'+mid+'">Copy</button></div>'+
+    '<div class="quiz-actions"><button class="btn ghost" id="quiz-'+mid+'-retry">Try again</button></div>'+
+    '</div>';
+  $("#quiz-"+mid+"-finish").hidden=true;
+  $("#copy-"+mid).addEventListener("click",function(){
+    var btn=this;
+    navigator.clipboard.writeText(code).then(function(){btn.textContent="Copied";},
+      function(){var r=document.createRange();r.selectNodeContents(btn.previousElementSibling);var s=getSelection();s.removeAllRanges();s.addRange(r);});
+  });
+  $("#quiz-"+mid+"-retry").addEventListener("click",function(){startQuiz(mid);window.scrollTo(0,$("#quiz-"+mid).offsetTop-20);});
+  renderRail(mid);
+
+  if(canSync&&db&&myId){
+    var doc=db.doc("results/"+myId);
+    doc.get().then(function(snap){
+      var body=snap.exists?JSON.parse(JSON.stringify(snap.data())):{};
+      body.name=name;body.email=email;
+      body[mid]={best:rec.best,last:score,attempts:rec.attempts,passed:rec.passed,ts:rec.ts,code:code};
+      return doc.set(body);
+    }).then(function(){
+      var el=$("#sync-"+mid);if(el)el.textContent="Score recorded in the course log under your name.";
+    }).catch(function(){
+      var el=$("#sync-"+mid);if(el)el.textContent="Couldn't reach the course log — keep the verification code and send it to your instructor.";
+    });
+  }
+}
+
+/* ---------- Polymerase Runner ---------- */
+var G=(function(){
+  var canvas=$("#game-canvas"),ctx=canvas.getContext("2d");
+  var overlay=$("#game-overlay"),controls=$("#game-controls");
+  var W=720,H=340,RAIL_Y=236,SITE_X=180;
+  var INK="#1F2933",MUT="#52606D",LINE="#DDDDD6";
+  var COLORS={A:"#2F8C72",T:"#C98F2C",C:"#4A69C4",G:"#B05A92",U:"#8A4BD9",X:"#8A7A66"};
+  var COMP={A:"T",T:"A",C:"G",G:"C"};
+  var PRACTICE=3,HINT_UNTIL=6;
+  var running=false,raf=null,last=0,hintBtn=null;
+  var s={};
+
+  function reset(){
+    s={bases:[],seen:0,speed:62,score:0,combo:0,pairs:0,hearts:3,
+       phase:"dna",flash:0,banner:0,bannerMsg:"",jumpT:-1,over:false,
+       spawned:0,xLeft:5,xGap:3};
+    var x=SITE_X+200;
+    for(var i=0;i<10;i++){pushBase(x);x+=spacing();}
+  }
+  function randBase(){return "ACGT"[Math.floor(Math.random()*4)];}
+  function spacing(){return 150+Math.random()*50;}
+  function pushBase(x){
+    // exactly 5 jump obstacles per run, spread out, never during practice
+    s.spawned++;
+    var damaged=false;
+    if(s.spawned>6&&s.xLeft>0){
+      if(s.xGap<=0){damaged=true;s.xLeft--;s.xGap=5+Math.floor(Math.random()*3);}
+      else s.xGap--;
+    }
+    s.bases.push({x:x,b:damaged?"X":randBase(),damaged:damaged,done:false});
+  }
+  function targetBase(){
+    for(var i=0;i<s.bases.length;i++){
+      var b=s.bases[i];
+      if(!b.done&&b.x>SITE_X-30)return b;
+    }
+    return null;
+  }
+  function wantKey(b){
+    if(!b||b.damaged)return null;
+    var w=COMP[b.b];
+    if(s.phase==="rna"&&w==="T")w="U";
+    return w;
+  }
+  function inPractice(){return s.seen<PRACTICE;}
+
+  function input(key){
+    if(!running||s.over)return;
+    var t=targetBase();
+    if(!t)return;
+    var inSite=t.x<=SITE_X+40;
+    if(key==="JUMP"){
+      if(s.jumpT<0)s.jumpT=0;
+      if(inSite&&t.damaged){t.done=true;t.cleared=true;s.seen++;s.score+=5;s.combo++;speedUp();}
+      return;
+    }
+    if(!inSite)return;
+    if(t.damaged){t.done=true;s.seen++;mutate(t,"That one was damaged — Jump skips it");return;}
+    var want=wantKey(t);
+    if(key===want){
+      t.done=true;t.good=true;t.pairWith=want;s.seen++;
+      s.score+=10+Math.min(s.combo,10);s.combo++;s.pairs++;speedUp();
+      if(s.phase==="dna"&&s.pairs>=10)enterRNA();
+      if(s.pairs>=40)endGame(true);
+    }else{
+      t.done=true;t.pairWith=key;t.bad=true;s.seen++;
+      var why=(s.phase==="rna"&&key==="T")?"No T in RNA — A now pairs with U":
+              t.b+" pairs with "+want+", not "+key;
+      mutate(t,why);
+    }
+  }
+  function speedUp(){s.speed=Math.min(150,s.speed+1.2);}
+  function mutate(t,why){
+    s.combo=0;t.bad=true;
+    if(inPractice()){
+      s.bannerMsg=why+"  (practice — no heart lost)";s.banner=2.2;
+    }else{
+      s.hearts--;s.bannerMsg=why;s.banner=2;
+      if(s.hearts<=0){endGame(false);return;}
+    }
+  }
+  function enterRNA(){
+    s.phase="rna";s.flash=1;s.banner=3.4;
+    s.bannerMsg="TRANSCRIPTION INITIATED — RNA uses U, not T";
+    $("#gb-T").hidden=true;$("#gb-U").hidden=false;
+  }
+  function endGame(won){
+    s.over=true;running=false;setHint(null);
+    var reduceMotion=false;
+    try{reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){}
+    if(won&&!reduceMotion){
+      s.confetti=[];
+      var palette=["#2F8C72","#C98F2C","#4A69C4","#B05A92","#8A4BD9","#B04A2F"];
+      for(var i=0;i<130;i++){
+        s.confetti.push({x:Math.random()*W,y:-20-Math.random()*140,
+          vx:(Math.random()-0.5)*70,vy:70+Math.random()*130,
+          rot:Math.random()*6.3,vr:(Math.random()-0.5)*8,c:palette[i%6]});
+      }
+      s.bannerMsg="mRNA COMPLETE!";s.banner=2;
+      cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
+    }
+    setTimeout(function(){
+      overlay.hidden=false;
+      overlay.innerHTML= won?
+        '<h4>Transcript complete — you built an mRNA!</h4>'+
+        '<p style="font-size:.95rem;color:#1F2933"><strong>'+s.score+' points</strong> · '+s.pairs+' correct pairs. And notice what changed mid-game: same track, new alphabet. Context changed the rules — remember that when you model biology.</p>'+
+        '<p>Real labs build mRNA the same way, letter by letter, through <em>in vitro transcription</em> — the process behind mRNA vaccines and therapeutics. If your transcript encoded a viral protein, it could be the starting blueprint for a hypothetical vaccine candidate. A real one also needs a cap, a tail, and years of engineering and testing — that part is the career.</p>'+
+        '<button id="game-start">Run it again</button>'
+        :
+        '<h4>Strand scrapped: 3 mutations</h4>'+
+        '<p style="font-size:.95rem;color:#1F2933">Mutations happen — real polymerases err about once per 100,000 bases before proofreading. You scored <strong>'+s.score+' points</strong> ('+s.pairs+' correct pairs).</p>'+
+        '<button id="game-start">Run it again</button>';
+      $("#game-start",overlay).addEventListener("click",start);
+    },(won&&!reduceMotion)?2100:500);
+  }
+
+  function start(){
+    reset();
+    overlay.hidden=true;
+    $("#gb-T").hidden=false;$("#gb-U").hidden=true;
+    running=true;last=performance.now();
+    cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
+  }
+
+  function setHint(key){
+    if(hintBtn){hintBtn.classList.remove("hint");hintBtn=null;}
+    if(key){
+      var el=key==="JUMP"?$("#gb-J"):$("#gb-"+key);
+      if(el&&!el.hidden){el.classList.add("hint");hintBtn=el;}
+    }
+  }
+
+  function loop(now){
+    var dt=Math.min(0.05,(now-last)/1000);last=now;
+    if(running){
+      s.bases.forEach(function(b){b.x-=s.speed*dt;});
+      s.bases.forEach(function(b){
+        if(!b.done&&b.x<SITE_X-36){
+          b.done=true;b.bad=true;s.seen++;
+          mutate(b,b.damaged?"A damaged base slipped past — Jump next time"
+                            :"Missed: "+b.b+" needed "+wantKey(b));
+        }
+      });
+      s.bases=s.bases.filter(function(b){return b.x>-60;});
+      var lastX=s.bases.length?s.bases[s.bases.length-1].x:SITE_X+140;
+      if(lastX<W+80)pushBase(lastX+spacing());
+      if(s.jumpT>=0){s.jumpT+=dt;if(s.jumpT>0.5)s.jumpT=-1;}
+      if(s.flash>0)s.flash-=dt;
+      if(s.banner>0)s.banner-=dt;
+      // button hint
+      if(s.pairs<HINT_UNTIL){
+        var t=targetBase();
+        setHint(t&&t.x<=SITE_X+70?(t.damaged?"JUMP":wantKey(t)):null);
+      }else setHint(null);
+    }
+    if(s.confetti&&s.confetti.length){
+      s.confetti.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=240*dt;p.rot+=p.vr*dt;});
+      s.confetti=s.confetti.filter(function(p){return p.y<H+30;});
+      if(s.banner>0)s.banner-=dt;
+    }
+    draw();
+    if(running||s.flash>0||(s.confetti&&s.confetti.length))raf=requestAnimationFrame(loop);
+  }
+
+  function bondCount(a,b){
+    var pair=a+b;
+    return (pair.indexOf("C")>=0&&pair.indexOf("G")>=0)?3:2;
+  }
+
+  function draw(){
+    var rna=s.phase==="rna";
+    // paper background with a gentle phase tint
+    ctx.fillStyle=rna?"#F4EFFA":"#FAFAF7";
+    ctx.fillRect(0,0,W,H);
+    if(s.flash>0){ctx.fillStyle="rgba(138,75,217,"+(s.flash*0.18)+")";ctx.fillRect(0,0,W,H);}
+
+    // template rail
+    ctx.strokeStyle=LINE;ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,RAIL_Y+40);ctx.lineTo(W,RAIL_Y+40);ctx.stroke();
+    ctx.fillStyle=MUT;ctx.font="11px 'JetBrains Mono',monospace";ctx.textAlign="left";
+    ctx.fillText("template strand",14,RAIL_Y+60);
+
+    // match slot
+    ctx.setLineDash([5,4]);
+    ctx.strokeStyle=rna?"#8A4BD9":"#B04A2F";ctx.lineWidth=2;
+    roundRect(SITE_X-24,RAIL_Y-6,48,48,9);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // bases and formed rungs
+    s.bases.forEach(function(b){
+      var col=b.damaged?COLORS.X:COLORS[b.b];
+      var faded=b.done&&!b.good;
+      ctx.globalAlpha=faded?0.3:1;
+      // template tile
+      ctx.fillStyle=col;
+      roundRect(b.x-17,RAIL_Y,34,34,7);ctx.fill();
+      ctx.fillStyle="#fff";ctx.font="700 18px 'JetBrains Mono',monospace";ctx.textAlign="center";
+      ctx.fillText(b.damaged?"✖":b.b,b.x,RAIL_Y+24);
+      if(b.bad){ctx.strokeStyle="#A83E32";ctx.lineWidth=2.5;
+        ctx.beginPath();ctx.moveTo(b.x-19,RAIL_Y-4);ctx.lineTo(b.x+19,RAIL_Y+38);ctx.stroke();}
+      ctx.globalAlpha=1;
+      // completed pair: complement tile above + hydrogen-bond lines
+      if(b.good&&b.pairWith){
+        var n=bondCount(b.b,b.pairWith);
+        ctx.strokeStyle="#B9B4A5";ctx.lineWidth=1.5;
+        for(var k=0;k<n;k++){
+          var off=(k-(n-1)/2)*7;
+          ctx.beginPath();ctx.moveTo(b.x+off,RAIL_Y-14);ctx.lineTo(b.x+off,RAIL_Y-2);ctx.stroke();
+        }
+        ctx.fillStyle=COLORS[b.pairWith];
+        roundRect(b.x-17,RAIL_Y-48,34,34,7);ctx.fill();
+        ctx.fillStyle="#fff";
+        ctx.fillText(b.pairWith,b.x,RAIL_Y-24);
+      }
+    });
+
+    // polymerase clamp over the slot
+    var lift=s.jumpT>=0?Math.sin(Math.min(s.jumpT/0.5,1)*Math.PI)*56:0;
+    var cy=RAIL_Y-66-lift;
+    var pc=rna?"#8A4BD9":"#B04A2F";
+    ctx.fillStyle=pc;
+    roundRect(SITE_X-44,cy,88,30,13);ctx.fill();
+    ctx.fillRect(SITE_X-38,cy+22,9,26);
+    ctx.fillRect(SITE_X+29,cy+22,9,26);
+    ctx.fillStyle="#fff";ctx.font="700 12px 'JetBrains Mono',monospace";ctx.textAlign="center";
+    ctx.fillText("YOU",SITE_X,cy+20);
+    ctx.fillStyle=MUT;ctx.font="11px 'JetBrains Mono',monospace";
+    ctx.fillText(rna?"RNA polymerase":"DNA polymerase",SITE_X,cy-8);
+
+    // hint above slot
+    if(running&&!s.over&&s.pairs<HINT_UNTIL){
+      var t=targetBase();
+      if(t&&t.x<=SITE_X+70){
+        var msg=t.damaged?"press Jump":"press "+wantKey(t);
+        ctx.fillStyle=INK;ctx.font="700 15px 'Atkinson Hyperlegible',sans-serif";
+        ctx.fillText(msg,SITE_X,RAIL_Y-110-lift*0);
+      }
+    }
+
+    // HUD
+    ctx.textAlign="left";ctx.font="700 15px 'JetBrains Mono',monospace";ctx.fillStyle=INK;
+    ctx.fillText("Score "+s.score,16,28);
+    ctx.fillText("Pairs "+s.pairs+"/40",140,28);
+    if(s.combo>2){ctx.fillStyle="#8A5A14";ctx.fillText("combo ×"+s.combo,290,28);}
+    for(var h=0;h<3;h++){
+      ctx.fillStyle=h<s.hearts?"#C94F42":"#E2DED2";
+      ctx.beginPath();ctx.arc(W-26-h*24,23,7,0,7);ctx.fill();
+    }
+    if(running&&inPractice()){
+      ctx.fillStyle=MUT;ctx.font="12px 'Atkinson Hyperlegible',sans-serif";
+      ctx.fillText("practice — mistakes are free for "+(PRACTICE-s.seen)+" more",16,50);
+    }
+    // pairing legend
+    ctx.font="12px 'JetBrains Mono',monospace";ctx.fillStyle=MUT;
+    ctx.fillText(rna?"A–U · C–G":"A–T · C–G",16,H-14);
+
+    // banner
+    if(s.banner>0&&s.bannerMsg){
+      ctx.font="700 14px 'JetBrains Mono',monospace";
+      var tw=ctx.measureText(s.bannerMsg).width;
+      ctx.fillStyle=(rna&&s.banner>1.4)?"#8A4BD9":"#1F2933";
+      roundRect(W/2-tw/2-16,64,tw+32,34,8);ctx.fill();
+      ctx.fillStyle="#fff";ctx.textAlign="center";
+      ctx.fillText(s.bannerMsg,W/2,86);
+      ctx.textAlign="left";
+    }
+    if(s.confetti)s.confetti.forEach(function(p){
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.fillStyle=p.c;ctx.fillRect(-5,-3,10,6);ctx.restore();
+    });
+  }
+  function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+  $("#game-start").addEventListener("click",start);
+  controls.addEventListener("click",function(e){
+    var b=e.target.closest("[data-base]");if(b)input(b.dataset.base);
+  });
+  document.addEventListener("keydown",function(e){
+    if(!running)return;
+    var k=e.key.toUpperCase();
+    if(k===" "||e.code==="Space"){e.preventDefault();input("JUMP");}
+    else if("ATCGU".indexOf(k)>=0){e.preventDefault();input(k);}
+  });
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden&&running){running=false;setHint(null);overlay.hidden=false;
+      overlay.innerHTML='<h4>Paused</h4><button id="game-start">Restart</button>';
+      $("#game-start",overlay).addEventListener("click",start);}
+  });
+  reset();draw();
+  return {stop:function(){running=false;}};
+})();
+
+/* ---------- instructor ---------- */
+function renderInstructor(){
+  var box=$("#inst-content");
+  if(!db){box.innerHTML='<p class="empty-note">The results log needs a signed-in editor view. Open this page signed in as the course owner.</p>';return;}
+  db.collection("results").orderBy("name").limit(500).get().then(function(snap){
+    if(snap.empty){box.innerHTML='<p class="empty-note">No scores yet. When a signed-in student submits a quiz, their best score appears here. Students who cannot sync send you a verification code instead — it encodes name, module, and score, and matches what this page would generate for the same three values.</p>';return;}
+    var rows=snap.docs.map(function(d){
+      var r=d.data()||{};var m1=r.m1||{};
+      return '<tr><td>'+esc(r.name||"—")+'</td><td>'+esc(r.email||"—")+'</td>'+
+        '<td>'+(m1.best!=null?m1.best+"/6":"—")+'</td><td>'+(m1.attempts||"—")+'</td>'+
+        '<td>'+(m1.passed?"✓":"")+'</td><td>'+esc((m1.ts||"").slice(0,10))+'</td></tr>';
+    }).join("");
+    box.innerHTML='<div class="inst-table-wrap"><table class="inst"><tr><th>Name</th><th>Email</th><th>M1 best</th><th>Attempts</th><th>Passed</th><th>Last attempt</th></tr>'+rows+'</table></div>';
+  }).catch(function(){
+    box.innerHTML='<p class="empty-note">Couldn’t load results in this view.</p>';
+  });
+}
+
+/* ---------- routing ---------- */
+var VIEWS=["home","m1","instructor"];
+function route(){
+  var h=(location.hash||"#home").slice(1);
+  if(VIEWS.indexOf(h)<0)h="home";
+  VIEWS.forEach(function(v){$("#view-"+v).hidden=(v!==h);});
+  renderRail(h==="home"?null:h);
+  if(h==="home")renderHome();
+  if(h==="instructor")renderInstructor();
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- boot ---------- */
+startQuiz("m1");
+route();
+$("#quiz-m1-submit").addEventListener("click",function(){finishQuiz("m1");});
+
+if(window.claude&&window.claude.use){
+  Promise.all([claude.use("db"),claude.use("user")]).then(function(ns){
+    db=ns[0];userNS=ns[1];
+    if(!db||!userNS)return;
+    return userNS.id().then(function(id){
+      myId=id;
+      if(!myId)return;
+      var w=userNS.can?userNS.can("data.write"):null;
+      return Promise.resolve(w).then(function(ok){
+        canSync=(ok!==false)&&!!myId;
+        if(userNS.canEdit){
+          return Promise.resolve(userNS.canEdit()).then(function(ed){
+            if(ed)$("#instructor-link").hidden=false;
+          });
+        }
+      });
+    });
+  }).catch(function(){});
+}
+})();
+</script>
+
+</body>
+</html>

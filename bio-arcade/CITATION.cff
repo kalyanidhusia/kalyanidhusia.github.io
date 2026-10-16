@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use Bio Arcade in teaching or research, please cite it as below."
+title: "Bio Arcade: six single-file browser games teaching biomedical concepts"
+type: software
+version: 1.0.0
+date-released: 2026-10-16
+authors:
+  - family-names: Dhusia
+    given-names: Kalyani
+    affiliation: "University of Arkansas for Medical Sciences; Arkansas INBRE Data Science Core"
+keywords:
+  - science education
+  - gamification
+  - molecular biology
+  - pharmacology
+  - immunology
+  - undergraduate training
+abstract: >-
+  Six self-contained, mobile-first browser games, each teaching one biomedical
+  concept through a flashcard -> gameplay -> quiz loop in which the game
+  mechanic models the concept itself: transcription (Polymerase Runner),
+  translation (Ribosome Snake), protein folding (Fold-Tris), phagocytosis and
+  opsonization (Phagocyte Patrol), pharmacokinetics (Drug Flight), and
+  antibiotic mechanism and resistance (Lysis Lab). Developed under Arkansas
+  INBRE, supported by NIH NIGMS grant P20 GM103429.
