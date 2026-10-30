@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bio Arcade — AR INBRE</title>
-<meta name="description" content="Eight short browser games that each teach one biomedical or bioinformatics concept: flashcard, play, quiz. Built under AR INBRE for Arkansas undergraduates.">
+<meta name="description" content="Twelve short browser games that each teach one biomedical or bioinformatics concept: flashcard, play, quiz. Built under AR INBRE for Arkansas undergraduates.">
 <style>
 /* ============================================================
    THEME — swap these tokens to restyle the whole hub.
@@ -71,7 +71,7 @@ a{color:var(--accent)}
   <header>
     <p class="eyebrow">AR INBRE · Student Training</p>
     <h1>Bio Arcade</h1>
-    <p class="lede">Eight short games. Each one teaches a single biomedical or bioinformatics concept — the game mechanic <em>is</em> the science, not decoration on top of it.</p>
+    <p class="lede">Twelve short games. Each one teaches a single biomedical or bioinformatics concept — the game mechanic <em>is</em> the science, not decoration on top of it.</p>
     <span class="loop"><b>Learn</b> (flashcard) → <b>Play</b> (the mechanic is the concept) → <b>Check</b> (6-question quiz, pass at 5)</span>
   </header>
 
@@ -138,6 +138,37 @@ a{color:var(--accent)}
       <p class="teach"><b>Why BLASTP is fast:</b> hunt the 3-letter seed word, extend the hit while the score holds, and skip sequences with no seed — trading guaranteed-best for fast, then reading the E-value.</p>
       <span class="meta">~7 min · phone-friendly</span>
       <a class="play" href="games/seed-extend/">Play</a>
+    </div>
+    <div class="card">
+      <span class="mod">Module 9 · Genome Assembly</span>
+      <h2>Genome Builder</h2>
+      <p class="teach"><b>De Bruijn assembly:</b> chop reads into k-mers, walk the k−1 overlaps to rebuild the genome — until a repeat branches the graph with equal support, or a one-read error dangles a dead-end tip.</p>
+      <span class="meta">~7 min · phone-friendly</span>
+      <a class="play" href="games/genome-builder/">Play</a>
+    </div>
+    <div class="card">
+      <span class="mod">Module 10 · Variant Calling</span>
+      <h2>Variant Detective</h2>
+      <p class="teach"><b>Reasoning under uncertainty:</b> a 2-check evidence budget against each read pileup — base quality, mapping, strands, context — then the verdict: real, artifact, or the honest one, unresolved.</p>
+      <span class="meta">~7 min · phone-friendly</span>
+      <a class="play" href="games/variant-detective/">Play</a>
+    </div>
+  </div>
+  <h2 class="cat">Research readiness</h2>
+  <div class="grid">
+    <div class="card">
+      <span class="mod">Module 11 · Honest Machine Learning</span>
+      <h2>Leakage Lab</h2>
+      <p class="teach"><b>Data leakage:</b> split patients (not rows), fit preprocessing on train only, select features inside the folds — then watch the leaky twin ace cross-validation and collapse on the protected holdout.</p>
+      <span class="meta">~6 min · phone-friendly</span>
+      <a class="play" href="games/leakage-lab/">Play</a>
+    </div>
+    <div class="card">
+      <span class="mod">Module 12 · Reproducible Workflows</span>
+      <h2>Pipeline Rescue</h2>
+      <p class="teach"><b>Workflows as DAGs:</b> wire tasks to their real inputs, trace a crash to its root cause, and resume by rerunning exactly the stale tasks — cached results stay, CPU hours get banked.</p>
+      <span class="meta">~6 min · phone-friendly</span>
+      <a class="play" href="games/pipeline-rescue/">Play</a>
     </div>
   </div>
 

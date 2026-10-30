@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline Rescue</title>
+<meta name="description" content="Play reproducible computing: wire the pipeline DAG, find the root cause of a failure, and cache-and-resume without rerunning the world.">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+/* THEME — swap these tokens when the custom theme arrives. Mobile-first. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2933; --muted:#52606D;
+  --line:rgba(0,0,0,.10); --accent:#B04A2F; --accent-soft:#F4E4DD;
+  --good:#2F7D52; --bad:#A83E32; --violet:#8A4BD9;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+    --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+    --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+  --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+  --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  font-size:1.1rem;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:560px;margin:0 auto}
+header{padding-block:18px 10px}
+header h1{font-size:1.5rem;font-weight:700;margin:0}
+header .tag{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+
+.statbar{display:flex;gap:8px;margin:10px 0 8px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 14px;min-width:0}
+.stat .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.stat .val{font-family:var(--mono);font-size:1.25rem;font-weight:600;line-height:1.3}
+.stat.grow{flex:1}
+.hearts .val{letter-spacing:2px}
+.hearts .off{opacity:.2}
+
+.stage{position:relative;display:grid;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+.stage>*{grid-area:1/1}
+#board{display:block;width:100%;touch-action:none;align-self:start}
+.overlay{position:relative;min-height:100%;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px}
+.overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
+.overlay p{margin:0;font-size:1rem}
+.overlay .muted{color:var(--muted);font-size:.9rem}
+.overlay .learn{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.overlay .learn b{display:block;margin-bottom:6px}
+.overlay .learn ul{margin:0;padding-left:20px}
+.overlay .learn li{margin:.25em 0}
+.overlay ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:1rem}
+.overlay ol li{display:flex;gap:10px}
+.overlay ol .n{color:var(--accent);font-weight:700;flex:none}
+.facts{display:flex;flex-direction:column;gap:8px;font-size:.93rem}
+.facts div{padding-left:12px;border-left:3px solid var(--accent-soft)}
+.btn{border:none;border-radius:999px;padding:13px 26px;font-weight:700;font-size:1.05rem;background:var(--accent);color:#fff;align-self:flex-start}
+.btn.sm{padding:9px 18px;font-size:.92rem}
+.banner{min-height:1.6em;text-align:center;font-weight:700;font-size:1rem;margin-top:10px}
+.banner.ok{color:var(--good)} .banner.no{color:var(--bad)} .banner.vi{color:var(--violet)}
+
+.pad{display:grid;grid-template-columns:repeat(3,76px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:14px}
+.pad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1.5rem;line-height:1;padding:0}
+.pad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.pad .up{grid-column:2}
+.ctrl-note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:8px}
+@media (min-width:700px){.pad{display:none}.ctrl-note.hide-desktop{display:none}}
+
+.quiz{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:20px;margin-top:28px}
+.quiz h2{font-size:1.25rem;margin:0 0 4px}
+.quiz .meta{font-size:.85rem;color:var(--muted)}
+.q-dots{display:flex;gap:6px;margin:14px 0}
+.q-dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.q-dots span.cur{background:var(--accent)}
+.q-dots span.ok{background:var(--good)}
+.q-dots span.no{background:var(--bad)}
+.q .stem{font-weight:700;margin-bottom:12px}
+.q label{display:flex;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:1rem;cursor:pointer;align-items:flex-start}
+.q input{margin-top:4px;accent-color:var(--accent)}
+.q.graded label.right{border-color:var(--good);background:var(--accent-soft)}
+.q.graded label.wrong-pick{border-color:var(--bad)}
+.q .verdict{font-weight:700;margin-top:6px}
+.q .verdict.ok{color:var(--good)} .q .verdict.no{color:var(--bad)}
+.q .explain{color:var(--muted);font-size:.92rem;border-left:3px solid var(--line);padding:2px 12px;margin-top:8px}
+.qbtn{border:none;border-radius:999px;padding:12px 22px;font-weight:700;background:var(--accent);color:#fff;margin-top:10px}
+.score-final{background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:1rem}
+.score-final .code{font-family:var(--mono);display:block;margin-top:6px}
+footer{margin-top:30px;color:var(--muted);font-size:.82rem;max-width:60ch}
+
+.rxpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.rxpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:.92rem;font-weight:700;min-width:96px;max-width:100%;padding:11px 12px;line-height:1.35;text-align:center}
+.rxpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.rxpad button[hidden]{display:none}
+.rxpad button:disabled{opacity:.35;cursor:default}
+.rxpad button.queued{border-color:var(--accent);background:var(--accent-soft)}
+.rxpad #rx-run{border:none;background:var(--accent);color:#fff}
+.rxkey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.rxkey b{color:var(--ink)}
+</style>
+<div class="wrap">
+<header><h1>Pipeline Rescue</h1> <span class="tag">Wire the workflow, resume from the wreck</span></header>
+<div class="statbar">
+  <div class="stat grow"><div class="lbl">Tasks green</div><div class="val" id="s1">0 / 4</div></div>
+  <div class="stat"><div class="lbl">CPU·h saved</div><div class="val" id="s2">0</div></div>
+  <div class="stat hearts"><div class="lbl">Slips</div><div class="val" id="hearts">●●●</div></div>
+</div>
+<div class="stage"><canvas id="board" aria-label="Pipeline Rescue board"></canvas>
+<div class="overlay" id="overlay"><p class="eyebrow">Reproducible computing · workflows as DAGs</p><h2>The run died at 2 a.m. — rescue it without rerunning the world.</h2><p>Real analyses are not one script but a <strong>workflow</strong>: tasks wired by their inputs into a <strong>directed acyclic graph</strong> (DAG). A task can run the moment its inputs exist — which is also how engines like Nextflow and Snakemake know, after a crash or a change, <strong>exactly which results are still valid</strong>: anything whose inputs did not change stays <strong>cached</strong>; anything downstream of a change is <strong>stale</strong> and must rerun. That is cache-and-resume, and it is why a fixed typo costs minutes, not the whole week of compute. The other lesson of the night shift: pipelines usually die of <strong>metadata</strong> — wrong sample IDs, wrong reference version — not of broken code.</p><div class="learn"><b>After playing you can…</b><ul><li>Wire a task to its real inputs and explain why the graph must have no cycles.</li><li>After a crash, name the ROOT CAUSE task (where the problem lives) versus where the error appeared.</li><li>After a fix or an input change, name exactly which tasks are stale (must rerun) and which cached results are still valid.</li></ul></div><ol><li><span class="n">1</span><span><strong>Wire it:</strong> for each task, tap the inputs it actually needs — the arrows you choose become the DAG.</span></li><li><span class="n">2</span><span><strong>Rescue it:</strong> the run fails. Tap the task where the ROOT CAUSE lives, pick the right fix, then queue EXACTLY the stale tasks for the resume — rerunning a cached task wastes compute, missing a stale one ships wrong results.</span></li><li><span class="n">3</span><span>Every valid cached task you protect banks CPU hours. First 2 wrong taps are free practice; after that, 3 slips kill the run for good.</span></li></ol><p class="muted">Two failures tonight: a sample-sheet mismatch, then a reference-genome update. Different root causes — different resume sets.</p><button class="btn" id="start-btn">Clock in</button></div></div>
+<div class="banner" id="banner"></div>
+<div class="rxpad" id="rxpad">
+  <button data-c="0" id="rx-0">—</button>
+  <button data-c="1" id="rx-1">—</button>
+  <button data-c="2" id="rx-2">—</button>
+  <button data-c="3" id="rx-3" hidden>—</button>
+  <button data-c="run" id="rx-run" hidden>Resume ▸</button>
+</div>
+<div class="rxkey"><span>inputs unchanged = <b>cached</b></span><span>downstream of a change = <b>stale</b></span></div>
+<p class="ctrl-note">Tap choices · desktop: 1 2 3 4 keys, Enter = Resume</p><div class="quiz" id="quiz"><h2>Check what you learned</h2><p class="meta">6 questions · pass at 5 · retakes allowed</p><div class="q-dots" id="q-dots"></div><div id="q-stage"></div><div id="q-final"></div></div>
+<footer>Part of the AI in Biomedicine student training pathway · AR INBRE, supported
+by NIGMS of the NIH under award P20 GM103429. Educational content, not medical advice.
+Simplified on purpose: real engines decide staleness by hashing file contents, parameters, code, and container versions — not by trusting your taps — and real failures come with schedulers, retries, and memory limits attached. The DAG, root-cause-versus-crash-site, the stale/cached split, and the run record are the true parts; four tasks stand in for pipelines that run hundreds.</footer>
+<script>
+(function(){
+"use strict";
+
+var $=function(s){return document.querySelector(s);};
+var bannerTimer=null;
+function setBanner(msg,cls){
+  var b=$("#banner");b.textContent=msg;b.className="banner "+(cls||"");
+  clearTimeout(bannerTimer);bannerTimer=setTimeout(function(){b.textContent="";},2800);
+}
+function reducedMotion(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
+function isDark(){try{return (document.documentElement.dataset.theme==="dark")||(!document.documentElement.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);}catch(e){return false;}}
+function makeConfetti(W,H){
+  var pal=["#2F8C72","#C98F2C","#4A69C4","#B05A92","#8A4BD9","#B04A2F"],out=[];
+  for(var i=0;i<110;i++)out.push({x:Math.random()*W,y:-10-Math.random()*80,
+    vx:(Math.random()-0.5)*60,vy:60+Math.random()*110,rot:Math.random()*6.3,vr:(Math.random()-0.5)*8,c:pal[i%6]});
+  return out;
+}
+function stepConfetti(list,H,dt){
+  list.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=240*dt;p.rot+=p.vr*dt;});
+  return list.filter(function(p){return p.y<H+40;});
+}
+function drawConfetti(ctx,list){
+  list.forEach(function(p){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+    ctx.fillStyle=p.c;ctx.fillRect(-4,-2.5,8,5);ctx.restore();});
+}
+function rrp(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+var QUIZ=[{"stem": "A workflow being a DAG (directed acyclic graph) means:", "opts": ["Tasks wired by their inputs, with no cycles — a task can run once its inputs exist", "All tasks run in a fixed single file line", "The pipeline has a graphical user interface"], "a": 0, "explain": "Arrows are data dependencies. No cycles means there is always something ready to run — and the same wiring tells the engine what a change invalidates."}, {"stem": "The reference genome is updated. Which tasks must rerun?", "opts": ["Everything, always", "Only alignment", "Alignment and everything downstream of it (quantify, report) — QC of the raw reads stays cached"], "a": 2, "explain": "Staleness flows along the arrows. QC never touched the reference, so its result is still valid — that is the second rescue you performed."}, {"stem": "Cache-and-resume (-resume) works by:", "opts": ["Saving the terminal scrollback", "Reusing any task result whose inputs and code are unchanged, rerunning only what a change made stale", "Compressing the output files"], "a": 1, "explain": "Engines fingerprint each task's inputs, parameters, and code; matching fingerprints mean the cached output is provably equivalent to rerunning."}, {"stem": "The run crashed in quantify: 'S01' vs 'Sample_01'. The root cause lives in:", "opts": ["The quantify code — it crashed there", "The samplesheet metadata — quantify is just where the inconsistency surfaced", "The reference genome"], "a": 1, "explain": "Crash site and root cause are different places. Fixing where the error appeared (deleting the check) would hide a real sample-identity risk."}, {"stem": "Why keep a run record (inputs, versions, parameters, what reran)?", "opts": ["Provenance — so the result can be reproduced and every output traced to exactly what produced it", "Journals require pretty logs", "To make the pipeline slower"], "a": 0, "explain": "Correct code with untracked inputs still is not reproducible. The run record is what lets someone else — or future you — regenerate and trust the result."}, {"stem": "Two tasks with no dependency path between them can:", "opts": ["Never coexist in one pipeline", "Run in parallel — the DAG exposes exactly which work is independent", "Share the same cache entry"], "a": 1, "explain": "Free speed from the same structure that enables rescue: the engine schedules independent branches simultaneously without you writing any parallel code."}];var CODEP="RX";
+
+var NODES={
+ sheet:{label:"samplesheet",x:0.14,y:0.16,task:false},
+ fastq:{label:"FASTQ reads",x:0.5,y:0.16,task:false},
+ ref:{label:"reference",x:0.86,y:0.16,task:false},
+ qc:{label:"QC",x:0.5,y:0.42,task:true},
+ align:{label:"align",x:0.68,y:0.64,task:true},
+ quant:{label:"quantify",x:0.42,y:0.84,task:true},
+ report:{label:"report",x:0.14,y:0.64,task:true}
+};
+var WIRE=[
+ {node:"qc",ask:"QC needs…",opts:[["the raw FASTQ reads",["fastq"]],["the reference genome",null],["the final report",null]],a:0},
+ {node:"align",ask:"ALIGN needs…",opts:[["raw reads, unchecked",null],["QC-passed reads + the reference",["qc","ref"]],["the samplesheet only",null]],a:1},
+ {node:"quant",ask:"QUANTIFY needs…",opts:[["aligned reads + the samplesheet (sample IDs)",["align","sheet"]],["the reference only",null],["nothing — it runs first",null]],a:0},
+ {node:"report",ask:"REPORT needs…",opts:[["the raw FASTQ reads",null],["the QC output only",null],["the quantified results",["quant"]]],a:2}
+];
+var FAILS=[
+ {fail:"quant",err:"ERROR in quantify: sample ID 'S01' in the BAM does not match samplesheet entry 'Sample_01'",
+  rootAsk:"Where does the ROOT CAUSE live?",root:"sheet",
+  rootWhy:"Quantify is where it CRASHED. The bad data — inconsistent sample IDs — lives in the samplesheet. Blaming the crash site is how people 'fix' the wrong file.",
+  fixAsk:"The fix:",fixes:["Edit the samplesheet so IDs match the sequencing files","Delete the ID check from the quantify code","Rerun unchanged and hope"],fa:0,
+  fixWhy:"Deleting the check hides a real sample-swap risk, and hope is not a strategy. Fix the metadata.",
+  changed:"sheet",stale:["quant","report"],cached:["qc","align"]},
+ {fail:null,err:"UPDATE: the reference genome was just revised (v2). The old alignments are now against the wrong reference.",
+  rootAsk:null,root:null,rootWhy:null,fixAsk:null,fixes:null,fa:0,fixWhy:null,
+  changed:"ref",stale:["align","quant","report"],cached:["qc"]}
+];
+var CPUH={qc:2,align:6,quant:3,report:1};
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=300,dpr=1,g=null;
+function reset(){
+  g={phase:"wire",wi:0,edges:[],state:{},fi:0,queued:{},saved:0,score:0,hearts:3,practice:2,over:false,confetti:null};
+  var k;for(k in NODES)g.state[k]=NODES[k].task?"pending":"input";
+  setBanner("Wire the DAG — what does QC need?","vi");
+  updHud();updPad();draw();
+}
+function F(){return FAILS[g.fi];}
+function greenCount(){var n=0,k;for(k in NODES)if(NODES[k].task&&(g.state[k]==="done"||g.state[k]==="cached"))n++;return n;}
+function updHud(){
+  $("#s1").textContent=greenCount()+" / 4";
+  $("#s2").textContent=g.saved;
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function setBtns(labels,showRun){
+  for(var i=0;i<4;i++){
+    var b=$("#rx-"+i);
+    if(labels[i]!==undefined){b.hidden=false;b.disabled=g.over;b.textContent=labels[i];
+      b.classList.toggle("queued",g.phase==="resume"&&!!g.queued[labels[i]]);}
+    else b.hidden=true;
+  }
+  var r=$("#rx-run");r.hidden=!showRun;r.disabled=g.over;
+}
+function updPad(){
+  if(g.phase==="wire")setBtns(WIRE[g.wi].opts.map(function(o){return o[0];}),false);
+  else if(g.phase==="root")setBtns(["samplesheet","QC","align","quantify"],false);
+  else if(g.phase==="fix")setBtns(F().fixes.slice(),false);
+  else if(g.phase==="resume")setBtns(["QC","align","quantify","report"],true);
+  else setBtns([],false);
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","no");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Run killed</p><h2>Rescue runs on the graph, not on panic.</h2><p>Trace the error to the task whose INPUT is wrong, fix the input, then rerun exactly the tasks downstream of the change — everything else is cached and valid. That discipline is what -resume automates.</p><button class="btn" id="start-btn">Clock in again</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"no");
+}
+function runAnim(upto,thenFail){
+  g.phase="run";updPad();
+  var order=["qc","align","quant","report"],i=0;
+  function step(){
+    if(g.over)return;
+    if(i>=order.length){afterRun(null);return;}
+    var n=order[i];
+    if(g.state[n]==="cached"){i++;step();return;}
+    if(thenFail&&n===thenFail){g.state[n]="failed";draw();afterRun(n);return;}
+    g.state[n]="running";draw();
+    setTimeout(function(){if(g.over)return;g.state[n]="done";updHud();draw();i++;step();},reducedMotion()?60:420);
+  }
+  step();
+}
+function afterRun(failed){
+  if(failed){
+    setBanner(F().err,"no");
+    g.phase="root";
+    setTimeout(function(){if(!g.over){setBanner(F().rootAsk,"vi");updPad();draw();}},reducedMotion()?200:1700);
+  } else if(g.fi<FAILS.length-1){
+    g.fi++;
+    var f=F(),k;
+    setBanner(f.err,"vi");
+    for(k in CPUH)g.state[k]="done";
+    g.state[f.changed+"_v2"]=true;
+    g.phase="resume";
+    setTimeout(function(){if(!g.over){setBanner("Reference changed. Queue EXACTLY the stale tasks, then Resume.","vi");updPad();draw();}},reducedMotion()?200:1700);
+  } else win();
+  updPad();draw();
+}
+function startResume(){
+  var f=F(),missing=f.stale.filter(function(s){return !g.queued[keyLabel(s)];});
+  if(missing.length){slip(label(missing[0])+" consumes a changed input downstream — it is STALE; resuming without it ships wrong results");return;}
+  var k;
+  f.cached.forEach(function(c){g.state[c]="cached";g.saved+=CPUH[c];});
+  f.stale.forEach(function(s){g.state[s]="pending";});
+  g.queued={};
+  g.score+=120;
+  setBanner("Resume: "+f.cached.map(label).join(" + ")+" cached ✓ ("+f.cached.reduce(function(a,c){return a+CPUH[c];},0)+" CPU·h saved)","ok");
+  updHud();
+  runAnim(null,null);
+}
+function label(k){return NODES[k].label;}
+function keyLabel(k){return {qc:"QC",align:"align",quant:"quantify",report:"report"}[k];}
+function labelKey(lab){return {QC:"qc",align:"align",quantify:"quant",report:"report"}[lab];}
+function pick(which){
+  if(!g||g.over)return;
+  if(which==="run"){if(g.phase==="resume")startResume();return;}
+  var i=+which,b=$("#rx-"+i);
+  if(b.hidden||b.disabled)return;
+  if(g.phase==="wire"){
+    var w=WIRE[g.wi];
+    if(i===w.a){
+      w.opts[w.a][1].forEach(function(src){g.edges.push([src,w.node]);});
+      g.score+=40;
+      setBanner(label(w.node)+" ← "+w.opts[w.a][1].map(label).join(" + ")+" ✓","ok");
+      g.wi++;
+      if(g.wi>=WIRE.length){
+        setBanner("DAG wired — launching the run. (Independent branches could run in parallel.)","ok");
+        setTimeout(function(){if(!g.over)runAnim(null,F().fail);},reducedMotion()?200:1100);
+        g.phase="run";updPad();draw();return;
+      }
+      updPad();draw();
+    } else slip("Follow the data: a task's inputs are what it actually reads, nothing more");
+  } else if(g.phase==="root"){
+    var picks=["sheet","qc","align","quant"];
+    if(picks[i]===F().root){
+      g.score+=60;setBanner("Right — the crash surfaced in quantify, but the broken THING is the samplesheet.","ok");
+      g.phase="fix";updPad();draw();
+    } else slip(F().rootWhy);
+  } else if(g.phase==="fix"){
+    var f=F();
+    if(i===f.fa){
+      g.score+=60;g.state[f.changed+"_v2"]=true;
+      setBanner("Samplesheet fixed. Now queue EXACTLY the stale tasks, then Resume.","ok");
+      g.phase="resume";updPad();draw();
+    } else slip(f.fixWhy);
+  } else if(g.phase==="resume"){
+    var lab=["QC","align","quantify","report"][i],key=labelKey(lab),f2=F();
+    if(f2.cached.indexOf(key)>=0){
+      slip(lab+"'s inputs did not change — its cached result is VALID; rerunning it burns "+CPUH[key]+" CPU·h for nothing");
+      return;
+    }
+    g.queued[lab]=!g.queued[lab];
+    setBanner(lab+(g.queued[lab]?" queued for rerun":" unqueued"),"vi");
+    updPad();draw();
+  }
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion()){g.confetti=makeConfetti(W,H);animConfetti();}
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Run complete · provenance intact</p><h2>'+g.score+' points · '+g.saved+' CPU·hours never wasted.</h2>'+
+    '<p style="font-family:var(--mono);font-size:.82rem;background:var(--accent-soft);border-radius:10px;padding:10px 14px;margin:0">RUN RECORD<br>inputs: samplesheet v2 · FASTQ r1 · reference v2<br>rescued: quantify+report (metadata fix), align+quantify+report (ref update)<br>cached: QC ×2, align ×1 — every output traceable to its inputs</p>'+
+    '<div class="facts">'+
+    '<div>That run record is <strong>provenance</strong> — being able to say exactly which inputs, versions, and tasks produced a result. It is the difference between an analysis and an anecdote.</div>'+
+    '<div><strong>Cache-and-resume is real:</strong> Nextflow and Snakemake fingerprint each task&#39;s inputs and code; unchanged fingerprints mean the cached result is reused. Your queuing decisions are what -resume computes automatically.</div>'+
+    '<div>Both failures were <strong>metadata, not code</strong> — mismatched sample IDs and a stale reference. Sample swaps and version drift cause more wrong results than bugs do.</div>'+
+    '<div>And the DAG gave you one thing for free you never tapped: tasks with no path between them can run <strong>in parallel</strong> — the same wiring that enables rescue enables speed.</div>'+
+    '</div><button class="btn" id="start-btn">Next night shift</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(Math.max(260,Math.min(320,w*0.8)));
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function nodeBox(k){
+  var n=NODES[k],bw=Math.min(96,W*0.26),bh=34;
+  return {x:n.x*W-bw/2,y:n.y*H-bh/2,w:bw,h:bh};
+}
+function stateCol(st,dark){
+  if(st==="done")return dark?"#5FB084":"#2F7D52";
+  if(st==="running")return dark?"#D68264":"#B04A2F";
+  if(st==="failed")return dark?"#D98378":"#A83E32";
+  if(st==="cached")return dark?"#B08CE8":"#8A4BD9";
+  return dark?"#5A646E":"#9AA5B1";
+}
+function draw(){
+  if(!g)return;
+  var dark=isDark(),ink=dark?"#E8EAED":"#1F2933",muted=dark?"#9AA5B1":"#52606D",
+      fam=getComputedStyle(document.body).fontFamily;
+  ctx.clearRect(0,0,W,H);
+  ctx.textBaseline="middle";
+  g.edges.forEach(function(e){
+    var a=nodeBox(e[0]),b=nodeBox(e[1]);
+    var x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y;
+    if(NODES[e[0]].y>NODES[e[1]].y){y1=a.y;y2=b.y+b.h;}
+    ctx.strokeStyle=dark?"rgba(232,234,237,.4)":"rgba(31,41,51,.35)";ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    var ang=Math.atan2(y2-y1,x2-x1);
+    ctx.beginPath();ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-9*Math.cos(ang-0.4),y2-9*Math.sin(ang-0.4));
+    ctx.lineTo(x2-9*Math.cos(ang+0.4),y2-9*Math.sin(ang+0.4));
+    ctx.closePath();ctx.fillStyle=ctx.strokeStyle;ctx.fill();
+  });
+  var k;
+  for(k in NODES){
+    var n=NODES[k],b2=nodeBox(k),st=g.state[k];
+    var isInput=!n.task;
+    ctx.fillStyle=isInput?(dark?"#262B32":"#F2F3F0"):(dark?"#1F2228":"#FFFFFF");
+    ctx.strokeStyle=isInput?(dark?"rgba(255,255,255,.2)":"rgba(0,0,0,.16)"):stateCol(st,dark);
+    ctx.lineWidth=isInput?1.5:2.5;
+    rrp(ctx,b2.x,b2.y,b2.w,b2.h,10);ctx.fill();ctx.stroke();
+    ctx.fillStyle=ink;ctx.font="700 11px "+fam;ctx.textAlign="center";
+    var lab=n.label+(g.state[k+"_v2"]?" v2":"");
+    ctx.fillText(lab,b2.x+b2.w/2,b2.y+b2.h/2-(n.task?4:0));
+    if(n.task){
+      ctx.fillStyle=stateCol(st,dark);ctx.font="600 9px "+fam;
+      var stl=st==="pending"?"idle":st==="done"?"done ✓":st==="running"?"running…":st==="failed"?"FAILED ✗":st==="cached"?"cached ✓":st;
+      if(g.phase==="resume"&&g.queued[keyLabel(k)]){stl="queued ↻";ctx.fillStyle=dark?"#D68264":"#B04A2F";}
+      ctx.fillText(stl,b2.x+b2.w/2,b2.y+b2.h/2+9);
+    }
+  }
+  ctx.fillStyle=muted;ctx.font="600 10px "+fam;ctx.textAlign="left";ctx.textBaseline="alphabetic";
+  ctx.fillText("gray idle · green done · violet cached · red failed",12,H-8);
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.RXstate=function(){return g?{phase:g.phase,wi:g.wi,fi:g.fi,state:g.state,queued:g.queued,saved:g.saved,hearts:g.hearts,score:g.score,over:g.over}:null;};
+$("#rxpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled&&!b.hidden)pick(b.getAttribute("data-c"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="1")pick("0");else if(e.key==="2")pick("1");else if(e.key==="3")pick("2");else if(e.key==="4")pick("3");
+  else if(e.key==="Enter")pick("run");
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+
+/* ---------- shared quiz engine ---------- */
+var qi=0,qres=[];
+function qDots(){
+  var d=$("#q-dots");d.innerHTML="";
+  QUIZ.forEach(function(_,i){
+    var s=document.createElement("span");
+    if(i<qres.length)s.className=qres[i]?"ok":"no";
+    else if(i===qi)s.className="cur";
+    d.appendChild(s);
+  });
+}
+function qRender(){
+  var q=QUIZ[qi],st=$("#q-stage");
+  st.innerHTML='<div class="q"><div class="stem">Q'+(qi+1)+'. '+q.stem+'</div>'+
+    q.opts.map(function(o,i){return '<label><input type="radio" name="qq" value="'+i+'" id="qq'+qi+'o'+i+'"><span>'+o+'</span></label>';}).join("")+
+    '<div class="fb"></div><button class="qbtn" id="q-check">Check answer</button></div>';
+  $("#q-check").addEventListener("click",qCheck);
+  qDots();
+}
+function qCheck(){
+  var q=QUIZ[qi],sel=document.querySelector('input[name="qq"]:checked');
+  var el=$("#q-stage .q"),fb=el.querySelector(".fb");
+  if(!sel){fb.innerHTML='<div class="verdict no">Pick an answer first.</div>';return;}
+  var pick=+sel.value,ok=pick===q.a;
+  qres.push(ok);el.classList.add("graded");
+  el.querySelectorAll("label").forEach(function(l,i){
+    l.querySelector("input").disabled=true;
+    if(i===q.a)l.classList.add("right");else if(i===pick)l.classList.add("wrong-pick");
+  });
+  fb.innerHTML='<div class="verdict '+(ok?"ok":"no")+'">'+(ok?"Correct.":"Not quite — see the highlighted answer.")+'</div><div class="explain">'+q.explain+'</div>';
+  var btn=el.querySelector(".qbtn");
+  btn.textContent=qi===QUIZ.length-1?"See my score":"Next question";
+  btn.removeEventListener("click",qCheck);
+  btn.addEventListener("click",function(){
+    if(qi===QUIZ.length-1)qFinish();else{qi++;qRender();}
+  });
+  qDots();
+}
+function qFinish(){
+  var score=qres.filter(Boolean).length,pass=score>=5;
+  var s=(CODEP+"|"+score+"|"+new Date().toISOString().slice(0,10));
+  var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;
+  $("#q-stage").innerHTML="";
+  $("#q-final").innerHTML='<div class="score-final"><strong>'+score+' / 6'+(pass?' — passed':'')+'</strong>'+
+    (pass?' Concept locked in.':' Replay the game, reread the win-screen facts, and try again — attempts are unlimited.')+
+    '<span class="code">verification code: '+CODEP+'-'+score+'-'+h.toString(36).toUpperCase()+'</span>'+
+    '<button class="qbtn" id="q-retry">Try again</button></div>';
+  $("#q-retry").addEventListener("click",function(){qi=0;qres=[];$("#q-final").innerHTML="";qRender();});
+  qDots();
+}
+
+qRender();
+})();
+</script>
+
+</body>
+</html>

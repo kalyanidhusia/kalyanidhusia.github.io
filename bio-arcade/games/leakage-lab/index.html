@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leakage Lab</title>
+<meta name="description" content="Play honest ML evaluation: group patients across the split, order the pipeline correctly, and see leakage inflate then collapse.">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+/* THEME — swap these tokens when the custom theme arrives. Mobile-first. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2933; --muted:#52606D;
+  --line:rgba(0,0,0,.10); --accent:#B04A2F; --accent-soft:#F4E4DD;
+  --good:#2F7D52; --bad:#A83E32; --violet:#8A4BD9;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+    --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+    --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+  --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+  --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  font-size:1.1rem;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:560px;margin:0 auto}
+header{padding-block:18px 10px}
+header h1{font-size:1.5rem;font-weight:700;margin:0}
+header .tag{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+
+.statbar{display:flex;gap:8px;margin:10px 0 8px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 14px;min-width:0}
+.stat .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.stat .val{font-family:var(--mono);font-size:1.25rem;font-weight:600;line-height:1.3}
+.stat.grow{flex:1}
+.hearts .val{letter-spacing:2px}
+.hearts .off{opacity:.2}
+
+.stage{position:relative;display:grid;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+.stage>*{grid-area:1/1}
+#board{display:block;width:100%;touch-action:none;align-self:start}
+.overlay{position:relative;min-height:100%;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px}
+.overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
+.overlay p{margin:0;font-size:1rem}
+.overlay .muted{color:var(--muted);font-size:.9rem}
+.overlay .learn{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.overlay .learn b{display:block;margin-bottom:6px}
+.overlay .learn ul{margin:0;padding-left:20px}
+.overlay .learn li{margin:.25em 0}
+.overlay ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:1rem}
+.overlay ol li{display:flex;gap:10px}
+.overlay ol .n{color:var(--accent);font-weight:700;flex:none}
+.facts{display:flex;flex-direction:column;gap:8px;font-size:.93rem}
+.facts div{padding-left:12px;border-left:3px solid var(--accent-soft)}
+.btn{border:none;border-radius:999px;padding:13px 26px;font-weight:700;font-size:1.05rem;background:var(--accent);color:#fff;align-self:flex-start}
+.btn.sm{padding:9px 18px;font-size:.92rem}
+.banner{min-height:1.6em;text-align:center;font-weight:700;font-size:1rem;margin-top:10px}
+.banner.ok{color:var(--good)} .banner.no{color:var(--bad)} .banner.vi{color:var(--violet)}
+
+.pad{display:grid;grid-template-columns:repeat(3,76px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:14px}
+.pad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1.5rem;line-height:1;padding:0}
+.pad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.pad .up{grid-column:2}
+.ctrl-note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:8px}
+@media (min-width:700px){.pad{display:none}.ctrl-note.hide-desktop{display:none}}
+
+.quiz{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:20px;margin-top:28px}
+.quiz h2{font-size:1.25rem;margin:0 0 4px}
+.quiz .meta{font-size:.85rem;color:var(--muted)}
+.q-dots{display:flex;gap:6px;margin:14px 0}
+.q-dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.q-dots span.cur{background:var(--accent)}
+.q-dots span.ok{background:var(--good)}
+.q-dots span.no{background:var(--bad)}
+.q .stem{font-weight:700;margin-bottom:12px}
+.q label{display:flex;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:1rem;cursor:pointer;align-items:flex-start}
+.q input{margin-top:4px;accent-color:var(--accent)}
+.q.graded label.right{border-color:var(--good);background:var(--accent-soft)}
+.q.graded label.wrong-pick{border-color:var(--bad)}
+.q .verdict{font-weight:700;margin-top:6px}
+.q .verdict.ok{color:var(--good)} .q .verdict.no{color:var(--bad)}
+.q .explain{color:var(--muted);font-size:.92rem;border-left:3px solid var(--line);padding:2px 12px;margin-top:8px}
+.qbtn{border:none;border-radius:999px;padding:12px 22px;font-weight:700;background:var(--accent);color:#fff;margin-top:10px}
+.score-final{background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:1rem}
+.score-final .code{font-family:var(--mono);display:block;margin-top:6px}
+footer{margin-top:30px;color:var(--muted);font-size:.82rem;max-width:60ch}
+
+.lkpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.lkpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:.95rem;font-weight:700;min-width:96px;max-width:100%;padding:12px 12px;line-height:1.35;text-align:center}
+.lkpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.lkpad button[hidden]{display:none}
+.lkpad button:disabled{opacity:.35;cursor:default}
+.lkpad #lk-0{border-color:var(--good)}
+.lkkey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.lkkey b{color:var(--ink)}
+</style>
+<div class="wrap">
+<header><h1>Leakage Lab</h1> <span class="tag">Build a classifier your reviewers can trust</span></header>
+<div class="statbar">
+  <div class="stat grow"><div class="lbl">Records split</div><div class="val" id="s1">0 / 10</div></div>
+  <div class="stat"><div class="lbl">Score</div><div class="val" id="s2">0</div></div>
+  <div class="stat hearts"><div class="lbl">Slips</div><div class="val" id="hearts">●●●</div></div>
+</div>
+<div class="stage"><canvas id="board" aria-label="Leakage Lab board"></canvas>
+<div class="overlay" id="overlay"><p class="eyebrow">Machine learning · data leakage</p><h2>Your model scored 96 percent. Should anyone believe it?</h2><p>A biomedical classifier is judged on data it has <strong>never seen</strong>. <strong>Leakage</strong> is any crack that lets test information reach training — and it quietly inflates accuracy. The classics: the <strong>same patient</strong> lands in both train and test (the model learns to recognize the person, not the disease); preprocessing is <strong>fit on all the data before splitting</strong>; features are <strong>selected using the whole dataset</strong>. Leaky pipelines ace cross-validation and collapse on the protected holdout — or worse, in the clinic.</p><div class="learn"><b>After playing you can…</b><ul><li>Split patient data so no patient (and, when the claim demands it, no hospital) straddles train and test.</li><li>Order a pipeline correctly: fit preprocessing and select features inside training data only.</li><li>Read a results table with suspicion: say why a sky-high cross-validation score can be meaningless, and which number to trust.</li></ul></div><ol><li><span class="n">1</span><span><strong>Split phase:</strong> 10 patient visits arrive one by one — tap Train or Test for each. Watch the patient IDs: repeat visits must follow their patient, and at least 2 patients must be held out for testing.</span></li><li><span class="n">2</span><span><strong>Pipeline phase:</strong> two setup decisions — where to fit the scaler, where to select features. One option is honest; the others leak.</span></li><li><span class="n">3</span><span><strong>Reveal:</strong> your pipeline and the leaky one you avoided are both scored — cross-validation AND a protected holdout from a new hospital. First 2 wrong taps are practice; after that, 3 slips end the run.</span></li></ol><p class="muted">The holdout is sacred: it gets looked at once, at the end, after every choice is frozen.</p><button class="btn" id="start-btn">Start building</button></div></div>
+<div class="banner" id="banner"></div>
+<div class="lkpad" id="lkpad">
+  <button data-c="0" id="lk-0">Train</button>
+  <button data-c="1" id="lk-1">Test</button>
+  <button data-c="2" id="lk-2" hidden>—</button>
+</div>
+<div class="lkkey"><span>same patient = <b>same side</b></span><span>fit on <b>train only</b></span><span>holdout: <b>look once</b></span></div>
+<p class="ctrl-note">Tap a choice · desktop: 1 2 3 keys</p><div class="quiz" id="quiz"><h2>Check what you learned</h2><p class="meta">6 questions · pass at 5 · retakes allowed</p><div class="q-dots" id="q-dots"></div><div id="q-stage"></div><div id="q-final"></div></div>
+<footer>Part of the AI in Biomedicine student training pathway · AR INBRE, supported
+by NIGMS of the NIH under award P20 GM103429. Educational content, not medical advice.
+Simplified on purpose: the accuracy numbers are illustrative, not computed from a real model, and two hospitals stand in for the whole zoo of batch and site effects. Real leakage is also sneakier than three taps — temporal leakage, label proxies hiding inside features, and duplicated samples all count. The three cracks you sealed (grouped patients, fit-on-train-only, selection inside folds) are the true, most common ones — straight from the scikit-learn pitfalls page and a decade of retracted biomarker papers.</footer>
+<script>
+(function(){
+"use strict";
+
+var $=function(s){return document.querySelector(s);};
+var bannerTimer=null;
+function setBanner(msg,cls){
+  var b=$("#banner");b.textContent=msg;b.className="banner "+(cls||"");
+  clearTimeout(bannerTimer);bannerTimer=setTimeout(function(){b.textContent="";},2800);
+}
+function reducedMotion(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
+function isDark(){try{return (document.documentElement.dataset.theme==="dark")||(!document.documentElement.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);}catch(e){return false;}}
+function makeConfetti(W,H){
+  var pal=["#2F8C72","#C98F2C","#4A69C4","#B05A92","#8A4BD9","#B04A2F"],out=[];
+  for(var i=0;i<110;i++)out.push({x:Math.random()*W,y:-10-Math.random()*80,
+    vx:(Math.random()-0.5)*60,vy:60+Math.random()*110,rot:Math.random()*6.3,vr:(Math.random()-0.5)*8,c:pal[i%6]});
+  return out;
+}
+function stepConfetti(list,H,dt){
+  list.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=240*dt;p.rot+=p.vr*dt;});
+  return list.filter(function(p){return p.y<H+40;});
+}
+function drawConfetti(ctx,list){
+  list.forEach(function(p){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+    ctx.fillStyle=p.c;ctx.fillRect(-4,-2.5,8,5);ctx.restore();});
+}
+function rrp(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+var QUIZ=[{"stem": "The same patient's visits land in both train and test. The danger is:", "opts": ["The files get corrupted", "The model can learn to recognize the PATIENT and look smart without learning the disease", "Training becomes slower"], "a": 1, "explain": "Identity is an easy shortcut: two visits share demographics, baseline labs, even scanner noise. Accuracy inflates, and the number says nothing about new patients."}, {"stem": "Fitting a scaler (normalization) on ALL data before splitting leaks because:", "opts": ["Scalers only work on small data", "Test-set statistics flow into what training sees — information moves backwards even though no label was touched", "Scaling is itself forbidden"], "a": 1, "explain": "Leakage does not need labels. Means and spreads computed from test records shape the training inputs — the test set no longer simulates unseen data."}, {"stem": "Selecting the 'top genes' on the full dataset, then cross-validating, produces:", "opts": ["Inflated scores — every fold already peeked at its own test samples during selection", "More interpretable genes", "No effect either way"], "a": 0, "explain": "The features were chosen while looking at everything, so each CV fold is partly grading data it helped choose. The fix: select inside each training fold."}, {"stem": "Your claim is 'this model works at NEW hospitals.' The right evaluation holds out:", "opts": ["Random rows", "An entire hospital (site) the model never trained on", "The oldest records"], "a": 1, "explain": "Sites leave fingerprints — scanners, kits, populations. If every hospital appears in training, random-split accuracy can come from recognizing the site, not the disease."}, {"stem": "Cross-validation says 96, the protected holdout says 61. The 96 was:", "opts": ["Correct, the holdout is broken", "Mostly leakage and shortcuts — the gap is the diagnosis, and the honest estimate is the holdout", "An average of the two"], "a": 1, "explain": "Clean pipelines score similarly on CV and holdout. A collapse on genuinely unseen data means the CV number was never measuring generalization."}, {"stem": "How often should the protected final holdout be evaluated?", "opts": ["After every tweak, to track progress", "Once — after all modeling choices are frozen", "Never"], "a": 1, "explain": "Peek repeatedly and your decisions start fitting the holdout — leakage through the analyst. One look, at the end, is what keeps it a test of the future."}];var CODEP="LK";
+
+var DECK=[
+ {p:"P1",hosp:"A",visit:1},{p:"P2",hosp:"A",visit:1},{p:"P3",hosp:"B",visit:1},
+ {p:"P2",hosp:"A",visit:2},{p:"P4",hosp:"B",visit:1},{p:"P5",hosp:"A",visit:1},
+ {p:"P3",hosp:"B",visit:2},{p:"P6",hosp:"B",visit:1},{p:"P7",hosp:"A",visit:1},
+ {p:"P5",hosp:"A",visit:2}
+];
+var QUESTIONS=[
+ {ask:"Scale the features. Fit the scaler…",
+  opts:["on the TRAINING records only, then apply it to test","on ALL 10 records, then split","on the TEST records, since they matter most"],
+  a:0,whyok:"The scaler now knows nothing about the test records — the test set still simulates the future.",
+  whyno:"Fitting on everything bakes test-set statistics (means, spreads) into training — information flows backwards. Classic leakage, even though no label was touched."},
+ {ask:"Pick the 20 most informative genes. Select them…",
+  opts:["using the FULL dataset, then cross-validate","inside each training fold only","using the test labels directly"],
+  a:1,whyok:"Each fold's features are chosen blind to that fold's test data — the score stays honest.",
+  whyno:"If the features were chosen while looking at all samples, every cross-validation fold has already peeked at its own test data. The most cited pitfall in the scikit-learn docs — and in retracted biomarker papers."}
+];
+var BOSS={ask:"A paper reports 99 percent accuracy; methods say the scaler was fit on the full dataset before splitting. Which number do you trust?",
+  opts:["None yet — the evaluation must be redone with the pipeline fit inside the splits","The 99 percent, it is very high","Subtract 10 points and trust 89 percent"],
+  a:0,whyok:"Exactly. Leakage does not discount a result, it voids it — the honest number could be anywhere.",
+  whyno:"A leaked score is not 'a bit high', it is unanchored. No correction factor exists; the evaluation has to be redone clean."};
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=300,dpr=1,g=null;
+var HOSPCOL={A:"#4A69C4",B:"#C98F2C"};
+function reset(){
+  g={phase:"split",di:0,train:[],test:[],qi:0,score:0,hearts:3,practice:2,over:false,confetti:null,revealT:0};
+  setBanner("Record 1 arrives — where does it go?","vi");
+  updHud();updPad();draw();
+}
+function updHud(){
+  $("#s1").textContent=(g.train.length+g.test.length)+" / "+DECK.length;
+  $("#s2").textContent=g.score;
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function side(p){
+  if(g.train.some(function(c){return c.p===p;}))return "train";
+  if(g.test.some(function(c){return c.p===p;}))return "test";
+  return null;
+}
+function updPad(){
+  var b0=$("#lk-0"),b1=$("#lk-1"),b2=$("#lk-2");
+  if(g.phase==="split"){
+    b0.hidden=b1.hidden=false;b2.hidden=true;
+    b0.textContent="→ Train";b1.textContent="→ Test";
+    var card=DECK[g.di],cur=card?side(card.p):null;
+    var testP={},k;g.test.forEach(function(c){testP[c.p]=1;});
+    var needP=Math.max(0,2-Object.keys(testP).length);
+    var freeP={};
+    for(k=g.di;k<DECK.length;k++){if(side(DECK[k].p)===null)freeP[DECK[k].p]=1;}
+    var blockTrain=card&&cur===null&&Object.keys(freeP).length<=needP;
+    b0.disabled=g.over||blockTrain;
+    b1.disabled=g.over;
+    if(blockTrain&&!g.over)setBanner("Hold out at least 2 patients for testing — this one goes to Test.","vi");
+  } else if(g.phase==="question"||g.phase==="boss"){
+    var q=g.phase==="boss"?BOSS:QUESTIONS[g.qi];
+    [b0,b1,b2].forEach(function(b,i){b.hidden=false;b.disabled=g.over;b.textContent=q.opts[i];});
+  } else {b0.hidden=b1.hidden=b2.hidden=true;}
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","no");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Evaluation voided</p><h2>The model aced the test by cheating on it.</h2><p>Three cracks to seal: repeat patients stay on ONE side of the split; preprocessing is fit on train only; features are selected inside the training folds. The protected holdout is looked at once, at the end.</p><button class="btn" id="start-btn">Rebuild it</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"no");
+}
+function pick(which){
+  if(!g||g.over)return;
+  var i=+which;
+  if(g.phase==="split"){
+    var card=DECK[g.di],s=side(card.p),dest=i===0?"train":"test";
+    var b=$("#lk-"+i);if(b.disabled||b.hidden)return;
+    if(s&&s!==dest){
+      slip(card.p+" already has a visit in "+s.toUpperCase()+" — split by PATIENT, or the model learns to recognize the person, not the disease");
+      return;
+    }
+    (dest==="train"?g.train:g.test).push(card);
+    g.score+= s?40:25;
+    setBanner(card.p+" visit "+card.visit+" → "+dest+(s?" ✓ grouped with their earlier visit":""),"ok");
+    g.di++;
+    if(g.di>=DECK.length){
+      g.phase="question";
+      setBanner("Split done — "+g.train.length+" train / "+g.test.length+" test, no patient straddles it. Now the pipeline.","ok");
+    }
+    updHud();updPad();draw();
+  } else if(g.phase==="question"){
+    var q=QUESTIONS[g.qi];
+    if(i===q.a){
+      g.score+=60;setBanner("Honest choice ✓ "+q.whyok,"ok");
+      g.qi++;
+      if(g.qi>=QUESTIONS.length){g.phase="reveal";animReveal();}
+      updPad();draw();
+    } else slip(q.whyno);
+  } else if(g.phase==="boss"){
+    if(i===BOSS.a){
+      g.score+=100;setBanner(BOSS.whyok,"ok");
+      win();
+    } else slip(BOSS.whyno);
+  }
+}
+function animReveal(){
+  updPad();
+  g.revealT=0;
+  setBanner("The protected holdout — a hospital the model never saw — is opened ONCE.","vi");
+  var t0=performance.now();
+  function step(now){
+    g.revealT=Math.min(1,(now-t0)/1400);
+    draw();
+    if(g.revealT<1)requestAnimationFrame(step);
+    else{g.phase="boss";setBanner(BOSS.ask,"vi");updPad();draw();}
+  }
+  requestAnimationFrame(step);
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion()){g.confetti=makeConfetti(W,H);animConfetti();}
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Defensible evaluation</p><h2>'+g.score+' points — and a number you can stand behind.</h2>'+
+    '<div class="facts">'+
+    '<div>Your clean pipeline: cross-validation 87, protected holdout 84 — close together, which is what generalization looks like. The leaky twin: CV 96, holdout 61 — the gap IS the leakage.</div>'+
+    '<div>Grouped splitting has first-class tool support (scikit-learn&#39;s GroupKFold and friends) because repeated patients, repeated sites, and repeated samples are the rule in biomedicine, not the exception.</div>'+
+    '<div>Hospitals and batches leave fingerprints — scanner settings, kits, demographics. A model can score high by learning WHERE data came from instead of what disease looks like; holding out a whole site is the test for that.</div>'+
+    '<div>The protected holdout is looked at <strong>once</strong>. Peek repeatedly and your choices start fitting it — leakage through your own eyeballs.</div>'+
+    '</div><button class="btn" id="start-btn">Build another</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(Math.max(260,Math.min(320,w*0.78)));
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function miniCard(x,y,w,h,card,dark){
+  ctx.fillStyle=HOSPCOL[card.hosp];
+  ctx.globalAlpha=card.visit>1?1:0.78;
+  rrp(ctx,x,y,w,h,6);ctx.fill();ctx.globalAlpha=1;
+  ctx.fillStyle="#fff";ctx.font="700 11px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText(card.p+(card.visit>1?"·v2":""),x+w/2,y+h/2);
+}
+function bar(x,y,w,val,col,label,muted,fam,t){
+  var full=Math.round(w*val/100*t);
+  ctx.fillStyle=col;rrp(ctx,x,y,Math.max(4,full),16,5);ctx.fill();
+  ctx.fillStyle=muted;ctx.font="600 10px "+fam;ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillText(label+" "+Math.round(val*t),x+w+8,y+8);
+}
+function draw(){
+  if(!g)return;
+  var dark=isDark(),ink=dark?"#E8EAED":"#1F2933",muted=dark?"#9AA5B1":"#52606D",
+      acc=dark?"#D68264":"#B04A2F",good=dark?"#5FB084":"#2F7D52",bad=dark?"#D98378":"#A83E32",
+      fam=getComputedStyle(document.body).fontFamily;
+  ctx.clearRect(0,0,W,H);
+  ctx.textBaseline="alphabetic";
+  if(g.phase==="split"||g.phase==="question"){
+    var half=Math.floor(W/2)-8;
+    ctx.fillStyle=muted;ctx.font="700 12px "+fam;ctx.textAlign="left";
+    ctx.fillText("TRAIN",14,24);
+    ctx.textAlign="right";ctx.fillText("TEST (future patients)",W-14,24);
+    ctx.strokeStyle=dark?"rgba(255,255,255,.18)":"rgba(0,0,0,.14)";
+    ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(W/2,10);ctx.lineTo(W/2,H-66);ctx.stroke();ctx.setLineDash([]);
+    var cw=64,chh=24;
+    g.train.forEach(function(c,i){miniCard(14+(i%3)*(cw+6),34+Math.floor(i/3)*(chh+6),cw,chh,c,dark);});
+    g.test.forEach(function(c,i){miniCard(W-14-cw-(i%2)*(cw+6),34+Math.floor(i/2)*(chh+6),cw,chh,c,dark);});
+    if(g.phase==="split"&&g.di<DECK.length){
+      var card=DECK[g.di],bw=150,bh=52,bx=(W-bw)/2,by=H-62;
+      ctx.fillStyle=dark?"#262B32":"#FFFFFF";
+      ctx.strokeStyle=acc;ctx.lineWidth=2;
+      rrp(ctx,bx,by,bw,bh,10);ctx.fill();ctx.stroke();
+      ctx.fillStyle=ink;ctx.font="700 15px "+fam;ctx.textAlign="center";
+      ctx.fillText("Patient "+card.p+" · visit "+card.visit,bx+bw/2,by+22);
+      ctx.fillStyle=HOSPCOL[card.hosp];ctx.font="700 11px "+fam;
+      ctx.fillText("Hospital "+card.hosp,bx+bw/2,by+40);
+      var s=side(card.p);
+      if(s){ctx.fillStyle=acc;ctx.font="600 10px "+fam;
+        ctx.fillText("this patient already has a visit placed",bx+bw/2,by-8);}
+    }
+    if(g.phase==="question"){
+      var q=QUESTIONS[g.qi],qy=H-56;
+      ctx.fillStyle=ink;ctx.font="700 13px "+fam;ctx.textAlign="center";
+      ctx.fillText("PIPELINE DECISION "+(g.qi+1)+" / 2",W/2,qy);
+      ctx.font="600 12px "+fam;ctx.fillStyle=muted;
+      ctx.fillText(q.ask,W/2,qy+20);
+    }
+  } else {
+    var t=g.phase==="over"||g.phase==="boss"?1:g.revealT;
+    ctx.fillStyle=muted;ctx.font="700 12px "+fam;ctx.textAlign="left";
+    ctx.fillText("THE REVEAL — same data, two pipelines",14,24);
+    var bx2=14,bw2=Math.min(190,W-150);
+    ctx.fillStyle=good;ctx.font="700 11px "+fam;
+    ctx.fillText("YOUR PIPELINE (clean)",bx2,50);
+    bar(bx2,60,bw2,87,good,"cross-validation",muted,fam,t);
+    bar(bx2,84,bw2,84,good,"protected holdout",muted,fam,t);
+    ctx.fillStyle=bad;ctx.font="700 11px "+fam;
+    ctx.fillText("THE LEAKY TWIN (split by row, everything fit on all data)",bx2,124);
+    bar(bx2,134,bw2,96,bad,"cross-validation",muted,fam,t);
+    bar(bx2,158,bw2,61,bad,"protected holdout",muted,fam,t);
+    if(t>=1){
+      ctx.fillStyle=ink;ctx.font="700 12px "+fam;
+      ctx.fillText("The 35-point collapse IS the leakage.",bx2,192);
+      if(g.phase==="boss"){
+        ctx.fillStyle=muted;ctx.font="600 11px "+fam;
+        var words=BOSS.ask.split(" "),lineStr="",ly=214;
+        for(var wi=0;wi<words.length;wi++){
+          var tryStr=lineStr?lineStr+" "+words[wi]:words[wi];
+          if(ctx.measureText(tryStr).width>W-28){ctx.fillText(lineStr,bx2,ly);ly+=16;lineStr=words[wi];}
+          else lineStr=tryStr;
+        }
+        if(lineStr)ctx.fillText(lineStr,bx2,ly);
+      }
+    }
+  }
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.LKstate=function(){return g?{phase:g.phase,di:g.di,train:g.train.length,test:g.test.length,qi:g.qi,hearts:g.hearts,score:g.score,over:g.over}:null;};
+$("#lkpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled&&!b.hidden)pick(b.getAttribute("data-c"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="1")pick("0");else if(e.key==="2")pick("1");else if(e.key==="3")pick("2");
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+
+/* ---------- shared quiz engine ---------- */
+var qi=0,qres=[];
+function qDots(){
+  var d=$("#q-dots");d.innerHTML="";
+  QUIZ.forEach(function(_,i){
+    var s=document.createElement("span");
+    if(i<qres.length)s.className=qres[i]?"ok":"no";
+    else if(i===qi)s.className="cur";
+    d.appendChild(s);
+  });
+}
+function qRender(){
+  var q=QUIZ[qi],st=$("#q-stage");
+  st.innerHTML='<div class="q"><div class="stem">Q'+(qi+1)+'. '+q.stem+'</div>'+
+    q.opts.map(function(o,i){return '<label><input type="radio" name="qq" value="'+i+'" id="qq'+qi+'o'+i+'"><span>'+o+'</span></label>';}).join("")+
+    '<div class="fb"></div><button class="qbtn" id="q-check">Check answer</button></div>';
+  $("#q-check").addEventListener("click",qCheck);
+  qDots();
+}
+function qCheck(){
+  var q=QUIZ[qi],sel=document.querySelector('input[name="qq"]:checked');
+  var el=$("#q-stage .q"),fb=el.querySelector(".fb");
+  if(!sel){fb.innerHTML='<div class="verdict no">Pick an answer first.</div>';return;}
+  var pick=+sel.value,ok=pick===q.a;
+  qres.push(ok);el.classList.add("graded");
+  el.querySelectorAll("label").forEach(function(l,i){
+    l.querySelector("input").disabled=true;
+    if(i===q.a)l.classList.add("right");else if(i===pick)l.classList.add("wrong-pick");
+  });
+  fb.innerHTML='<div class="verdict '+(ok?"ok":"no")+'">'+(ok?"Correct.":"Not quite — see the highlighted answer.")+'</div><div class="explain">'+q.explain+'</div>';
+  var btn=el.querySelector(".qbtn");
+  btn.textContent=qi===QUIZ.length-1?"See my score":"Next question";
+  btn.removeEventListener("click",qCheck);
+  btn.addEventListener("click",function(){
+    if(qi===QUIZ.length-1)qFinish();else{qi++;qRender();}
+  });
+  qDots();
+}
+function qFinish(){
+  var score=qres.filter(Boolean).length,pass=score>=5;
+  var s=(CODEP+"|"+score+"|"+new Date().toISOString().slice(0,10));
+  var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;
+  $("#q-stage").innerHTML="";
+  $("#q-final").innerHTML='<div class="score-final"><strong>'+score+' / 6'+(pass?' — passed':'')+'</strong>'+
+    (pass?' Concept locked in.':' Replay the game, reread the win-screen facts, and try again — attempts are unlimited.')+
+    '<span class="code">verification code: '+CODEP+'-'+score+'-'+h.toString(36).toUpperCase()+'</span>'+
+    '<button class="qbtn" id="q-retry">Try again</button></div>';
+  $("#q-retry").addEventListener("click",function(){qi=0;qres=[];$("#q-final").innerHTML="";qRender();});
+  qDots();
+}
+
+qRender();
+})();
+</script>
+
+</body>
+</html>

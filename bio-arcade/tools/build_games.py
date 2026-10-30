@@ -1942,6 +1942,1084 @@ $("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;re
   ],
   simplification="Simplified on purpose: real BLASTP scores with BLOSUM62 (so near-matching 'neighborhood words' can seed too, not just exact ones), uses two-hit triggers and an X-drop rule for extension, and computes E-values from Karlin–Altschul statistics. Our exact-match seeds, +2/−1 scoring, and stop-at-the-peak rule are the training-wheel versions of those ideas.")
 
+# ============================================================ GENOME BUILDER
+GAMES["genome"] = dict(
+  title="Genome Builder", tag="Walk the k-mer graph, rebuild the genome",
+  codep="GB",
+  extra_css="""
+.gbpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.gbpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1rem;font-weight:700;min-width:104px;padding:12px 8px;line-height:1.3;font-family:var(--mono)}
+.gbpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.gbpad button small{display:block;font-weight:400;font-size:.76rem;color:var(--muted);font-family:var(--font)}
+.gbpad button[hidden]{display:none}
+.gbpad #gb-flag{font-family:var(--font);border-color:var(--violet);color:var(--violet)}
+.gbkey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.gbkey b{color:var(--ink)}
+""",
+  hud=STD_HUD.replace("{L1}","Contig").replace("{V1}","0 bases")
+            .replace("{L2}","Score").replace("{V2}","0")
+            .replace("{L3}","Slips"),
+  stage_inner=flashcard(
+    "Genome assembly · De Bruijn graphs",
+    "You are the assembler — the genome arrives in pieces.",
+    "Sequencers cannot read a genome end to end: they return millions of <strong>short reads</strong>. Assemblers chop every read into <strong>k-mers</strong> (substrings of length k) and link any two that <strong>overlap by k−1 letters</strong> — a De Bruijn graph. Walking that graph letter by letter rebuilds the genome. Two things fight you: <strong>repeats</strong>, where the graph branches and the reads alone cannot say which path the true genome took, and <strong>sequencing errors</strong>, which show up as k-mers supported by almost no reads, dangling off the graph as dead-end tips.",
+    ["Define a k-mer and say why consecutive k-mers overlap by k−1 letters.",
+     "Spot a repeat: two equally supported branches mean the reads cannot resolve the path — and say what extra information would (longer reads).",
+     "Spot a sequencing error: a barely supported dead-end k-mer, and say what assemblers do with it (prune the tip)."],
+    ["The contig grows one k-mer at a time. Each candidate shows how many <strong>reads</strong> support it — tap the next k-mer that overlaps the contig end by k−1 letters.",
+     "If one candidate has clearly <strong>more read support</strong>, trust the coverage: the weak one is a sequencing error.",
+     "If two candidates are <strong>equally supported</strong>, do NOT guess — tap <strong>Ambiguous</strong>. A longer read then arrives and settles the branch. Your first 2 wrong taps are free practice; after that, 3 slips end the run."],
+    "Three contigs to assemble: a clean one, one with a repeat, one with a sequencing error.",
+    "Start assembling"),
+  controls="""<div class="gbpad" id="gbpad">
+  <button data-c="0" id="gb-c0">---<small>reads --</small></button>
+  <button data-c="1" id="gb-c1">---<small>reads --</small></button>
+  <button data-c="2" id="gb-c2" hidden>---<small>reads --</small></button>
+  <button data-c="flag" id="gb-flag">Ambiguous<small>need longer reads</small></button>
+</div>
+<div class="gbkey"><span>Overlap = <b>k−1 letters</b></span><span>coverage breaks ties</span><span>equal support = <b>don't guess</b></span></div>
+<p class="ctrl-note">Tap the next k-mer · desktop: 1 2 3 pick, space = Ambiguous</p>""",
+  js=r"""
+var K=3;
+var ROUNDS=[
+ {name:"Clean stretch",genome:"ATGGCGTCA",err:null,
+  intro:"Round 1 — a clean stretch: every branch has exactly one way forward."},
+ {name:"The repeat",genome:"ATGCATGAA",err:null,
+  intro:"Round 2 — this genome repeats ATG. Somewhere the graph will branch with EQUAL support."},
+ {name:"The error",genome:"ATGGCTAGA",err:{kmer:"GCA",after:"GGC"},
+  intro:"Round 3 — one read carries a sequencing error. Coverage will give it away."}
+];
+var COV=3;
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=280,dpr=1,g=null;
+var BASECOL={A:"#2F8C72",T:"#C98F2C",G:"#4A69C4",C:"#B05A92"};
+function kmersOf(s){var out={},i;for(i=0;i+K<=s.length;i++){var km=s.substr(i,K);out[km]=(out[km]||0)+1;}return out;}
+function newRound(r){
+  var R=ROUNDS[r],pool=kmersOf(R.genome);
+  g.round=r;g.pool=pool;g.err=R.err?{kmer:R.err.kmer,used:false}:null;
+  g.contig=R.genome.substr(0,K);
+  g.pool[g.contig]--;
+  g.genome=R.genome;g.revealed=null;g.phase="walk";
+  setBanner(R.intro,"vi");
+  updHud();updPad();draw();
+}
+function cands(){
+  var suf=g.contig.substr(g.contig.length-(K-1)),out=[],km;
+  for(km in g.pool){if(g.pool[km]>0&&km.substr(0,K-1)===suf)out.push({kmer:km,reads:g.pool[km]*COV,err:false});}
+  if(g.err&&!g.err.used&&g.err.kmer.substr(0,K-1)===suf)out.push({kmer:g.err.kmer,reads:1,err:true});
+  out.sort(function(a,b){return a.kmer<b.kmer?-1:1;});
+  return out;
+}
+function tied(cs){return cs.length>=2&&cs[0].reads===cs[1].reads;}
+function rightPick(cs){
+  var next=g.genome.substr(g.contig.length-(K-1),K);
+  for(var i=0;i<cs.length;i++)if(cs[i].kmer===next)return next;
+  return null;
+}
+function reset(){
+  g={score:0,hearts:3,practice:2,over:false,confetti:null,round:0};
+  newRound(0);
+}
+function updHud(){
+  $("#s1").textContent=g?g.contig.length+" / "+g.genome.length:"0";
+  $("#s2").textContent=g.score;
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function updPad(){
+  var cs=g.phase==="walk"?cands():[],i;
+  for(i=0;i<3;i++){
+    var b=$("#gb-c"+i);
+    if(cs[i]){b.hidden=false;b.disabled=false;
+      b.innerHTML=cs[i].kmer+"<small>reads ×"+cs[i].reads+"</small>";
+      if(g.revealed===cs[i].kmer)b.style.borderColor="var(--violet)";else b.style.borderColor="";
+    } else {b.hidden=true;}
+  }
+  $("#gb-flag").disabled=g.phase!=="walk"||cs.length<2;
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","no");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;g.phase="over";updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Out of slips</p><h2>The graph punishes guessing — read the evidence.</h2><p>Overlap first: the next k-mer must start with the contig&#39;s last '+(K-1)+' letters. Then coverage: more reads wins. Equal reads on two branches means the data cannot decide — that is what <strong>Ambiguous</strong> is for.</p><button class="btn" id="start-btn">Try again</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"no");
+}
+function pick(which){
+  if(!g||g.over||g.phase!=="walk")return;
+  var cs=cands();
+  if(which==="flag"){
+    if(tied(cs)){
+      var next=rightPick(cs);
+      g.revealed=next;g.score+=80;
+      var pre=g.contig.substr(g.contig.length-2);
+      setBanner("Right — equal support, the short reads can't decide. A LONGER read arrives: …"+pre+next.charAt(K-1)+"… Tap the branch it spans.","vi");
+      updPad();draw();
+    } else slip("Not ambiguous — read support breaks this tie (coverage "+cs[0].reads+" vs "+ (cs[1]?cs[1].reads:0)+")");
+    return;
+  }
+  var c=cs[+which];if(!c)return;
+  if(c.err){slip("Only 1 read supports "+c.kmer+" and nothing continues from it — a sequencing-error TIP. Assemblers prune these.");return;}
+  if(tied(cs)&&!g.revealed){slip("Two branches with EQUAL support — the reads alone cannot tell. Tap Ambiguous instead of guessing.");return;}
+  var next=rightPick(cs);
+  if(c.kmer===next){
+    g.pool[c.kmer]--;g.contig+=c.kmer.charAt(K-1);g.score+=40;g.revealed=null;
+    setBanner("Overlap "+c.kmer.substr(0,K-1)+" ✓ contig +1 base","ok");
+    if(g.contig.length>=g.genome.length){
+      g.score+=50;
+      if(g.round<ROUNDS.length-1){setBanner("Contig complete: "+g.contig+" (+50)","ok");
+        setTimeout(function(){newRound(g.round+1);},900);g.phase="wait";updPad();updHud();draw();return;}
+      win();return;
+    }
+    updHud();updPad();draw();
+  } else {
+    slip(c.kmer+" is a real k-mer, but its copy belongs elsewhere on the path — follow the revealed branch");
+  }
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion()){g.confetti=makeConfetti(W,H);animConfetti();}
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Genome assembled</p><h2>'+g.score+' points — three contigs from nothing but overlaps.</h2>'+
+    '<div class="facts">'+
+    '<div>You walked a <strong>De Bruijn graph</strong> — the data structure inside real assemblers such as SPAdes and Velvet: chop reads into k-mers, link k−1 overlaps, walk the paths.</div>'+
+    '<div><strong>Repeats are THE hard part of assembly.</strong> When two branches are equally supported, no algorithm can conjure the answer from short reads — that is why long-read sequencing (Nanopore, PacBio) changed genomics: one read spans the repeat.</div>'+
+    '<div><strong>Coverage is evidence.</strong> A k-mer in 1 read against branches in many is almost always a sequencing error — assemblers prune these dead-end tips before walking.</div>'+
+    '<div>Choosing k is a trade-off: larger k resolves repeats but demands longer exact overlaps, so at low coverage the graph falls apart into fragments.</div>'+
+    '</div><button class="btn" id="start-btn">Assemble again</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(Math.max(240,Math.min(300,w*0.72)));
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function tileAt(x,y,s,letter,ghost){
+  ctx.globalAlpha=ghost?0.35:1;
+  ctx.fillStyle=BASECOL[letter]||"#9AA5B1";
+  rrp(ctx,x,y,s,s,Math.round(s*0.22));ctx.fill();
+  ctx.fillStyle="#fff";ctx.font="700 "+Math.round(s*0.55)+"px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText(letter,x+s/2,y+s/2+1);
+  ctx.globalAlpha=1;
+}
+function draw(){
+  if(!g)return;
+  var dark=isDark(),ink=dark?"#E8EAED":"#1F2933",muted=dark?"#9AA5B1":"#52606D",
+      acc=dark?"#D68264":"#B04A2F",vio=dark?"#B08CE8":"#8A4BD9";
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=muted;ctx.font="700 12px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="left";ctx.textBaseline="alphabetic";
+  ctx.fillText("ROUND "+(g.round+1)+" / 3 · "+ROUNDS[g.round].name.toUpperCase()+" · k = "+K+" · coverage ~"+COV+"×",12,22);
+  var s=Math.min(36,Math.floor((W-24)/Math.max(10,g.genome.length))-3);
+  var total=g.genome.length,ox=Math.round((W-total*(s+3))/2),cy=Math.round(H*0.42);
+  ctx.fillStyle=muted;ctx.font="600 11px "+getComputedStyle(document.body).fontFamily;
+  ctx.fillText("CONTIG",ox,cy-10);
+  for(var i=0;i<total;i++){
+    var x=ox+i*(s+3);
+    if(i<g.contig.length){
+      tileAt(x,cy,s,g.contig.charAt(i),false);
+      if(i>=g.contig.length-(K-1)){
+        ctx.strokeStyle=acc;ctx.lineWidth=2.5;
+        rrp(ctx,x-1.5,cy-1.5,s+3,s+3,Math.round(s*0.25));ctx.stroke();
+      }
+    } else {
+      ctx.strokeStyle=dark?"rgba(255,255,255,.18)":"rgba(0,0,0,.14)";ctx.lineWidth=1;
+      ctx.setLineDash([4,3]);ctx.strokeRect(x,cy,s,s);ctx.setLineDash([]);
+    }
+  }
+  ctx.fillStyle=acc;ctx.font="600 11px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="left";
+  ctx.fillText("overlap: next k-mer must start with "+g.contig.substr(g.contig.length-(K-1)),ox,cy+s+20);
+  var cs=g.phase==="walk"?cands():[];
+  var by=cy+s+44;
+  for(var c2=0;c2<cs.length&&c2<3;c2++){
+    var cx=ox+c2*Math.min(120,(W-24)/Math.max(2,cs.length));
+    for(var j=0;j<K;j++)tileAt(cx+j*(22+2),by,22,cs[c2].kmer.charAt(j),j<K-1);
+    ctx.fillStyle=cs[c2].err?(dark?"#D98378":"#A83E32"):muted;
+    ctx.font="600 10px "+getComputedStyle(document.body).fontFamily;
+    ctx.fillText("reads ×"+cs[c2].reads,cx,by+36);
+    if(g.revealed===cs[c2].kmer){
+      ctx.strokeStyle=vio;ctx.lineWidth=2;
+      rrp(ctx,cx-4,by-4,K*24+4,30,8);ctx.stroke();
+      ctx.fillStyle=vio;ctx.fillText("long read says: this way",cx,by-8);
+    }
+  }
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.GBstate=function(){return g?{round:g.round,contig:g.contig,phase:g.phase,hearts:g.hearts,score:g.score,over:g.over,cands:cands()}:null;};
+$("#gbpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled&&!b.hidden)pick(b.getAttribute("data-c"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="1")pick("0");else if(e.key==="2")pick("1");else if(e.key==="3")pick("2");
+  else if(e.key===" "){e.preventDefault();pick("flag");}
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+""",
+  quiz=[
+   dict(stem="A k-mer is:",opts=["A substring of length k taken from a read","A whole chromosome","A protein fragment"],a=0,
+        explain="Assemblers chop every read into its k-mers. Your tiles were 3-mers; real assemblers use k around 31–77."),
+   dict(stem="Two k-mers are linked in the assembly graph when:",opts=["They come from the same machine","The suffix of one matches the prefix of the next, overlapping by k−1 letters","They have the same GC content"],a=1,
+        explain="The k−1 overlap is the whole trick: each step forward adds exactly one new base, which is why walking the graph spells out the genome."),
+   dict(stem="In round 2 the graph branched with EQUAL read support on both sides because:",opts=["The sequencer broke","A repeat — the same k−1 context occurs twice in the genome, and short reads cannot say which continuation goes where","The genome was circular"],a=1,
+        explain="Repeats longer than the read length are THE classic assembly problem: the information simply is not in the short reads, so guessing is wrong by construction."),
+   dict(stem="What extra data resolves a repeat branch?",opts=["Reads long enough to span the repeat (or read pairs bridging it)","More copies of the same short reads","A faster computer"],a=0,
+        explain="More of the same short reads adds confidence, not information — only something that spans the repeat (long reads, mate pairs) links the right flanks together."),
+   dict(stem="A k-mer supported by a single read that leads nowhere (a dead-end tip) is most likely:",opts=["A new gene","The telomere","A sequencing error — assemblers prune such tips before walking the graph"],a=2,
+        explain="At ~3× coverage every true k-mer should appear in several reads. One-read dead ends are the signature of a miscalled base, and tip-pruning removes them."),
+   dict(stem="Why not just use a very large k every time?",opts=["Large k is illegal in bioinformatics","Larger k resolves repeats but requires longer error-free overlaps — at low coverage the graph fragments into pieces","k must always equal 3"],a=1,
+        explain="Choosing k is a real trade-off: big k = fewer ambiguous branches but more broken links from errors and thin coverage. Real assemblers even try several k values."),
+  ],
+  simplification="Simplified on purpose: we walk k-mers as nodes joined by k−1 overlaps — the textbook De Bruijn formulation makes k-mers the EDGES between (k−1)-mer nodes and finds an Eulerian path. Real assemblers use k ≈ 31–77 over millions of reads, prune tips and pop bubbles statistically, and never know the true genome in advance (here it referees your taps). The overlap rule, the repeat ambiguity, and coverage-as-evidence are the true parts.")
+
+# ============================================================ VARIANT DETECTIVE
+GAMES["variant"] = dict(
+  title="Variant Detective", tag="Is that mismatch real? Spend evidence wisely",
+  codep="VD",
+  extra_css="""
+.vdpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.vdpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:.92rem;font-weight:700;min-width:84px;padding:10px 8px;line-height:1.3}
+.vdpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.vdpad button small{display:block;font-weight:400;font-size:.74rem;color:var(--muted)}
+.vdpad button:disabled{opacity:.35;cursor:default}
+.vdpad button.spent{border-style:dashed;opacity:.55}
+.vdverdict{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.vdverdict button{border:none;border-radius:999px;padding:12px 20px;font-weight:700;font-size:.98rem;color:#fff}
+.vdverdict #vd-real{background:var(--good)} .vdverdict #vd-art{background:var(--bad)} .vdverdict #vd-unres{background:var(--violet)}
+.vdverdict button:disabled{opacity:.4}
+.vdkey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.vdkey b{color:var(--ink)}
+""",
+  hud=STD_HUD.replace("{L1}","Case").replace("{V1}","1 / 5")
+            .replace("{L2}","Evidence left").replace("{V2}","2")
+            .replace("{L3}","Slips"),
+  stage_inner=flashcard(
+    "Variant calling · evidence, not certainty",
+    "You are the variant reviewer — the pileup is your crime scene.",
+    "Align millions of reads to a reference genome and mismatches appear everywhere. Most are not mutations: sequencers miscall bases, reads land in the wrong place, certain sequence contexts breed systematic errors. A <strong>variant caller</strong> weighs evidence — <strong>base quality</strong> (how sure the machine was of each letter), <strong>mapping quality</strong> (how sure the aligner was of the read's position), <strong>strand balance</strong> (real variants show up on both DNA strands), and <strong>sequence context</strong> (homopolymer runs like AAAAA cause slips). Your job: for each candidate site, decide <strong>real variant</strong>, <strong>artifact</strong>, or — when the data cannot support either call — <strong>unresolved</strong>.",
+    ["Name the four evidence types and say what each one rules in or out.",
+     "Explain why two sites with the SAME alt-read count can deserve opposite verdicts.",
+     "Say why 'the variant is real' never by itself means 'the variant causes disease.'"],
+    ["Each case shows a read pileup with one highlighted column. You get an <strong>evidence budget of 2</strong> — tap at most two checks (base quality, mapping, strands, context) and read what they reveal.",
+     "Then give a <strong>verdict</strong>: Real / Artifact / Unresolved. A correct verdict scores; a wrong one is a slip, and all four evidence lines are revealed so you see what you missed.",
+     "<strong>Unresolved is a real answer.</strong> Calling a coin-flip 'real' is how false findings enter papers. First wrong verdict is free practice; after that, 3 slips end the shift."],
+    "Five cases. Two of them have identical read counts — and opposite verdicts.",
+    "Open the first case"),
+  controls="""<div class="vdpad" id="vdpad">
+  <button data-e="bq" id="vd-bq">Base quality<small>cost 1</small></button>
+  <button data-e="mq" id="vd-mq">Mapping<small>cost 1</small></button>
+  <button data-e="strand" id="vd-strand">Strands<small>cost 1</small></button>
+  <button data-e="ctx" id="vd-ctx">Context<small>cost 1</small></button>
+</div>
+<div class="vdverdict" id="vdverdict">
+  <button data-v="real" id="vd-real">Real variant</button>
+  <button data-v="artifact" id="vd-art">Artifact</button>
+  <button data-v="unresolved" id="vd-unres">Unresolved</button>
+</div>
+<div class="vdkey"><span>budget: <b>2 checks</b> per case</span><span>then one verdict</span></div>
+<p class="ctrl-note">Tap checks, then a verdict · desktop: 1–4 = checks, R / A / U = verdict</p>""",
+  js=r"""
+var CASES=[
+ {name:"The textbook het",depth:8,alt:4,truth:"real",decisive:"all clean",
+  ev:{bq:"Alt bases: quality 35–38 (about 1 error in 5,000). Solid calls.",
+      mq:"Every read maps uniquely, MAPQ 60. The position is trusted.",
+      strand:"Alt on 2 forward + 2 reverse reads. Balanced — like real DNA.",
+      ctx:"Ordinary mixed sequence around the site. No error-prone motif."},
+  reads:[{alt:true,f:true,lab:""},{alt:false,f:false,lab:""},{alt:true,f:false,lab:""},{alt:false,f:true,lab:""},{alt:true,f:true,lab:""},{alt:false,f:false,lab:""},{alt:true,f:false,lab:""},{alt:false,f:true,lab:""}],
+  why:"4 of 8 reads, high quality, both strands, clean context — a classic heterozygous variant (one chromosome copy carries it)."},
+ {name:"The one-sided witness",depth:8,alt:3,truth:"artifact",decisive:"strand",
+  ev:{bq:"Alt bases: quality 11–14 (about 1 error in 20). The machine itself was unsure.",
+      mq:"MAPQ 60 across the pile. Position is fine.",
+      strand:"ALL 3 alt reads are forward-strand. Zero reverse support.",
+      ctx:"Ordinary sequence. Nothing special here."},
+  reads:[{alt:true,f:true,lab:""},{alt:false,f:false,lab:""},{alt:true,f:true,lab:""},{alt:false,f:true,lab:""},{alt:false,f:false,lab:""},{alt:true,f:true,lab:""},{alt:false,f:false,lab:""},{alt:false,f:true,lab:""}],
+  why:"Real DNA is sequenced from both strands, so a real variant appears on both. All-forward alt reads with shaky base quality is the signature of a systematic sequencing artifact."},
+ {name:"The slippery stretch",depth:7,alt:3,truth:"artifact",decisive:"context",
+  ev:{bq:"Alt bases: quality 22–28. Middling.",
+      mq:"MAPQ 60. Mapping is not the problem.",
+      strand:"Alt on 2 forward + 1 reverse. Roughly balanced.",
+      ctx:"The site sits at the edge of an AAAAAA homopolymer run — polymerases slip here, creating recurrent miscalls."},
+  reads:[{alt:true,f:true,lab:""},{alt:false,f:false,lab:""},{alt:true,f:false,lab:""},{alt:false,f:true,lab:""},{alt:false,f:false,lab:""},{alt:true,f:true,lab:""},{alt:false,f:true,lab:""}],
+  why:"Homopolymer runs are error factories: the enzyme loses count of identical bases. Recurrent mismatches at run boundaries are artifacts until proven otherwise by another technology."},
+ {name:"The thin pile",depth:3,alt:2,truth:"unresolved",decisive:"depth",
+  ev:{bq:"Alt bases: quality 36. Good calls.",
+      mq:"MAPQ 60. Fine.",
+      strand:"1 forward + 1 reverse alt. Balanced — but it is only 2 reads.",
+      ctx:"Clean context."},
+  reads:[{alt:true,f:true,lab:""},{alt:false,f:false,lab:""},{alt:true,f:false,lab:""}],
+  why:"Everything looks clean — and there are 3 reads total. Two good reads cannot separate a real het from bad luck. The honest call is UNRESOLVED: flag it, sequence deeper, decide then."},
+ {name:"The copy-paste con",depth:8,alt:4,truth:"artifact",decisive:"mapping",
+  ev:{bq:"Alt bases: quality 34–37. The letters are fine.",
+      mq:"The 4 alt reads have MAPQ 0–3: the aligner says they fit SOMEWHERE ELSE equally well. This region has a near-identical copy elsewhere in the genome.",
+      strand:"2 forward + 2 reverse. Balanced.",
+      ctx:"Clean context."},
+  reads:[{alt:true,f:true,lab:"MQ0"},{alt:false,f:false,lab:""},{alt:true,f:false,lab:"MQ2"},{alt:false,f:true,lab:""},{alt:true,f:true,lab:"MQ0"},{alt:false,f:false,lab:""},{alt:true,f:false,lab:"MQ3"},{alt:false,f:true,lab:""}],
+  why:"Same 4-of-8 counts as case 1 — opposite verdict. MAPQ near 0 means those reads likely belong to a duplicated region; the 'variant' is a difference between two genome copies, pasted onto the wrong one."}
+];
+var REFBASE=["G","C","T","A","C"],ALTBASE=["A","T","C","G","T"];
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=300,dpr=1,g=null;
+function reset(){
+  g={ci:0,budget:2,spent:[],verdicted:false,score:0,hearts:3,practice:1,over:false,confetti:null};
+  setBanner("Case 1 — inspect, then call it.","vi");
+  updHud();updPad();draw();
+}
+function C(){return CASES[g.ci];}
+function updHud(){
+  $("#s1").textContent=(g.ci+1)+" / "+CASES.length;
+  $("#s2").textContent=g.budget;
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function updPad(){
+  ["bq","mq","strand","ctx"].forEach(function(e){
+    var b=$("#vd-"+(e==="strand"?"strand":e));
+    b.classList.toggle("spent",g.spent.indexOf(e)>=0);
+    b.disabled=g.over||g.verdicted||g.spent.indexOf(e)>=0||g.budget<=0;
+  });
+  ["real","art","unres"].forEach(function(v){$("#vd-"+v).disabled=g.over||g.verdicted;});
+}
+function inspect(e){
+  if(!g||g.over||g.verdicted||g.budget<=0||g.spent.indexOf(e)>=0)return;
+  g.budget--;g.spent.push(e);
+  setBanner(C().ev[e],g.budget?"vi":"vi");
+  updHud();updPad();draw();
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice","no");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Off the case</p><h2>Verdicts need evidence, not vibes.</h2><p>Spend the budget where it discriminates: strand balance and base quality expose sequencing artifacts, mapping quality exposes misplaced reads, context exposes slippery sequence — and when depth is thin, <strong>Unresolved</strong> is the professional answer.</p><button class="btn" id="start-btn">New shift</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"no");
+}
+function verdict(v){
+  if(!g||g.over||g.verdicted)return;
+  var c=C(),ok=v===c.truth;
+  if(ok){
+    g.verdicted=true;g.score+=80;updPad();
+    setBanner("Correct — "+c.truth.toUpperCase()+". "+c.why,"ok");
+    setTimeout(nextCase,2400);
+  } else {
+    slip("Not "+v+". Decisive evidence here: "+c.decisive+". "+c.why);
+    draw(true);
+  }
+}
+function nextCase(){
+  if(g.over)return;
+  if(g.ci>=CASES.length-1)return win();
+  g.ci++;g.budget=2;g.spent=[];g.verdicted=false;
+  setBanner("Case "+(g.ci+1)+" — "+C().name,"vi");
+  updHud();updPad();draw();
+}
+function win(){
+  g.over=true;updPad();updHud();
+  if(!reducedMotion()){g.confetti=makeConfetti(W,H);animConfetti();}
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Shift complete</p><h2>'+g.score+' points — five calls, none on vibes.</h2>'+
+    '<div class="facts">'+
+    '<div>Real variant callers (the GATK family and kin) weigh exactly the evidence you spent: per-base quality, mapping quality, strand balance, and error-prone context — folded into likelihoods instead of taps.</div>'+
+    '<div>Cases 1 and 5 had <strong>identical counts and opposite verdicts</strong> — raw alt-read counts are a starting point, never a conclusion.</div>'+
+    '<div><strong>Unresolved is a finding.</strong> Low-confidence calls get flagged, validated with deeper or orthogonal sequencing, and only then believed.</div>'+
+    '<div>And the big one: a validated, real variant is still only a <strong>difference</strong>. Whether it causes disease is a separate question with its own evidence standards — population frequency, segregation, functional data.</div>'+
+    '</div><button class="btn" id="start-btn">Work another shift</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(Math.max(260,Math.min(320,w*0.78)));
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function draw(revealAll){
+  if(!g)return;
+  var dark=isDark(),ink=dark?"#E8EAED":"#1F2933",muted=dark?"#9AA5B1":"#52606D",
+      acc=dark?"#D68264":"#B04A2F",good=dark?"#5FB084":"#2F7D52",bad=dark?"#D98378":"#A83E32",
+      line=dark?"rgba(255,255,255,.18)":"rgba(0,0,0,.14)",fam=getComputedStyle(document.body).fontFamily;
+  ctx.clearRect(0,0,W,H);
+  var c=C();
+  ctx.fillStyle=muted;ctx.font="700 12px "+fam;ctx.textAlign="left";ctx.textBaseline="alphabetic";
+  ctx.fillText("CASE "+(g.ci+1)+" · "+c.name.toUpperCase()+" · depth "+c.depth+"×, alt "+c.alt,12,22);
+  var cols=5,colw=Math.min(54,Math.floor((W-120)/cols)),ox=86,oy=48,rh=Math.min(24,Math.floor((H-110)/Math.max(4,c.reads.length)));
+  var vc=2;
+  var homop=(c.decisive==="context")&&(g.spent.indexOf("ctx")>=0||revealAll);
+  ctx.font="700 14px monospace";
+  ctx.textAlign="center";
+  for(var j=0;j<cols;j++){
+    var rb=homop&&j!==vc?"A":REFBASE[j];
+    ctx.fillStyle=j===vc?acc:muted;
+    ctx.fillText(rb,ox+j*colw+colw/2,oy);
+  }
+  ctx.fillStyle=muted;ctx.font="600 10px "+fam;ctx.textAlign="right";
+  ctx.fillText("REF",ox-10,oy);
+  ctx.fillStyle=dark?"rgba(214,130,100,.1)":"rgba(176,74,47,.07)";
+  ctx.fillRect(ox+vc*colw,oy-16,colw,c.reads.length*rh+34);
+  var showBQ=g.spent.indexOf("bq")>=0||revealAll,showMQ=g.spent.indexOf("mq")>=0||revealAll,
+      showStr=g.spent.indexOf("strand")>=0||revealAll;
+  for(var i=0;i<c.reads.length;i++){
+    var r=c.reads[i],y=oy+14+i*rh;
+    ctx.fillStyle=dark?"#262B32":"#F2F3F0";
+    rrp(ctx,ox,y,cols*colw,rh-5,7);ctx.fill();
+    if(showStr){
+      ctx.fillStyle=r.f?good:(dark?"#B08CE8":"#8A4BD9");ctx.font="700 11px "+fam;ctx.textAlign="left";
+      ctx.fillText(r.f?"fwd →":"← rev",ox+6,y+rh-10);
+    }
+    ctx.font="700 13px monospace";ctx.textAlign="center";
+    for(var j2=0;j2<cols;j2++){
+      var cxp=ox+j2*colw+colw/2;
+      if(j2===vc){
+        if(r.alt){
+          var lowbq=(c.decisive==="strand");
+          ctx.fillStyle=showBQ&&lowbq?bad:acc;
+          ctx.globalAlpha=showBQ&&lowbq?0.55:1;
+          ctx.fillText(ALTBASE[g.ci],cxp,y+rh-10);
+          ctx.globalAlpha=1;
+        } else {ctx.fillStyle=muted;ctx.fillText("·",cxp,y+rh-10);}
+      } else {ctx.fillStyle=dark?"rgba(154,165,177,.5)":"rgba(82,96,109,.45)";ctx.fillText("·",cxp,y+rh-10);}
+    }
+    if(showMQ&&r.lab){
+      ctx.fillStyle=bad;ctx.font="700 10px "+fam;ctx.textAlign="left";
+      ctx.fillText(r.lab,ox+cols*colw+8,y+rh-10);
+    } else if(showMQ&&!r.lab&&c.decisive==="mapping"&&r.alt===false){
+      ctx.fillStyle=muted;ctx.font="600 10px "+fam;ctx.textAlign="left";
+      ctx.fillText("MQ60",ox+cols*colw+8,y+rh-10);
+    }
+  }
+  var fy=oy+20+c.reads.length*rh+6;
+  ctx.textAlign="left";ctx.font="600 11px "+fam;
+  ctx.fillStyle=muted;
+  ctx.fillText("checks used: "+(g.spent.length?g.spent.join(", "):"none")+" · budget "+g.budget,12,Math.min(H-10,fy));
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.VDstate=function(){return g?{ci:g.ci,budget:g.budget,spent:g.spent.slice(),hearts:g.hearts,score:g.score,over:g.over,truth:C().truth}:null;};
+$("#vdpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled)inspect(b.getAttribute("data-e"));});
+$("#vdverdict").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled)verdict(b.getAttribute("data-v"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  var k=e.key.toLowerCase();
+  if(k==="1")inspect("bq");else if(k==="2")inspect("mq");else if(k==="3")inspect("strand");else if(k==="4")inspect("ctx");
+  else if(k==="r")verdict("real");else if(k==="a")verdict("artifact");else if(k==="u")verdict("unresolved");
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+""",
+  quiz=[
+   dict(stem="An alternate base is MORE believable when:",opts=["It appears on only one strand","It has high base quality, high mapping quality, and support from both strands","It sits inside a homopolymer run"],a=1,
+        explain="Those are the three green flags you inspected. Real biology does not care which strand got sequenced, the machine was confident, and the read's position is trusted."),
+   dict(stem="All alternate reads landing on ONE strand suggests:",opts=["A systematic sequencing artifact rather than a real variant","A variant on the paternal chromosome","Higher-quality data"],a=0,
+        explain="DNA is double-stranded, so a real variant is seen from both directions. Strand bias is one of the most reliable artifact signatures — case 2's one-sided witness."),
+   dict(stem="Mapping quality near 0 on the alt reads means:",opts=["The bases were miscalled","The aligner says those reads fit elsewhere equally well — the 'variant' may belong to a near-identical copy of this region","The sample was contaminated"],a=1,
+        explain="MAPQ is the aligner's confidence in WHERE the read goes. Case 5's copy-paste con: perfect letters, wrong address."),
+   dict(stem="2 of 3 reads show the alternate base, everything looks clean. The professional call is:",opts=["Real — majority rules","Artifact — too few reads","Unresolved — 3 reads cannot separate a real variant from chance; flag it and sequence deeper"],a=2,
+        explain="Depth is evidence too. With a thin pile, both 'real' and 'artifact' are overclaims — unresolved plus validation is how false findings are kept out of papers."),
+   dict(stem="Why do homopolymer runs (AAAAAA) matter to a variant reviewer?",opts=["They are always disease-causing","Polymerases and sequencers slip there, producing recurrent errors at the run's edges","They cannot be sequenced at all"],a=1,
+        explain="The enzyme loses count of identical bases, so the same miscall recurs read after read — context check, case 3."),
+   dict(stem="A variant passes every check and is validated as real. What does that establish about disease?",opts=["Nothing yet — pathogenicity is a separate question needing its own evidence (frequency, segregation, function)","That it causes the patient's condition","That it should be reported to the family immediately"],a=0,
+        explain="Detection and interpretation are different jobs. Most real variants are harmless; clinical meaning has its own evidence framework (e.g., ACMG criteria) on top of 'is it there at all.'"),
+  ],
+  simplification="Simplified on purpose: real callers do not spend a 2-check budget — they integrate ALL evidence probabilistically, converting per-base and per-read qualities into genotype likelihoods, and hard cases get settled by orthogonal validation (a second technology), not by a verdict button. The evidence types, the artifact signatures, and 'unresolved is an answer' are the true parts; the budget exists to make you choose what discriminates.")
+
+# ============================================================ LEAKAGE LAB
+GAMES["leak"] = dict(
+  title="Leakage Lab", tag="Build a classifier your reviewers can trust",
+  codep="LK",
+  extra_css="""
+.lkpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.lkpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:.95rem;font-weight:700;min-width:96px;max-width:100%;padding:12px 12px;line-height:1.35;text-align:center}
+.lkpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.lkpad button[hidden]{display:none}
+.lkpad button:disabled{opacity:.35;cursor:default}
+.lkpad #lk-0{border-color:var(--good)}
+.lkkey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.lkkey b{color:var(--ink)}
+""",
+  hud=STD_HUD.replace("{L1}","Records split").replace("{V1}","0 / 10")
+            .replace("{L2}","Score").replace("{V2}","0")
+            .replace("{L3}","Slips"),
+  stage_inner=flashcard(
+    "Machine learning · data leakage",
+    "Your model scored 96 percent. Should anyone believe it?",
+    "A biomedical classifier is judged on data it has <strong>never seen</strong>. <strong>Leakage</strong> is any crack that lets test information reach training — and it quietly inflates accuracy. The classics: the <strong>same patient</strong> lands in both train and test (the model learns to recognize the person, not the disease); preprocessing is <strong>fit on all the data before splitting</strong>; features are <strong>selected using the whole dataset</strong>. Leaky pipelines ace cross-validation and collapse on the protected holdout — or worse, in the clinic.",
+    ["Split patient data so no patient (and, when the claim demands it, no hospital) straddles train and test.",
+     "Order a pipeline correctly: fit preprocessing and select features inside training data only.",
+     "Read a results table with suspicion: say why a sky-high cross-validation score can be meaningless, and which number to trust."],
+    ["<strong>Split phase:</strong> 10 patient visits arrive one by one — tap Train or Test for each. Watch the patient IDs: repeat visits must follow their patient, and at least 2 patients must be held out for testing.",
+     "<strong>Pipeline phase:</strong> two setup decisions — where to fit the scaler, where to select features. One option is honest; the others leak.",
+     "<strong>Reveal:</strong> your pipeline and the leaky one you avoided are both scored — cross-validation AND a protected holdout from a new hospital. First 2 wrong taps are practice; after that, 3 slips end the run."],
+    "The holdout is sacred: it gets looked at once, at the end, after every choice is frozen.",
+    "Start building"),
+  controls="""<div class="lkpad" id="lkpad">
+  <button data-c="0" id="lk-0">Train</button>
+  <button data-c="1" id="lk-1">Test</button>
+  <button data-c="2" id="lk-2" hidden>—</button>
+</div>
+<div class="lkkey"><span>same patient = <b>same side</b></span><span>fit on <b>train only</b></span><span>holdout: <b>look once</b></span></div>
+<p class="ctrl-note">Tap a choice · desktop: 1 2 3 keys</p>""",
+  js=r"""
+var DECK=[
+ {p:"P1",hosp:"A",visit:1},{p:"P2",hosp:"A",visit:1},{p:"P3",hosp:"B",visit:1},
+ {p:"P2",hosp:"A",visit:2},{p:"P4",hosp:"B",visit:1},{p:"P5",hosp:"A",visit:1},
+ {p:"P3",hosp:"B",visit:2},{p:"P6",hosp:"B",visit:1},{p:"P7",hosp:"A",visit:1},
+ {p:"P5",hosp:"A",visit:2}
+];
+var QUESTIONS=[
+ {ask:"Scale the features. Fit the scaler…",
+  opts:["on the TRAINING records only, then apply it to test","on ALL 10 records, then split","on the TEST records, since they matter most"],
+  a:0,whyok:"The scaler now knows nothing about the test records — the test set still simulates the future.",
+  whyno:"Fitting on everything bakes test-set statistics (means, spreads) into training — information flows backwards. Classic leakage, even though no label was touched."},
+ {ask:"Pick the 20 most informative genes. Select them…",
+  opts:["using the FULL dataset, then cross-validate","inside each training fold only","using the test labels directly"],
+  a:1,whyok:"Each fold's features are chosen blind to that fold's test data — the score stays honest.",
+  whyno:"If the features were chosen while looking at all samples, every cross-validation fold has already peeked at its own test data. The most cited pitfall in the scikit-learn docs — and in retracted biomarker papers."}
+];
+var BOSS={ask:"A paper reports 99 percent accuracy; methods say the scaler was fit on the full dataset before splitting. Which number do you trust?",
+  opts:["None yet — the evaluation must be redone with the pipeline fit inside the splits","The 99 percent, it is very high","Subtract 10 points and trust 89 percent"],
+  a:0,whyok:"Exactly. Leakage does not discount a result, it voids it — the honest number could be anywhere.",
+  whyno:"A leaked score is not 'a bit high', it is unanchored. No correction factor exists; the evaluation has to be redone clean."};
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=300,dpr=1,g=null;
+var HOSPCOL={A:"#4A69C4",B:"#C98F2C"};
+function reset(){
+  g={phase:"split",di:0,train:[],test:[],qi:0,score:0,hearts:3,practice:2,over:false,confetti:null,revealT:0};
+  setBanner("Record 1 arrives — where does it go?","vi");
+  updHud();updPad();draw();
+}
+function updHud(){
+  $("#s1").textContent=(g.train.length+g.test.length)+" / "+DECK.length;
+  $("#s2").textContent=g.score;
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function side(p){
+  if(g.train.some(function(c){return c.p===p;}))return "train";
+  if(g.test.some(function(c){return c.p===p;}))return "test";
+  return null;
+}
+function updPad(){
+  var b0=$("#lk-0"),b1=$("#lk-1"),b2=$("#lk-2");
+  if(g.phase==="split"){
+    b0.hidden=b1.hidden=false;b2.hidden=true;
+    b0.textContent="→ Train";b1.textContent="→ Test";
+    var card=DECK[g.di],cur=card?side(card.p):null;
+    var testP={},k;g.test.forEach(function(c){testP[c.p]=1;});
+    var needP=Math.max(0,2-Object.keys(testP).length);
+    var freeP={};
+    for(k=g.di;k<DECK.length;k++){if(side(DECK[k].p)===null)freeP[DECK[k].p]=1;}
+    var blockTrain=card&&cur===null&&Object.keys(freeP).length<=needP;
+    b0.disabled=g.over||blockTrain;
+    b1.disabled=g.over;
+    if(blockTrain&&!g.over)setBanner("Hold out at least 2 patients for testing — this one goes to Test.","vi");
+  } else if(g.phase==="question"||g.phase==="boss"){
+    var q=g.phase==="boss"?BOSS:QUESTIONS[g.qi];
+    [b0,b1,b2].forEach(function(b,i){b.hidden=false;b.disabled=g.over;b.textContent=q.opts[i];});
+  } else {b0.hidden=b1.hidden=b2.hidden=true;}
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","no");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Evaluation voided</p><h2>The model aced the test by cheating on it.</h2><p>Three cracks to seal: repeat patients stay on ONE side of the split; preprocessing is fit on train only; features are selected inside the training folds. The protected holdout is looked at once, at the end.</p><button class="btn" id="start-btn">Rebuild it</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"no");
+}
+function pick(which){
+  if(!g||g.over)return;
+  var i=+which;
+  if(g.phase==="split"){
+    var card=DECK[g.di],s=side(card.p),dest=i===0?"train":"test";
+    var b=$("#lk-"+i);if(b.disabled||b.hidden)return;
+    if(s&&s!==dest){
+      slip(card.p+" already has a visit in "+s.toUpperCase()+" — split by PATIENT, or the model learns to recognize the person, not the disease");
+      return;
+    }
+    (dest==="train"?g.train:g.test).push(card);
+    g.score+= s?40:25;
+    setBanner(card.p+" visit "+card.visit+" → "+dest+(s?" ✓ grouped with their earlier visit":""),"ok");
+    g.di++;
+    if(g.di>=DECK.length){
+      g.phase="question";
+      setBanner("Split done — "+g.train.length+" train / "+g.test.length+" test, no patient straddles it. Now the pipeline.","ok");
+    }
+    updHud();updPad();draw();
+  } else if(g.phase==="question"){
+    var q=QUESTIONS[g.qi];
+    if(i===q.a){
+      g.score+=60;setBanner("Honest choice ✓ "+q.whyok,"ok");
+      g.qi++;
+      if(g.qi>=QUESTIONS.length){g.phase="reveal";animReveal();}
+      updPad();draw();
+    } else slip(q.whyno);
+  } else if(g.phase==="boss"){
+    if(i===BOSS.a){
+      g.score+=100;setBanner(BOSS.whyok,"ok");
+      win();
+    } else slip(BOSS.whyno);
+  }
+}
+function animReveal(){
+  updPad();
+  g.revealT=0;
+  setBanner("The protected holdout — a hospital the model never saw — is opened ONCE.","vi");
+  var t0=performance.now();
+  function step(now){
+    g.revealT=Math.min(1,(now-t0)/1400);
+    draw();
+    if(g.revealT<1)requestAnimationFrame(step);
+    else{g.phase="boss";setBanner(BOSS.ask,"vi");updPad();draw();}
+  }
+  requestAnimationFrame(step);
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion()){g.confetti=makeConfetti(W,H);animConfetti();}
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Defensible evaluation</p><h2>'+g.score+' points — and a number you can stand behind.</h2>'+
+    '<div class="facts">'+
+    '<div>Your clean pipeline: cross-validation 87, protected holdout 84 — close together, which is what generalization looks like. The leaky twin: CV 96, holdout 61 — the gap IS the leakage.</div>'+
+    '<div>Grouped splitting has first-class tool support (scikit-learn&#39;s GroupKFold and friends) because repeated patients, repeated sites, and repeated samples are the rule in biomedicine, not the exception.</div>'+
+    '<div>Hospitals and batches leave fingerprints — scanner settings, kits, demographics. A model can score high by learning WHERE data came from instead of what disease looks like; holding out a whole site is the test for that.</div>'+
+    '<div>The protected holdout is looked at <strong>once</strong>. Peek repeatedly and your choices start fitting it — leakage through your own eyeballs.</div>'+
+    '</div><button class="btn" id="start-btn">Build another</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(Math.max(260,Math.min(320,w*0.78)));
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function miniCard(x,y,w,h,card,dark){
+  ctx.fillStyle=HOSPCOL[card.hosp];
+  ctx.globalAlpha=card.visit>1?1:0.78;
+  rrp(ctx,x,y,w,h,6);ctx.fill();ctx.globalAlpha=1;
+  ctx.fillStyle="#fff";ctx.font="700 11px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText(card.p+(card.visit>1?"·v2":""),x+w/2,y+h/2);
+}
+function bar(x,y,w,val,col,label,muted,fam,t){
+  var full=Math.round(w*val/100*t);
+  ctx.fillStyle=col;rrp(ctx,x,y,Math.max(4,full),16,5);ctx.fill();
+  ctx.fillStyle=muted;ctx.font="600 10px "+fam;ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillText(label+" "+Math.round(val*t),x+w+8,y+8);
+}
+function draw(){
+  if(!g)return;
+  var dark=isDark(),ink=dark?"#E8EAED":"#1F2933",muted=dark?"#9AA5B1":"#52606D",
+      acc=dark?"#D68264":"#B04A2F",good=dark?"#5FB084":"#2F7D52",bad=dark?"#D98378":"#A83E32",
+      fam=getComputedStyle(document.body).fontFamily;
+  ctx.clearRect(0,0,W,H);
+  ctx.textBaseline="alphabetic";
+  if(g.phase==="split"||g.phase==="question"){
+    var half=Math.floor(W/2)-8;
+    ctx.fillStyle=muted;ctx.font="700 12px "+fam;ctx.textAlign="left";
+    ctx.fillText("TRAIN",14,24);
+    ctx.textAlign="right";ctx.fillText("TEST (future patients)",W-14,24);
+    ctx.strokeStyle=dark?"rgba(255,255,255,.18)":"rgba(0,0,0,.14)";
+    ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(W/2,10);ctx.lineTo(W/2,H-66);ctx.stroke();ctx.setLineDash([]);
+    var cw=64,chh=24;
+    g.train.forEach(function(c,i){miniCard(14+(i%3)*(cw+6),34+Math.floor(i/3)*(chh+6),cw,chh,c,dark);});
+    g.test.forEach(function(c,i){miniCard(W-14-cw-(i%2)*(cw+6),34+Math.floor(i/2)*(chh+6),cw,chh,c,dark);});
+    if(g.phase==="split"&&g.di<DECK.length){
+      var card=DECK[g.di],bw=150,bh=52,bx=(W-bw)/2,by=H-62;
+      ctx.fillStyle=dark?"#262B32":"#FFFFFF";
+      ctx.strokeStyle=acc;ctx.lineWidth=2;
+      rrp(ctx,bx,by,bw,bh,10);ctx.fill();ctx.stroke();
+      ctx.fillStyle=ink;ctx.font="700 15px "+fam;ctx.textAlign="center";
+      ctx.fillText("Patient "+card.p+" · visit "+card.visit,bx+bw/2,by+22);
+      ctx.fillStyle=HOSPCOL[card.hosp];ctx.font="700 11px "+fam;
+      ctx.fillText("Hospital "+card.hosp,bx+bw/2,by+40);
+      var s=side(card.p);
+      if(s){ctx.fillStyle=acc;ctx.font="600 10px "+fam;
+        ctx.fillText("this patient already has a visit placed",bx+bw/2,by-8);}
+    }
+    if(g.phase==="question"){
+      var q=QUESTIONS[g.qi],qy=H-56;
+      ctx.fillStyle=ink;ctx.font="700 13px "+fam;ctx.textAlign="center";
+      ctx.fillText("PIPELINE DECISION "+(g.qi+1)+" / 2",W/2,qy);
+      ctx.font="600 12px "+fam;ctx.fillStyle=muted;
+      ctx.fillText(q.ask,W/2,qy+20);
+    }
+  } else {
+    var t=g.phase==="over"||g.phase==="boss"?1:g.revealT;
+    ctx.fillStyle=muted;ctx.font="700 12px "+fam;ctx.textAlign="left";
+    ctx.fillText("THE REVEAL — same data, two pipelines",14,24);
+    var bx2=14,bw2=Math.min(190,W-150);
+    ctx.fillStyle=good;ctx.font="700 11px "+fam;
+    ctx.fillText("YOUR PIPELINE (clean)",bx2,50);
+    bar(bx2,60,bw2,87,good,"cross-validation",muted,fam,t);
+    bar(bx2,84,bw2,84,good,"protected holdout",muted,fam,t);
+    ctx.fillStyle=bad;ctx.font="700 11px "+fam;
+    ctx.fillText("THE LEAKY TWIN (split by row, everything fit on all data)",bx2,124);
+    bar(bx2,134,bw2,96,bad,"cross-validation",muted,fam,t);
+    bar(bx2,158,bw2,61,bad,"protected holdout",muted,fam,t);
+    if(t>=1){
+      ctx.fillStyle=ink;ctx.font="700 12px "+fam;
+      ctx.fillText("The 35-point collapse IS the leakage.",bx2,192);
+      if(g.phase==="boss"){
+        ctx.fillStyle=muted;ctx.font="600 11px "+fam;
+        var words=BOSS.ask.split(" "),lineStr="",ly=214;
+        for(var wi=0;wi<words.length;wi++){
+          var tryStr=lineStr?lineStr+" "+words[wi]:words[wi];
+          if(ctx.measureText(tryStr).width>W-28){ctx.fillText(lineStr,bx2,ly);ly+=16;lineStr=words[wi];}
+          else lineStr=tryStr;
+        }
+        if(lineStr)ctx.fillText(lineStr,bx2,ly);
+      }
+    }
+  }
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.LKstate=function(){return g?{phase:g.phase,di:g.di,train:g.train.length,test:g.test.length,qi:g.qi,hearts:g.hearts,score:g.score,over:g.over}:null;};
+$("#lkpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled&&!b.hidden)pick(b.getAttribute("data-c"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="1")pick("0");else if(e.key==="2")pick("1");else if(e.key==="3")pick("2");
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+""",
+  quiz=[
+   dict(stem="The same patient's visits land in both train and test. The danger is:",opts=["The files get corrupted","The model can learn to recognize the PATIENT and look smart without learning the disease","Training becomes slower"],a=1,
+        explain="Identity is an easy shortcut: two visits share demographics, baseline labs, even scanner noise. Accuracy inflates, and the number says nothing about new patients."),
+   dict(stem="Fitting a scaler (normalization) on ALL data before splitting leaks because:",opts=["Scalers only work on small data","Test-set statistics flow into what training sees — information moves backwards even though no label was touched","Scaling is itself forbidden"],a=1,
+        explain="Leakage does not need labels. Means and spreads computed from test records shape the training inputs — the test set no longer simulates unseen data."),
+   dict(stem="Selecting the 'top genes' on the full dataset, then cross-validating, produces:",opts=["Inflated scores — every fold already peeked at its own test samples during selection","More interpretable genes","No effect either way"],a=0,
+        explain="The features were chosen while looking at everything, so each CV fold is partly grading data it helped choose. The fix: select inside each training fold."),
+   dict(stem="Your claim is 'this model works at NEW hospitals.' The right evaluation holds out:",opts=["Random rows","An entire hospital (site) the model never trained on","The oldest records"],a=1,
+        explain="Sites leave fingerprints — scanners, kits, populations. If every hospital appears in training, random-split accuracy can come from recognizing the site, not the disease."),
+   dict(stem="Cross-validation says 96, the protected holdout says 61. The 96 was:",opts=["Correct, the holdout is broken","Mostly leakage and shortcuts — the gap is the diagnosis, and the honest estimate is the holdout","An average of the two"],a=1,
+        explain="Clean pipelines score similarly on CV and holdout. A collapse on genuinely unseen data means the CV number was never measuring generalization."),
+   dict(stem="How often should the protected final holdout be evaluated?",opts=["After every tweak, to track progress","Once — after all modeling choices are frozen","Never"],a=1,
+        explain="Peek repeatedly and your decisions start fitting the holdout — leakage through the analyst. One look, at the end, is what keeps it a test of the future."),
+  ],
+  simplification="Simplified on purpose: the accuracy numbers are illustrative, not computed from a real model, and two hospitals stand in for the whole zoo of batch and site effects. Real leakage is also sneakier than three taps — temporal leakage, label proxies hiding inside features, and duplicated samples all count. The three cracks you sealed (grouped patients, fit-on-train-only, selection inside folds) are the true, most common ones — straight from the scikit-learn pitfalls page and a decade of retracted biomarker papers.")
+
+# ============================================================ PIPELINE RESCUE
+GAMES["pipeline"] = dict(
+  title="Pipeline Rescue", tag="Wire the workflow, resume from the wreck",
+  codep="RX",
+  extra_css="""
+.rxpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.rxpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:.92rem;font-weight:700;min-width:96px;max-width:100%;padding:11px 12px;line-height:1.35;text-align:center}
+.rxpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.rxpad button[hidden]{display:none}
+.rxpad button:disabled{opacity:.35;cursor:default}
+.rxpad button.queued{border-color:var(--accent);background:var(--accent-soft)}
+.rxpad #rx-run{border:none;background:var(--accent);color:#fff}
+.rxkey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.rxkey b{color:var(--ink)}
+""",
+  hud=STD_HUD.replace("{L1}","Tasks green").replace("{V1}","0 / 4")
+            .replace("{L2}","CPU·h saved").replace("{V2}","0")
+            .replace("{L3}","Slips"),
+  stage_inner=flashcard(
+    "Reproducible computing · workflows as DAGs",
+    "The run died at 2 a.m. — rescue it without rerunning the world.",
+    "Real analyses are not one script but a <strong>workflow</strong>: tasks wired by their inputs into a <strong>directed acyclic graph</strong> (DAG). A task can run the moment its inputs exist — which is also how engines like Nextflow and Snakemake know, after a crash or a change, <strong>exactly which results are still valid</strong>: anything whose inputs did not change stays <strong>cached</strong>; anything downstream of a change is <strong>stale</strong> and must rerun. That is cache-and-resume, and it is why a fixed typo costs minutes, not the whole week of compute. The other lesson of the night shift: pipelines usually die of <strong>metadata</strong> — wrong sample IDs, wrong reference version — not of broken code.",
+    ["Wire a task to its real inputs and explain why the graph must have no cycles.",
+     "After a crash, name the ROOT CAUSE task (where the problem lives) versus where the error appeared.",
+     "After a fix or an input change, name exactly which tasks are stale (must rerun) and which cached results are still valid."],
+    ["<strong>Wire it:</strong> for each task, tap the inputs it actually needs — the arrows you choose become the DAG.",
+     "<strong>Rescue it:</strong> the run fails. Tap the task where the ROOT CAUSE lives, pick the right fix, then queue EXACTLY the stale tasks for the resume — rerunning a cached task wastes compute, missing a stale one ships wrong results.",
+     "Every valid cached task you protect banks CPU hours. First 2 wrong taps are free practice; after that, 3 slips kill the run for good."],
+    "Two failures tonight: a sample-sheet mismatch, then a reference-genome update. Different root causes — different resume sets.",
+    "Clock in"),
+  controls="""<div class="rxpad" id="rxpad">
+  <button data-c="0" id="rx-0">—</button>
+  <button data-c="1" id="rx-1">—</button>
+  <button data-c="2" id="rx-2">—</button>
+  <button data-c="3" id="rx-3" hidden>—</button>
+  <button data-c="run" id="rx-run" hidden>Resume ▸</button>
+</div>
+<div class="rxkey"><span>inputs unchanged = <b>cached</b></span><span>downstream of a change = <b>stale</b></span></div>
+<p class="ctrl-note">Tap choices · desktop: 1 2 3 4 keys, Enter = Resume</p>""",
+  js=r"""
+var NODES={
+ sheet:{label:"samplesheet",x:0.14,y:0.16,task:false},
+ fastq:{label:"FASTQ reads",x:0.5,y:0.16,task:false},
+ ref:{label:"reference",x:0.86,y:0.16,task:false},
+ qc:{label:"QC",x:0.5,y:0.42,task:true},
+ align:{label:"align",x:0.68,y:0.64,task:true},
+ quant:{label:"quantify",x:0.42,y:0.84,task:true},
+ report:{label:"report",x:0.14,y:0.64,task:true}
+};
+var WIRE=[
+ {node:"qc",ask:"QC needs…",opts:[["the raw FASTQ reads",["fastq"]],["the reference genome",null],["the final report",null]],a:0},
+ {node:"align",ask:"ALIGN needs…",opts:[["raw reads, unchecked",null],["QC-passed reads + the reference",["qc","ref"]],["the samplesheet only",null]],a:1},
+ {node:"quant",ask:"QUANTIFY needs…",opts:[["aligned reads + the samplesheet (sample IDs)",["align","sheet"]],["the reference only",null],["nothing — it runs first",null]],a:0},
+ {node:"report",ask:"REPORT needs…",opts:[["the raw FASTQ reads",null],["the QC output only",null],["the quantified results",["quant"]]],a:2}
+];
+var FAILS=[
+ {fail:"quant",err:"ERROR in quantify: sample ID 'S01' in the BAM does not match samplesheet entry 'Sample_01'",
+  rootAsk:"Where does the ROOT CAUSE live?",root:"sheet",
+  rootWhy:"Quantify is where it CRASHED. The bad data — inconsistent sample IDs — lives in the samplesheet. Blaming the crash site is how people 'fix' the wrong file.",
+  fixAsk:"The fix:",fixes:["Edit the samplesheet so IDs match the sequencing files","Delete the ID check from the quantify code","Rerun unchanged and hope"],fa:0,
+  fixWhy:"Deleting the check hides a real sample-swap risk, and hope is not a strategy. Fix the metadata.",
+  changed:"sheet",stale:["quant","report"],cached:["qc","align"]},
+ {fail:null,err:"UPDATE: the reference genome was just revised (v2). The old alignments are now against the wrong reference.",
+  rootAsk:null,root:null,rootWhy:null,fixAsk:null,fixes:null,fa:0,fixWhy:null,
+  changed:"ref",stale:["align","quant","report"],cached:["qc"]}
+];
+var CPUH={qc:2,align:6,quant:3,report:1};
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=300,dpr=1,g=null;
+function reset(){
+  g={phase:"wire",wi:0,edges:[],state:{},fi:0,queued:{},saved:0,score:0,hearts:3,practice:2,over:false,confetti:null};
+  var k;for(k in NODES)g.state[k]=NODES[k].task?"pending":"input";
+  setBanner("Wire the DAG — what does QC need?","vi");
+  updHud();updPad();draw();
+}
+function F(){return FAILS[g.fi];}
+function greenCount(){var n=0,k;for(k in NODES)if(NODES[k].task&&(g.state[k]==="done"||g.state[k]==="cached"))n++;return n;}
+function updHud(){
+  $("#s1").textContent=greenCount()+" / 4";
+  $("#s2").textContent=g.saved;
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function setBtns(labels,showRun){
+  for(var i=0;i<4;i++){
+    var b=$("#rx-"+i);
+    if(labels[i]!==undefined){b.hidden=false;b.disabled=g.over;b.textContent=labels[i];
+      b.classList.toggle("queued",g.phase==="resume"&&!!g.queued[labels[i]]);}
+    else b.hidden=true;
+  }
+  var r=$("#rx-run");r.hidden=!showRun;r.disabled=g.over;
+}
+function updPad(){
+  if(g.phase==="wire")setBtns(WIRE[g.wi].opts.map(function(o){return o[0];}),false);
+  else if(g.phase==="root")setBtns(["samplesheet","QC","align","quantify"],false);
+  else if(g.phase==="fix")setBtns(F().fixes.slice(),false);
+  else if(g.phase==="resume")setBtns(["QC","align","quantify","report"],true);
+  else setBtns([],false);
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","no");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Run killed</p><h2>Rescue runs on the graph, not on panic.</h2><p>Trace the error to the task whose INPUT is wrong, fix the input, then rerun exactly the tasks downstream of the change — everything else is cached and valid. That discipline is what -resume automates.</p><button class="btn" id="start-btn">Clock in again</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"no");
+}
+function runAnim(upto,thenFail){
+  g.phase="run";updPad();
+  var order=["qc","align","quant","report"],i=0;
+  function step(){
+    if(g.over)return;
+    if(i>=order.length){afterRun(null);return;}
+    var n=order[i];
+    if(g.state[n]==="cached"){i++;step();return;}
+    if(thenFail&&n===thenFail){g.state[n]="failed";draw();afterRun(n);return;}
+    g.state[n]="running";draw();
+    setTimeout(function(){if(g.over)return;g.state[n]="done";updHud();draw();i++;step();},reducedMotion()?60:420);
+  }
+  step();
+}
+function afterRun(failed){
+  if(failed){
+    setBanner(F().err,"no");
+    g.phase="root";
+    setTimeout(function(){if(!g.over){setBanner(F().rootAsk,"vi");updPad();draw();}},reducedMotion()?200:1700);
+  } else if(g.fi<FAILS.length-1){
+    g.fi++;
+    var f=F(),k;
+    setBanner(f.err,"vi");
+    for(k in CPUH)g.state[k]="done";
+    g.state[f.changed+"_v2"]=true;
+    g.phase="resume";
+    setTimeout(function(){if(!g.over){setBanner("Reference changed. Queue EXACTLY the stale tasks, then Resume.","vi");updPad();draw();}},reducedMotion()?200:1700);
+  } else win();
+  updPad();draw();
+}
+function startResume(){
+  var f=F(),missing=f.stale.filter(function(s){return !g.queued[keyLabel(s)];});
+  if(missing.length){slip(label(missing[0])+" consumes a changed input downstream — it is STALE; resuming without it ships wrong results");return;}
+  var k;
+  f.cached.forEach(function(c){g.state[c]="cached";g.saved+=CPUH[c];});
+  f.stale.forEach(function(s){g.state[s]="pending";});
+  g.queued={};
+  g.score+=120;
+  setBanner("Resume: "+f.cached.map(label).join(" + ")+" cached ✓ ("+f.cached.reduce(function(a,c){return a+CPUH[c];},0)+" CPU·h saved)","ok");
+  updHud();
+  runAnim(null,null);
+}
+function label(k){return NODES[k].label;}
+function keyLabel(k){return {qc:"QC",align:"align",quant:"quantify",report:"report"}[k];}
+function labelKey(lab){return {QC:"qc",align:"align",quantify:"quant",report:"report"}[lab];}
+function pick(which){
+  if(!g||g.over)return;
+  if(which==="run"){if(g.phase==="resume")startResume();return;}
+  var i=+which,b=$("#rx-"+i);
+  if(b.hidden||b.disabled)return;
+  if(g.phase==="wire"){
+    var w=WIRE[g.wi];
+    if(i===w.a){
+      w.opts[w.a][1].forEach(function(src){g.edges.push([src,w.node]);});
+      g.score+=40;
+      setBanner(label(w.node)+" ← "+w.opts[w.a][1].map(label).join(" + ")+" ✓","ok");
+      g.wi++;
+      if(g.wi>=WIRE.length){
+        setBanner("DAG wired — launching the run. (Independent branches could run in parallel.)","ok");
+        setTimeout(function(){if(!g.over)runAnim(null,F().fail);},reducedMotion()?200:1100);
+        g.phase="run";updPad();draw();return;
+      }
+      updPad();draw();
+    } else slip("Follow the data: a task's inputs are what it actually reads, nothing more");
+  } else if(g.phase==="root"){
+    var picks=["sheet","qc","align","quant"];
+    if(picks[i]===F().root){
+      g.score+=60;setBanner("Right — the crash surfaced in quantify, but the broken THING is the samplesheet.","ok");
+      g.phase="fix";updPad();draw();
+    } else slip(F().rootWhy);
+  } else if(g.phase==="fix"){
+    var f=F();
+    if(i===f.fa){
+      g.score+=60;g.state[f.changed+"_v2"]=true;
+      setBanner("Samplesheet fixed. Now queue EXACTLY the stale tasks, then Resume.","ok");
+      g.phase="resume";updPad();draw();
+    } else slip(f.fixWhy);
+  } else if(g.phase==="resume"){
+    var lab=["QC","align","quantify","report"][i],key=labelKey(lab),f2=F();
+    if(f2.cached.indexOf(key)>=0){
+      slip(lab+"'s inputs did not change — its cached result is VALID; rerunning it burns "+CPUH[key]+" CPU·h for nothing");
+      return;
+    }
+    g.queued[lab]=!g.queued[lab];
+    setBanner(lab+(g.queued[lab]?" queued for rerun":" unqueued"),"vi");
+    updPad();draw();
+  }
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion()){g.confetti=makeConfetti(W,H);animConfetti();}
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Run complete · provenance intact</p><h2>'+g.score+' points · '+g.saved+' CPU·hours never wasted.</h2>'+
+    '<p style="font-family:var(--mono);font-size:.82rem;background:var(--accent-soft);border-radius:10px;padding:10px 14px;margin:0">RUN RECORD<br>inputs: samplesheet v2 · FASTQ r1 · reference v2<br>rescued: quantify+report (metadata fix), align+quantify+report (ref update)<br>cached: QC ×2, align ×1 — every output traceable to its inputs</p>'+
+    '<div class="facts">'+
+    '<div>That run record is <strong>provenance</strong> — being able to say exactly which inputs, versions, and tasks produced a result. It is the difference between an analysis and an anecdote.</div>'+
+    '<div><strong>Cache-and-resume is real:</strong> Nextflow and Snakemake fingerprint each task&#39;s inputs and code; unchanged fingerprints mean the cached result is reused. Your queuing decisions are what -resume computes automatically.</div>'+
+    '<div>Both failures were <strong>metadata, not code</strong> — mismatched sample IDs and a stale reference. Sample swaps and version drift cause more wrong results than bugs do.</div>'+
+    '<div>And the DAG gave you one thing for free you never tapped: tasks with no path between them can run <strong>in parallel</strong> — the same wiring that enables rescue enables speed.</div>'+
+    '</div><button class="btn" id="start-btn">Next night shift</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(Math.max(260,Math.min(320,w*0.8)));
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function nodeBox(k){
+  var n=NODES[k],bw=Math.min(96,W*0.26),bh=34;
+  return {x:n.x*W-bw/2,y:n.y*H-bh/2,w:bw,h:bh};
+}
+function stateCol(st,dark){
+  if(st==="done")return dark?"#5FB084":"#2F7D52";
+  if(st==="running")return dark?"#D68264":"#B04A2F";
+  if(st==="failed")return dark?"#D98378":"#A83E32";
+  if(st==="cached")return dark?"#B08CE8":"#8A4BD9";
+  return dark?"#5A646E":"#9AA5B1";
+}
+function draw(){
+  if(!g)return;
+  var dark=isDark(),ink=dark?"#E8EAED":"#1F2933",muted=dark?"#9AA5B1":"#52606D",
+      fam=getComputedStyle(document.body).fontFamily;
+  ctx.clearRect(0,0,W,H);
+  ctx.textBaseline="middle";
+  g.edges.forEach(function(e){
+    var a=nodeBox(e[0]),b=nodeBox(e[1]);
+    var x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y;
+    if(NODES[e[0]].y>NODES[e[1]].y){y1=a.y;y2=b.y+b.h;}
+    ctx.strokeStyle=dark?"rgba(232,234,237,.4)":"rgba(31,41,51,.35)";ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    var ang=Math.atan2(y2-y1,x2-x1);
+    ctx.beginPath();ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-9*Math.cos(ang-0.4),y2-9*Math.sin(ang-0.4));
+    ctx.lineTo(x2-9*Math.cos(ang+0.4),y2-9*Math.sin(ang+0.4));
+    ctx.closePath();ctx.fillStyle=ctx.strokeStyle;ctx.fill();
+  });
+  var k;
+  for(k in NODES){
+    var n=NODES[k],b2=nodeBox(k),st=g.state[k];
+    var isInput=!n.task;
+    ctx.fillStyle=isInput?(dark?"#262B32":"#F2F3F0"):(dark?"#1F2228":"#FFFFFF");
+    ctx.strokeStyle=isInput?(dark?"rgba(255,255,255,.2)":"rgba(0,0,0,.16)"):stateCol(st,dark);
+    ctx.lineWidth=isInput?1.5:2.5;
+    rrp(ctx,b2.x,b2.y,b2.w,b2.h,10);ctx.fill();ctx.stroke();
+    ctx.fillStyle=ink;ctx.font="700 11px "+fam;ctx.textAlign="center";
+    var lab=n.label+(g.state[k+"_v2"]?" v2":"");
+    ctx.fillText(lab,b2.x+b2.w/2,b2.y+b2.h/2-(n.task?4:0));
+    if(n.task){
+      ctx.fillStyle=stateCol(st,dark);ctx.font="600 9px "+fam;
+      var stl=st==="pending"?"idle":st==="done"?"done ✓":st==="running"?"running…":st==="failed"?"FAILED ✗":st==="cached"?"cached ✓":st;
+      if(g.phase==="resume"&&g.queued[keyLabel(k)]){stl="queued ↻";ctx.fillStyle=dark?"#D68264":"#B04A2F";}
+      ctx.fillText(stl,b2.x+b2.w/2,b2.y+b2.h/2+9);
+    }
+  }
+  ctx.fillStyle=muted;ctx.font="600 10px "+fam;ctx.textAlign="left";ctx.textBaseline="alphabetic";
+  ctx.fillText("gray idle · green done · violet cached · red failed",12,H-8);
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.RXstate=function(){return g?{phase:g.phase,wi:g.wi,fi:g.fi,state:g.state,queued:g.queued,saved:g.saved,hearts:g.hearts,score:g.score,over:g.over}:null;};
+$("#rxpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled&&!b.hidden)pick(b.getAttribute("data-c"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="1")pick("0");else if(e.key==="2")pick("1");else if(e.key==="3")pick("2");else if(e.key==="4")pick("3");
+  else if(e.key==="Enter")pick("run");
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+""",
+  quiz=[
+   dict(stem="A workflow being a DAG (directed acyclic graph) means:",opts=["Tasks wired by their inputs, with no cycles — a task can run once its inputs exist","All tasks run in a fixed single file line","The pipeline has a graphical user interface"],a=0,
+        explain="Arrows are data dependencies. No cycles means there is always something ready to run — and the same wiring tells the engine what a change invalidates."),
+   dict(stem="The reference genome is updated. Which tasks must rerun?",opts=["Everything, always","Only alignment","Alignment and everything downstream of it (quantify, report) — QC of the raw reads stays cached"],a=2,
+        explain="Staleness flows along the arrows. QC never touched the reference, so its result is still valid — that is the second rescue you performed."),
+   dict(stem="Cache-and-resume (-resume) works by:",opts=["Saving the terminal scrollback","Reusing any task result whose inputs and code are unchanged, rerunning only what a change made stale","Compressing the output files"],a=1,
+        explain="Engines fingerprint each task's inputs, parameters, and code; matching fingerprints mean the cached output is provably equivalent to rerunning."),
+   dict(stem="The run crashed in quantify: 'S01' vs 'Sample_01'. The root cause lives in:",opts=["The quantify code — it crashed there","The samplesheet metadata — quantify is just where the inconsistency surfaced","The reference genome"],a=1,
+        explain="Crash site and root cause are different places. Fixing where the error appeared (deleting the check) would hide a real sample-identity risk."),
+   dict(stem="Why keep a run record (inputs, versions, parameters, what reran)?",opts=["Provenance — so the result can be reproduced and every output traced to exactly what produced it","Journals require pretty logs","To make the pipeline slower"],a=0,
+        explain="Correct code with untracked inputs still is not reproducible. The run record is what lets someone else — or future you — regenerate and trust the result."),
+   dict(stem="Two tasks with no dependency path between them can:",opts=["Never coexist in one pipeline","Run in parallel — the DAG exposes exactly which work is independent","Share the same cache entry"],a=1,
+        explain="Free speed from the same structure that enables rescue: the engine schedules independent branches simultaneously without you writing any parallel code."),
+  ],
+  simplification="Simplified on purpose: real engines decide staleness by hashing file contents, parameters, code, and container versions — not by trusting your taps — and real failures come with schedulers, retries, and memory limits attached. The DAG, root-cause-versus-crash-site, the stale/cached split, and the run record are the true parts; four tasks stand in for pipelines that run hundreds.")
+
 # ============================================================ BUILD
 # games.json (repo root) is the single source of truth for the catalog:
 # the hub index.html is generated from it, and every manifest entry with

@@ -95,6 +95,48 @@ All modules are single-file HTML (no build step, no dependencies, no tracking, z
 
 **The pair is scientifically distinct on purpose.** Module 7 is the exact, global, guaranteed algorithm; Module 8 is the fast, heuristic, local search. Playing them back-to-back is a lesson in algorithmic trade-offs — the sensibility the program wants computing students to bring into biology.
 
+## Module 9 — Genome Builder (De Bruijn assembly)
+
+**Concept.** Assemblers chop short reads into k-mers and link k−1 overlaps into a De Bruijn graph; walking the graph rebuilds the genome. Repeats make the graph branch with equal read support — information the short reads simply do not contain — and sequencing errors appear as barely supported dead-end tips that assemblers prune.
+
+**Mechanic → biology/CS.** The k-mer walk is the game. The contig grows one base per correct k-mer tap (the overlap rule enforced every step), with read support shown on every candidate. Round 1 is a clean walk; round 2 contains a repeat — two equally supported branches, where the only correct move is the **Ambiguous** button (guessing is a slip by design), after which a longer read arrives and resolves the branch; round 3 contains a 1-read error tip, where coverage breaks the tie and picking the weak branch is a slip. Two free practice slips, then three slips end the run.
+
+**Objectives.** Define a k-mer and the k−1 overlap; recognize repeat ambiguity and say what resolves it (longer reads / mate pairs); recognize an error tip and say what assemblers do with it.
+
+**Named simplification.** k-mers are walked as nodes joined by k−1 overlaps; the textbook De Bruijn formulation makes k-mers the edges between (k−1)-mer nodes and finds an Eulerian path. Real assemblers use k ≈ 31–77 over millions of reads, prune tips and pop bubbles statistically, and never know the true genome in advance (here it referees the taps).
+
+## Module 10 — Variant Detective (variant calling as evidence weighing)
+
+**Concept.** A mismatch in aligned reads is a hypothesis, not a mutation. Callers weigh base quality, mapping quality, strand balance, and sequence context — and when depth is too thin to decide, the honest verdict is *unresolved*. Detecting a real variant is, separately, not evidence that it causes disease.
+
+**Mechanic → biology/CS.** Five read pileups, each with a highlighted candidate site and an **evidence budget of 2 checks** — the budget forces the player to reason about which evidence discriminates for this case. Verdict buttons: Real / Artifact / Unresolved, with Unresolved as a scoring answer (the thin-pile case). Two cases carry identical alt-read counts and opposite verdicts (clean het vs. MAPQ-0 mismapping), making the don't-trust-raw-counts lesson structural. Wrong verdicts reveal all four evidence lines; one practice verdict, then three slips end the shift.
+
+**Objectives.** Name the four evidence types and what each rules in or out; explain why identical counts can deserve opposite verdicts; state that detection and pathogenicity are separate questions with separate evidence standards.
+
+**Named simplification.** Real callers integrate all evidence probabilistically (per-base and per-read qualities → genotype likelihoods) rather than spending a 2-check budget, and hard cases are settled by orthogonal validation, not a verdict button. The evidence types, the artifact signatures, and unresolved-as-an-answer are the true parts.
+
+## Module 11 — Leakage Lab (honest ML evaluation)
+
+**Concept.** Data leakage — any crack that lets test information reach training — silently inflates accuracy. The classics in biomedicine: the same patient on both sides of the split, preprocessing fit on all data before splitting, and feature selection performed on the full dataset. Leaky pipelines ace cross-validation and collapse on genuinely unseen data.
+
+**Mechanic → biology/CS.** Ten patient visits stream one at a time into Train/Test bins: repeat visits must follow their patient (splitting a patient is a slip, with the model-recognizes-the-person explanation), and at least two patients must be held out. Two pipeline decisions follow (scaler fit, feature selection), each with one honest option. The reveal draws the player's clean pipeline next to its leaky twin — CV 87/holdout 84 versus CV 96/holdout 61 — so the collapse *is* the diagnosis, then a final judgment round asks which reported number deserves trust (answer: none, until the evaluation is redone clean). Two practice slips, then three slips void the evaluation.
+
+**Objectives.** Split by patient (and by site when the claim demands it); order preprocessing and selection inside training data; read a results table with suspicion and say which number to trust.
+
+**Named simplification.** Accuracy numbers are illustrative, not computed from a live model; two hospitals stand in for the full zoo of site/batch effects; real leakage is sneakier (temporal leakage, label proxies, duplicates). The three sealed cracks are the most common real ones, per the scikit-learn pitfalls documentation.
+
+## Module 12 — Pipeline Rescue (reproducible workflows)
+
+**Concept.** Analyses are DAGs of tasks wired by their inputs. The wiring is what lets workflow engines resume after a crash or a change: unchanged inputs → cached, valid results; anything downstream of a change → stale, must rerun. Root cause and crash site are different places, and pipelines usually die of metadata (sample IDs, reference versions), not code.
+
+**Mechanic → biology/CS.** The player wires the DAG (each task's true inputs), then survives two failures: a samplesheet/BAM sample-ID mismatch (root cause lives two tasks upstream of the crash; blaming the crash site is a slip) and a reference-genome update. Each rescue requires queuing **exactly** the stale task set — queuing a cached task is a slip that names the wasted CPU-hours, resuming without a stale task is a slip that names the wrong-results risk — and valid cached tasks bank CPU-hours in the HUD. The win screen is a run record: inputs, versions, what reran — provenance as the prize. Two practice slips, then three slips kill the run.
+
+**Objectives.** Wire tasks to their real inputs; separate root cause from crash site; name the stale set and the cached set after any change; say what a run record is for.
+
+**Named simplification.** Real engines (Nextflow, Snakemake) decide staleness by hashing file contents, parameters, code, and container versions — not by trusting taps — and real failures arrive with schedulers, retries, and memory limits attached. Four tasks stand in for pipelines that run hundreds.
+
+**The second pair is a deliberate arc.** Modules 9–10 extend the algorithmic story (align → assemble → call) that recruits computing students into biology; Modules 11–12 are research readiness — the evaluation discipline and computational hygiene students need before contributing to a real project.
+
 ---
 
 ## Assessment & evidence

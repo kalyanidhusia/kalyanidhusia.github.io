@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Genome Builder</title>
+<meta name="description" content="Play genome assembly: walk the De Bruijn graph by k-mer overlaps, flag repeat ambiguity instead of guessing, prune sequencing-error tips.">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+/* THEME — swap these tokens when the custom theme arrives. Mobile-first. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2933; --muted:#52606D;
+  --line:rgba(0,0,0,.10); --accent:#B04A2F; --accent-soft:#F4E4DD;
+  --good:#2F7D52; --bad:#A83E32; --violet:#8A4BD9;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+    --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+    --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+  --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+  --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  font-size:1.1rem;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:560px;margin:0 auto}
+header{padding-block:18px 10px}
+header h1{font-size:1.5rem;font-weight:700;margin:0}
+header .tag{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+
+.statbar{display:flex;gap:8px;margin:10px 0 8px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 14px;min-width:0}
+.stat .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.stat .val{font-family:var(--mono);font-size:1.25rem;font-weight:600;line-height:1.3}
+.stat.grow{flex:1}
+.hearts .val{letter-spacing:2px}
+.hearts .off{opacity:.2}
+
+.stage{position:relative;display:grid;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+.stage>*{grid-area:1/1}
+#board{display:block;width:100%;touch-action:none;align-self:start}
+.overlay{position:relative;min-height:100%;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px}
+.overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
+.overlay p{margin:0;font-size:1rem}
+.overlay .muted{color:var(--muted);font-size:.9rem}
+.overlay .learn{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.overlay .learn b{display:block;margin-bottom:6px}
+.overlay .learn ul{margin:0;padding-left:20px}
+.overlay .learn li{margin:.25em 0}
+.overlay ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:1rem}
+.overlay ol li{display:flex;gap:10px}
+.overlay ol .n{color:var(--accent);font-weight:700;flex:none}
+.facts{display:flex;flex-direction:column;gap:8px;font-size:.93rem}
+.facts div{padding-left:12px;border-left:3px solid var(--accent-soft)}
+.btn{border:none;border-radius:999px;padding:13px 26px;font-weight:700;font-size:1.05rem;background:var(--accent);color:#fff;align-self:flex-start}
+.btn.sm{padding:9px 18px;font-size:.92rem}
+.banner{min-height:1.6em;text-align:center;font-weight:700;font-size:1rem;margin-top:10px}
+.banner.ok{color:var(--good)} .banner.no{color:var(--bad)} .banner.vi{color:var(--violet)}
+
+.pad{display:grid;grid-template-columns:repeat(3,76px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:14px}
+.pad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1.5rem;line-height:1;padding:0}
+.pad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.pad .up{grid-column:2}
+.ctrl-note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:8px}
+@media (min-width:700px){.pad{display:none}.ctrl-note.hide-desktop{display:none}}
+
+.quiz{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:20px;margin-top:28px}
+.quiz h2{font-size:1.25rem;margin:0 0 4px}
+.quiz .meta{font-size:.85rem;color:var(--muted)}
+.q-dots{display:flex;gap:6px;margin:14px 0}
+.q-dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.q-dots span.cur{background:var(--accent)}
+.q-dots span.ok{background:var(--good)}
+.q-dots span.no{background:var(--bad)}
+.q .stem{font-weight:700;margin-bottom:12px}
+.q label{display:flex;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:1rem;cursor:pointer;align-items:flex-start}
+.q input{margin-top:4px;accent-color:var(--accent)}
+.q.graded label.right{border-color:var(--good);background:var(--accent-soft)}
+.q.graded label.wrong-pick{border-color:var(--bad)}
+.q .verdict{font-weight:700;margin-top:6px}
+.q .verdict.ok{color:var(--good)} .q .verdict.no{color:var(--bad)}
+.q .explain{color:var(--muted);font-size:.92rem;border-left:3px solid var(--line);padding:2px 12px;margin-top:8px}
+.qbtn{border:none;border-radius:999px;padding:12px 22px;font-weight:700;background:var(--accent);color:#fff;margin-top:10px}
+.score-final{background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:1rem}
+.score-final .code{font-family:var(--mono);display:block;margin-top:6px}
+footer{margin-top:30px;color:var(--muted);font-size:.82rem;max-width:60ch}
+
+.gbpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.gbpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1rem;font-weight:700;min-width:104px;padding:12px 8px;line-height:1.3;font-family:var(--mono)}
+.gbpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.gbpad button small{display:block;font-weight:400;font-size:.76rem;color:var(--muted);font-family:var(--font)}
+.gbpad button[hidden]{display:none}
+.gbpad #gb-flag{font-family:var(--font);border-color:var(--violet);color:var(--violet)}
+.gbkey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.gbkey b{color:var(--ink)}
+</style>
+<div class="wrap">
+<header><h1>Genome Builder</h1> <span class="tag">Walk the k-mer graph, rebuild the genome</span></header>
+<div class="statbar">
+  <div class="stat grow"><div class="lbl">Contig</div><div class="val" id="s1">0 bases</div></div>
+  <div class="stat"><div class="lbl">Score</div><div class="val" id="s2">0</div></div>
+  <div class="stat hearts"><div class="lbl">Slips</div><div class="val" id="hearts">●●●</div></div>
+</div>
+<div class="stage"><canvas id="board" aria-label="Genome Builder board"></canvas>
+<div class="overlay" id="overlay"><p class="eyebrow">Genome assembly · De Bruijn graphs</p><h2>You are the assembler — the genome arrives in pieces.</h2><p>Sequencers cannot read a genome end to end: they return millions of <strong>short reads</strong>. Assemblers chop every read into <strong>k-mers</strong> (substrings of length k) and link any two that <strong>overlap by k−1 letters</strong> — a De Bruijn graph. Walking that graph letter by letter rebuilds the genome. Two things fight you: <strong>repeats</strong>, where the graph branches and the reads alone cannot say which path the true genome took, and <strong>sequencing errors</strong>, which show up as k-mers supported by almost no reads, dangling off the graph as dead-end tips.</p><div class="learn"><b>After playing you can…</b><ul><li>Define a k-mer and say why consecutive k-mers overlap by k−1 letters.</li><li>Spot a repeat: two equally supported branches mean the reads cannot resolve the path — and say what extra information would (longer reads).</li><li>Spot a sequencing error: a barely supported dead-end k-mer, and say what assemblers do with it (prune the tip).</li></ul></div><ol><li><span class="n">1</span><span>The contig grows one k-mer at a time. Each candidate shows how many <strong>reads</strong> support it — tap the next k-mer that overlaps the contig end by k−1 letters.</span></li><li><span class="n">2</span><span>If one candidate has clearly <strong>more read support</strong>, trust the coverage: the weak one is a sequencing error.</span></li><li><span class="n">3</span><span>If two candidates are <strong>equally supported</strong>, do NOT guess — tap <strong>Ambiguous</strong>. A longer read then arrives and settles the branch. Your first 2 wrong taps are free practice; after that, 3 slips end the run.</span></li></ol><p class="muted">Three contigs to assemble: a clean one, one with a repeat, one with a sequencing error.</p><button class="btn" id="start-btn">Start assembling</button></div></div>
+<div class="banner" id="banner"></div>
+<div class="gbpad" id="gbpad">
+  <button data-c="0" id="gb-c0">---<small>reads --</small></button>
+  <button data-c="1" id="gb-c1">---<small>reads --</small></button>
+  <button data-c="2" id="gb-c2" hidden>---<small>reads --</small></button>
+  <button data-c="flag" id="gb-flag">Ambiguous<small>need longer reads</small></button>
+</div>
+<div class="gbkey"><span>Overlap = <b>k−1 letters</b></span><span>coverage breaks ties</span><span>equal support = <b>don't guess</b></span></div>
+<p class="ctrl-note">Tap the next k-mer · desktop: 1 2 3 pick, space = Ambiguous</p><div class="quiz" id="quiz"><h2>Check what you learned</h2><p class="meta">6 questions · pass at 5 · retakes allowed</p><div class="q-dots" id="q-dots"></div><div id="q-stage"></div><div id="q-final"></div></div>
+<footer>Part of the AI in Biomedicine student training pathway · AR INBRE, supported
+by NIGMS of the NIH under award P20 GM103429. Educational content, not medical advice.
+Simplified on purpose: we walk k-mers as nodes joined by k−1 overlaps — the textbook De Bruijn formulation makes k-mers the EDGES between (k−1)-mer nodes and finds an Eulerian path. Real assemblers use k ≈ 31–77 over millions of reads, prune tips and pop bubbles statistically, and never know the true genome in advance (here it referees your taps). The overlap rule, the repeat ambiguity, and coverage-as-evidence are the true parts.</footer>
+<script>
+(function(){
+"use strict";
+
+var $=function(s){return document.querySelector(s);};
+var bannerTimer=null;
+function setBanner(msg,cls){
+  var b=$("#banner");b.textContent=msg;b.className="banner "+(cls||"");
+  clearTimeout(bannerTimer);bannerTimer=setTimeout(function(){b.textContent="";},2800);
+}
+function reducedMotion(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
+function isDark(){try{return (document.documentElement.dataset.theme==="dark")||(!document.documentElement.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);}catch(e){return false;}}
+function makeConfetti(W,H){
+  var pal=["#2F8C72","#C98F2C","#4A69C4","#B05A92","#8A4BD9","#B04A2F"],out=[];
+  for(var i=0;i<110;i++)out.push({x:Math.random()*W,y:-10-Math.random()*80,
+    vx:(Math.random()-0.5)*60,vy:60+Math.random()*110,rot:Math.random()*6.3,vr:(Math.random()-0.5)*8,c:pal[i%6]});
+  return out;
+}
+function stepConfetti(list,H,dt){
+  list.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=240*dt;p.rot+=p.vr*dt;});
+  return list.filter(function(p){return p.y<H+40;});
+}
+function drawConfetti(ctx,list){
+  list.forEach(function(p){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+    ctx.fillStyle=p.c;ctx.fillRect(-4,-2.5,8,5);ctx.restore();});
+}
+function rrp(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+var QUIZ=[{"stem": "A k-mer is:", "opts": ["A substring of length k taken from a read", "A whole chromosome", "A protein fragment"], "a": 0, "explain": "Assemblers chop every read into its k-mers. Your tiles were 3-mers; real assemblers use k around 31–77."}, {"stem": "Two k-mers are linked in the assembly graph when:", "opts": ["They come from the same machine", "The suffix of one matches the prefix of the next, overlapping by k−1 letters", "They have the same GC content"], "a": 1, "explain": "The k−1 overlap is the whole trick: each step forward adds exactly one new base, which is why walking the graph spells out the genome."}, {"stem": "In round 2 the graph branched with EQUAL read support on both sides because:", "opts": ["The sequencer broke", "A repeat — the same k−1 context occurs twice in the genome, and short reads cannot say which continuation goes where", "The genome was circular"], "a": 1, "explain": "Repeats longer than the read length are THE classic assembly problem: the information simply is not in the short reads, so guessing is wrong by construction."}, {"stem": "What extra data resolves a repeat branch?", "opts": ["Reads long enough to span the repeat (or read pairs bridging it)", "More copies of the same short reads", "A faster computer"], "a": 0, "explain": "More of the same short reads adds confidence, not information — only something that spans the repeat (long reads, mate pairs) links the right flanks together."}, {"stem": "A k-mer supported by a single read that leads nowhere (a dead-end tip) is most likely:", "opts": ["A new gene", "The telomere", "A sequencing error — assemblers prune such tips before walking the graph"], "a": 2, "explain": "At ~3× coverage every true k-mer should appear in several reads. One-read dead ends are the signature of a miscalled base, and tip-pruning removes them."}, {"stem": "Why not just use a very large k every time?", "opts": ["Large k is illegal in bioinformatics", "Larger k resolves repeats but requires longer error-free overlaps — at low coverage the graph fragments into pieces", "k must always equal 3"], "a": 1, "explain": "Choosing k is a real trade-off: big k = fewer ambiguous branches but more broken links from errors and thin coverage. Real assemblers even try several k values."}];var CODEP="GB";
+
+var K=3;
+var ROUNDS=[
+ {name:"Clean stretch",genome:"ATGGCGTCA",err:null,
+  intro:"Round 1 — a clean stretch: every branch has exactly one way forward."},
+ {name:"The repeat",genome:"ATGCATGAA",err:null,
+  intro:"Round 2 — this genome repeats ATG. Somewhere the graph will branch with EQUAL support."},
+ {name:"The error",genome:"ATGGCTAGA",err:{kmer:"GCA",after:"GGC"},
+  intro:"Round 3 — one read carries a sequencing error. Coverage will give it away."}
+];
+var COV=3;
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=280,dpr=1,g=null;
+var BASECOL={A:"#2F8C72",T:"#C98F2C",G:"#4A69C4",C:"#B05A92"};
+function kmersOf(s){var out={},i;for(i=0;i+K<=s.length;i++){var km=s.substr(i,K);out[km]=(out[km]||0)+1;}return out;}
+function newRound(r){
+  var R=ROUNDS[r],pool=kmersOf(R.genome);
+  g.round=r;g.pool=pool;g.err=R.err?{kmer:R.err.kmer,used:false}:null;
+  g.contig=R.genome.substr(0,K);
+  g.pool[g.contig]--;
+  g.genome=R.genome;g.revealed=null;g.phase="walk";
+  setBanner(R.intro,"vi");
+  updHud();updPad();draw();
+}
+function cands(){
+  var suf=g.contig.substr(g.contig.length-(K-1)),out=[],km;
+  for(km in g.pool){if(g.pool[km]>0&&km.substr(0,K-1)===suf)out.push({kmer:km,reads:g.pool[km]*COV,err:false});}
+  if(g.err&&!g.err.used&&g.err.kmer.substr(0,K-1)===suf)out.push({kmer:g.err.kmer,reads:1,err:true});
+  out.sort(function(a,b){return a.kmer<b.kmer?-1:1;});
+  return out;
+}
+function tied(cs){return cs.length>=2&&cs[0].reads===cs[1].reads;}
+function rightPick(cs){
+  var next=g.genome.substr(g.contig.length-(K-1),K);
+  for(var i=0;i<cs.length;i++)if(cs[i].kmer===next)return next;
+  return null;
+}
+function reset(){
+  g={score:0,hearts:3,practice:2,over:false,confetti:null,round:0};
+  newRound(0);
+}
+function updHud(){
+  $("#s1").textContent=g?g.contig.length+" / "+g.genome.length:"0";
+  $("#s2").textContent=g.score;
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function updPad(){
+  var cs=g.phase==="walk"?cands():[],i;
+  for(i=0;i<3;i++){
+    var b=$("#gb-c"+i);
+    if(cs[i]){b.hidden=false;b.disabled=false;
+      b.innerHTML=cs[i].kmer+"<small>reads ×"+cs[i].reads+"</small>";
+      if(g.revealed===cs[i].kmer)b.style.borderColor="var(--violet)";else b.style.borderColor="";
+    } else {b.hidden=true;}
+  }
+  $("#gb-flag").disabled=g.phase!=="walk"||cs.length<2;
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","no");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;g.phase="over";updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Out of slips</p><h2>The graph punishes guessing — read the evidence.</h2><p>Overlap first: the next k-mer must start with the contig&#39;s last '+(K-1)+' letters. Then coverage: more reads wins. Equal reads on two branches means the data cannot decide — that is what <strong>Ambiguous</strong> is for.</p><button class="btn" id="start-btn">Try again</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"no");
+}
+function pick(which){
+  if(!g||g.over||g.phase!=="walk")return;
+  var cs=cands();
+  if(which==="flag"){
+    if(tied(cs)){
+      var next=rightPick(cs);
+      g.revealed=next;g.score+=80;
+      var pre=g.contig.substr(g.contig.length-2);
+      setBanner("Right — equal support, the short reads can't decide. A LONGER read arrives: …"+pre+next.charAt(K-1)+"… Tap the branch it spans.","vi");
+      updPad();draw();
+    } else slip("Not ambiguous — read support breaks this tie (coverage "+cs[0].reads+" vs "+ (cs[1]?cs[1].reads:0)+")");
+    return;
+  }
+  var c=cs[+which];if(!c)return;
+  if(c.err){slip("Only 1 read supports "+c.kmer+" and nothing continues from it — a sequencing-error TIP. Assemblers prune these.");return;}
+  if(tied(cs)&&!g.revealed){slip("Two branches with EQUAL support — the reads alone cannot tell. Tap Ambiguous instead of guessing.");return;}
+  var next=rightPick(cs);
+  if(c.kmer===next){
+    g.pool[c.kmer]--;g.contig+=c.kmer.charAt(K-1);g.score+=40;g.revealed=null;
+    setBanner("Overlap "+c.kmer.substr(0,K-1)+" ✓ contig +1 base","ok");
+    if(g.contig.length>=g.genome.length){
+      g.score+=50;
+      if(g.round<ROUNDS.length-1){setBanner("Contig complete: "+g.contig+" (+50)","ok");
+        setTimeout(function(){newRound(g.round+1);},900);g.phase="wait";updPad();updHud();draw();return;}
+      win();return;
+    }
+    updHud();updPad();draw();
+  } else {
+    slip(c.kmer+" is a real k-mer, but its copy belongs elsewhere on the path — follow the revealed branch");
+  }
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion()){g.confetti=makeConfetti(W,H);animConfetti();}
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Genome assembled</p><h2>'+g.score+' points — three contigs from nothing but overlaps.</h2>'+
+    '<div class="facts">'+
+    '<div>You walked a <strong>De Bruijn graph</strong> — the data structure inside real assemblers such as SPAdes and Velvet: chop reads into k-mers, link k−1 overlaps, walk the paths.</div>'+
+    '<div><strong>Repeats are THE hard part of assembly.</strong> When two branches are equally supported, no algorithm can conjure the answer from short reads — that is why long-read sequencing (Nanopore, PacBio) changed genomics: one read spans the repeat.</div>'+
+    '<div><strong>Coverage is evidence.</strong> A k-mer in 1 read against branches in many is almost always a sequencing error — assemblers prune these dead-end tips before walking.</div>'+
+    '<div>Choosing k is a trade-off: larger k resolves repeats but demands longer exact overlaps, so at low coverage the graph falls apart into fragments.</div>'+
+    '</div><button class="btn" id="start-btn">Assemble again</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(Math.max(240,Math.min(300,w*0.72)));
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function tileAt(x,y,s,letter,ghost){
+  ctx.globalAlpha=ghost?0.35:1;
+  ctx.fillStyle=BASECOL[letter]||"#9AA5B1";
+  rrp(ctx,x,y,s,s,Math.round(s*0.22));ctx.fill();
+  ctx.fillStyle="#fff";ctx.font="700 "+Math.round(s*0.55)+"px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText(letter,x+s/2,y+s/2+1);
+  ctx.globalAlpha=1;
+}
+function draw(){
+  if(!g)return;
+  var dark=isDark(),ink=dark?"#E8EAED":"#1F2933",muted=dark?"#9AA5B1":"#52606D",
+      acc=dark?"#D68264":"#B04A2F",vio=dark?"#B08CE8":"#8A4BD9";
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=muted;ctx.font="700 12px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="left";ctx.textBaseline="alphabetic";
+  ctx.fillText("ROUND "+(g.round+1)+" / 3 · "+ROUNDS[g.round].name.toUpperCase()+" · k = "+K+" · coverage ~"+COV+"×",12,22);
+  var s=Math.min(36,Math.floor((W-24)/Math.max(10,g.genome.length))-3);
+  var total=g.genome.length,ox=Math.round((W-total*(s+3))/2),cy=Math.round(H*0.42);
+  ctx.fillStyle=muted;ctx.font="600 11px "+getComputedStyle(document.body).fontFamily;
+  ctx.fillText("CONTIG",ox,cy-10);
+  for(var i=0;i<total;i++){
+    var x=ox+i*(s+3);
+    if(i<g.contig.length){
+      tileAt(x,cy,s,g.contig.charAt(i),false);
+      if(i>=g.contig.length-(K-1)){
+        ctx.strokeStyle=acc;ctx.lineWidth=2.5;
+        rrp(ctx,x-1.5,cy-1.5,s+3,s+3,Math.round(s*0.25));ctx.stroke();
+      }
+    } else {
+      ctx.strokeStyle=dark?"rgba(255,255,255,.18)":"rgba(0,0,0,.14)";ctx.lineWidth=1;
+      ctx.setLineDash([4,3]);ctx.strokeRect(x,cy,s,s);ctx.setLineDash([]);
+    }
+  }
+  ctx.fillStyle=acc;ctx.font="600 11px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="left";
+  ctx.fillText("overlap: next k-mer must start with "+g.contig.substr(g.contig.length-(K-1)),ox,cy+s+20);
+  var cs=g.phase==="walk"?cands():[];
+  var by=cy+s+44;
+  for(var c2=0;c2<cs.length&&c2<3;c2++){
+    var cx=ox+c2*Math.min(120,(W-24)/Math.max(2,cs.length));
+    for(var j=0;j<K;j++)tileAt(cx+j*(22+2),by,22,cs[c2].kmer.charAt(j),j<K-1);
+    ctx.fillStyle=cs[c2].err?(dark?"#D98378":"#A83E32"):muted;
+    ctx.font="600 10px "+getComputedStyle(document.body).fontFamily;
+    ctx.fillText("reads ×"+cs[c2].reads,cx,by+36);
+    if(g.revealed===cs[c2].kmer){
+      ctx.strokeStyle=vio;ctx.lineWidth=2;
+      rrp(ctx,cx-4,by-4,K*24+4,30,8);ctx.stroke();
+      ctx.fillStyle=vio;ctx.fillText("long read says: this way",cx,by-8);
+    }
+  }
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.GBstate=function(){return g?{round:g.round,contig:g.contig,phase:g.phase,hearts:g.hearts,score:g.score,over:g.over,cands:cands()}:null;};
+$("#gbpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled&&!b.hidden)pick(b.getAttribute("data-c"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="1")pick("0");else if(e.key==="2")pick("1");else if(e.key==="3")pick("2");
+  else if(e.key===" "){e.preventDefault();pick("flag");}
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+
+/* ---------- shared quiz engine ---------- */
+var qi=0,qres=[];
+function qDots(){
+  var d=$("#q-dots");d.innerHTML="";
+  QUIZ.forEach(function(_,i){
+    var s=document.createElement("span");
+    if(i<qres.length)s.className=qres[i]?"ok":"no";
+    else if(i===qi)s.className="cur";
+    d.appendChild(s);
+  });
+}
+function qRender(){
+  var q=QUIZ[qi],st=$("#q-stage");
+  st.innerHTML='<div class="q"><div class="stem">Q'+(qi+1)+'. '+q.stem+'</div>'+
+    q.opts.map(function(o,i){return '<label><input type="radio" name="qq" value="'+i+'" id="qq'+qi+'o'+i+'"><span>'+o+'</span></label>';}).join("")+
+    '<div class="fb"></div><button class="qbtn" id="q-check">Check answer</button></div>';
+  $("#q-check").addEventListener("click",qCheck);
+  qDots();
+}
+function qCheck(){
+  var q=QUIZ[qi],sel=document.querySelector('input[name="qq"]:checked');
+  var el=$("#q-stage .q"),fb=el.querySelector(".fb");
+  if(!sel){fb.innerHTML='<div class="verdict no">Pick an answer first.</div>';return;}
+  var pick=+sel.value,ok=pick===q.a;
+  qres.push(ok);el.classList.add("graded");
+  el.querySelectorAll("label").forEach(function(l,i){
+    l.querySelector("input").disabled=true;
+    if(i===q.a)l.classList.add("right");else if(i===pick)l.classList.add("wrong-pick");
+  });
+  fb.innerHTML='<div class="verdict '+(ok?"ok":"no")+'">'+(ok?"Correct.":"Not quite — see the highlighted answer.")+'</div><div class="explain">'+q.explain+'</div>';
+  var btn=el.querySelector(".qbtn");
+  btn.textContent=qi===QUIZ.length-1?"See my score":"Next question";
+  btn.removeEventListener("click",qCheck);
+  btn.addEventListener("click",function(){
+    if(qi===QUIZ.length-1)qFinish();else{qi++;qRender();}
+  });
+  qDots();
+}
+function qFinish(){
+  var score=qres.filter(Boolean).length,pass=score>=5;
+  var s=(CODEP+"|"+score+"|"+new Date().toISOString().slice(0,10));
+  var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;
+  $("#q-stage").innerHTML="";
+  $("#q-final").innerHTML='<div class="score-final"><strong>'+score+' / 6'+(pass?' — passed':'')+'</strong>'+
+    (pass?' Concept locked in.':' Replay the game, reread the win-screen facts, and try again — attempts are unlimited.')+
+    '<span class="code">verification code: '+CODEP+'-'+score+'-'+h.toString(36).toUpperCase()+'</span>'+
+    '<button class="qbtn" id="q-retry">Try again</button></div>';
+  $("#q-retry").addEventListener("click",function(){qi=0;qres=[];$("#q-final").innerHTML="";qRender();});
+  qDots();
+}
+
+qRender();
+})();
+</script>
+
+</body>
+</html>
