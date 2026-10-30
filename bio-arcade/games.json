@@ -1,0 +1,62 @@
+{
+  "comment": "Single source of truth for the arcade catalog. tools/build_games.py generates the hub index.html from this file and builds every game whose 'key' matches a GAMES entry. Hand-built games (generated: false) are listed here for the hub only. Adding a game = one entry here + one GAMES block in build_games.py.",
+  "categories": ["Molecular biology", "Biomedicine", "Bioinformatics algorithms"],
+  "games": [
+    {
+      "key": "poly", "slug": "polymerase-runner", "module": 1, "title": "Polymerase Runner",
+      "category": "Molecular biology", "mod_label": "Module 1 · Central Dogma I",
+      "teach": "<b>Transcription:</b> you are RNA polymerase — pair the bases by hydrogen bonds, watch T shatter into <span class=\"rna\">U</span> at the transcription zone, and build an mRNA.",
+      "meta": "~6 min · phone-friendly", "generated": true,
+      "description": "Play transcription: pair bases by hydrogen bonds, shatter T into U at the transcription zone, and build an mRNA."
+    },
+    {
+      "key": "snake", "slug": "ribosome-snake", "module": 2, "title": "Ribosome Snake",
+      "category": "Molecular biology", "mod_label": "Module 2 · Central Dogma II",
+      "teach": "<b>Translation:</b> the ribosome reads codons AUG → stop, tRNAs deliver amino acids, and release factors end the chain at UAA / UAG / UGA.",
+      "meta": "~6 min · phone-friendly", "generated": false,
+      "description": "Play translation: read codons, deliver amino acids, and end the chain at a stop codon with a release factor."
+    },
+    {
+      "key": "fold", "slug": "fold-tris", "module": 3, "title": "Fold-Tris",
+      "category": "Molecular biology", "mod_label": "Module 3 · Protein Folding",
+      "teach": "<b>The hydrophobic effect:</b> oily residues bury in the core, polar ones face water — and misfolding leads to aggregation unless chaperones step in.",
+      "meta": "~6 min · phone-friendly", "generated": true,
+      "description": "Play protein folding: bury the hydrophobic core, avoid aggregation, meet the chaperones."
+    },
+    {
+      "key": "phago", "slug": "phagocyte-patrol", "module": 4, "title": "Phagocyte Patrol",
+      "category": "Biomedicine", "mod_label": "Module 4 · Immunology",
+      "teach": "<b>Phagocytosis &amp; opsonization:</b> you are a macrophage; antibody tags turn hard-to-catch pathogens into easy meals — innate and adaptive immunity as a team.",
+      "meta": "~6 min · phone-friendly", "generated": true,
+      "description": "Play innate immunity: patrol the tissue, grab the antibody power-up, engulf opsonized pathogens."
+    },
+    {
+      "key": "drug", "slug": "drug-flight", "module": 5, "title": "Drug Flight",
+      "category": "Biomedicine", "mod_label": "Module 5 · Pharmacology",
+      "teach": "<b>Pharmacokinetics:</b> dose timing keeps a drug inside its therapeutic window — too high is toxic, too low does nothing, and the liver and kidneys clear it.",
+      "meta": "~5 min · phone-friendly", "generated": true,
+      "description": "Play pharmacokinetics: dose against clearance and stay inside the therapeutic window."
+    },
+    {
+      "key": "lysis", "slug": "lysis-lab", "module": 6, "title": "Lysis Lab",
+      "category": "Biomedicine", "mod_label": "Module 6 · Microbiology",
+      "teach": "<b>Antibiotics &amp; resistance:</b> wall-targeting drugs burst bacteria but spare your wall-less cells — until β-lactamase appears, and clavulanate counters it.",
+      "meta": "~6 min · phone-friendly", "generated": true,
+      "description": "Play antibiotic mechanisms: break the peptidoglycan wall, beat beta-lactamase with clavulanate."
+    },
+    {
+      "key": "align", "slug": "alignment-grid", "module": 7, "title": "Alignment Grid",
+      "category": "Bioinformatics algorithms", "mod_label": "Module 7 · Sequence Alignment I",
+      "teach": "<b>Needleman–Wunsch:</b> fill the dynamic-programming matrix cell by cell — each cell is the best score so far — then walk the traceback and read the optimal global alignment you just computed.",
+      "meta": "~7 min · phone-friendly", "generated": true,
+      "description": "Play Needleman-Wunsch global alignment: fill the dynamic-programming matrix, walk the traceback, read the optimal alignment."
+    },
+    {
+      "key": "seed", "slug": "seed-extend", "module": 8, "title": "Seed &amp; Extend",
+      "category": "Bioinformatics algorithms", "mod_label": "Module 8 · Sequence Alignment II",
+      "teach": "<b>Why BLASTP is fast:</b> hunt the 3-letter seed word, extend the hit while the score holds, and skip sequences with no seed — trading guaranteed-best for fast, then reading the E-value.",
+      "meta": "~7 min · phone-friendly", "generated": true,
+      "description": "Play the BLASTP idea: find seed words, extend local hits while the score holds, skip seedless sequences, and read E-values at intuition level."
+    }
+  ]
+}

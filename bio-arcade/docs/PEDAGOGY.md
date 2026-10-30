@@ -73,6 +73,28 @@ All modules are single-file HTML (no build step, no dependencies, no tracking, z
 
 **Named simplification.** Antibiotics don't bounce — they block wall-building chemistry while the bacterium grows. The mechanism and the resistance arms race are the true part.
 
+## Module 7 — Alignment Grid (Needleman–Wunsch global alignment)
+
+**Concept.** The optimal end-to-end (global) alignment of two sequences falls out of a dynamic-programming matrix: each cell holds the best score for aligning the prefixes ending there, computed as the maximum over three finished neighbors — diagonal (pair the letters: match/mismatch), above and left (gaps). The traceback through the winning arrows reconstructs the alignment itself.
+
+**Mechanic → biology/CS.** The DP grid is the game board. For each cell the player is shown the three candidate scores and must tap the maximum — the recurrence, executed by hand. Filling the full matrix unlocks the traceback phase: from the bottom-right corner the player taps, cell by cell, the move each value came from, and the alignment assembles letter by letter on the win screen. Two free practice slips, then three slips end the run.
+
+**Objectives.** State what one matrix cell means and name its three sources; distinguish the diagonal move (pairing) from gap moves; explain what the traceback recovers and why NW is exact and global — with Smith–Waterman as the exact local counterpart and BLASTP as the fast heuristic (never "NW inside BLASTP").
+
+**Named simplification.** Training-wheel scoring (match +2, mismatch −1, gap −2) keeps the arithmetic mental; real protein alignment uses BLOSUM62 and affine gaps. The table, the max-of-three rule, and the traceback are the true parts.
+
+## Module 8 — Seed & Extend (BLASTP heuristic local search)
+
+**Concept.** BLASTP trades guaranteed-best for speed: it only aligns where a short query word (3 amino acids for proteins) matches — a seed — then extends the hit outward while the score holds, and skips seedless sequences entirely. The E-value converts a hit score into "expected chance hits this good in a database this size."
+
+**Mechanic → biology/CS.** Three database sequences, one query with its seed word highlighted. The player must (1) tap where the seed sits — or press Skip when no seed exists, the round whose correct move IS the heuristic's defining shortcut; (2) extend the hit left/right with the running score visible; (3) stop at the peak — the X-drop intuition. The win screen is a BLASTP-style hit report ranking the three outcomes, including the skip.
+
+**Objectives.** Explain seeding and the cost of skipping seedless sequences; describe extension as growing a local alignment that stops when the score decays; give the E-value idea at intuition level; name Smith–Waterman as the exact local algorithm BLAST approximates.
+
+**Named simplification.** Real BLASTP seeds on BLOSUM62 "neighborhood words" (near-matches count), uses two-hit triggers and X-drop extension, and computes E-values from Karlin–Altschul statistics. Exact-match seeds, +2/−1 scoring, and stop-at-the-peak are the training-wheel versions.
+
+**The pair is scientifically distinct on purpose.** Module 7 is the exact, global, guaranteed algorithm; Module 8 is the fast, heuristic, local search. Playing them back-to-back is a lesson in algorithmic trade-offs — the sensibility the program wants computing students to bring into biology.
+
 ---
 
 ## Assessment & evidence

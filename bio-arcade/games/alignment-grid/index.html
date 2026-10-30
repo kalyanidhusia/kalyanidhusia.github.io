@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alignment Grid</title>
+<meta name="description" content="Play Needleman-Wunsch global alignment: fill the dynamic-programming matrix, walk the traceback, read the optimal alignment.">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+/* THEME — swap these tokens when the custom theme arrives. Mobile-first. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2933; --muted:#52606D;
+  --line:rgba(0,0,0,.10); --accent:#B04A2F; --accent-soft:#F4E4DD;
+  --good:#2F7D52; --bad:#A83E32; --violet:#8A4BD9;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+    --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+    --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+  --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+  --good:#5FB084; --bad:#D98378; --violet:#B08CE8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  font-size:1.1rem;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:560px;margin:0 auto}
+header{padding-block:18px 10px}
+header h1{font-size:1.5rem;font-weight:700;margin:0}
+header .tag{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+
+.statbar{display:flex;gap:8px;margin:10px 0 8px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 14px;min-width:0}
+.stat .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.stat .val{font-family:var(--mono);font-size:1.25rem;font-weight:600;line-height:1.3}
+.stat.grow{flex:1}
+.hearts .val{letter-spacing:2px}
+.hearts .off{opacity:.2}
+
+.stage{position:relative;display:grid;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);background:var(--surface)}
+.stage>*{grid-area:1/1}
+#board{display:block;width:100%;touch-action:none;align-self:start}
+.overlay{position:relative;min-height:100%;background:var(--bg);opacity:.97;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:20px}
+.overlay h2{font-size:1.35rem;margin:0;line-height:1.25}
+.overlay p{margin:0;font-size:1rem}
+.overlay .muted{color:var(--muted);font-size:.9rem}
+.overlay .learn{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.overlay .learn b{display:block;margin-bottom:6px}
+.overlay .learn ul{margin:0;padding-left:20px}
+.overlay .learn li{margin:.25em 0}
+.overlay ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:1rem}
+.overlay ol li{display:flex;gap:10px}
+.overlay ol .n{color:var(--accent);font-weight:700;flex:none}
+.facts{display:flex;flex-direction:column;gap:8px;font-size:.93rem}
+.facts div{padding-left:12px;border-left:3px solid var(--accent-soft)}
+.btn{border:none;border-radius:999px;padding:13px 26px;font-weight:700;font-size:1.05rem;background:var(--accent);color:#fff;align-self:flex-start}
+.btn.sm{padding:9px 18px;font-size:.92rem}
+.banner{min-height:1.6em;text-align:center;font-weight:700;font-size:1rem;margin-top:10px}
+.banner.ok{color:var(--good)} .banner.no{color:var(--bad)} .banner.vi{color:var(--violet)}
+
+.pad{display:grid;grid-template-columns:repeat(3,76px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:14px}
+.pad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1.5rem;line-height:1;padding:0}
+.pad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.pad .up{grid-column:2}
+.ctrl-note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:8px}
+@media (min-width:700px){.pad{display:none}.ctrl-note.hide-desktop{display:none}}
+
+.quiz{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:20px;margin-top:28px}
+.quiz h2{font-size:1.25rem;margin:0 0 4px}
+.quiz .meta{font-size:.85rem;color:var(--muted)}
+.q-dots{display:flex;gap:6px;margin:14px 0}
+.q-dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.q-dots span.cur{background:var(--accent)}
+.q-dots span.ok{background:var(--good)}
+.q-dots span.no{background:var(--bad)}
+.q .stem{font-weight:700;margin-bottom:12px}
+.q label{display:flex;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:1rem;cursor:pointer;align-items:flex-start}
+.q input{margin-top:4px;accent-color:var(--accent)}
+.q.graded label.right{border-color:var(--good);background:var(--accent-soft)}
+.q.graded label.wrong-pick{border-color:var(--bad)}
+.q .verdict{font-weight:700;margin-top:6px}
+.q .verdict.ok{color:var(--good)} .q .verdict.no{color:var(--bad)}
+.q .explain{color:var(--muted);font-size:.92rem;border-left:3px solid var(--line);padding:2px 12px;margin-top:8px}
+.qbtn{border:none;border-radius:999px;padding:12px 22px;font-weight:700;background:var(--accent);color:#fff;margin-top:10px}
+.score-final{background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:1rem}
+.score-final .code{font-family:var(--mono);display:block;margin-top:6px}
+footer{margin-top:30px;color:var(--muted);font-size:.82rem;max-width:60ch}
+
+.algnpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.algnpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1rem;font-weight:700;min-width:104px;padding:12px 8px;line-height:1.3}
+.algnpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.algnpad button small{display:block;font-weight:400;font-size:.78rem;color:var(--muted)}
+.algnpad button:disabled{opacity:.35;cursor:default}
+.scorekey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.scorekey b{color:var(--ink)}
+.alnout{font-family:var(--mono);font-size:1.05rem;line-height:1.5;white-space:pre;background:var(--accent-soft);border-radius:10px;padding:10px 14px;display:inline-block;margin:10px 0}
+</style>
+<div class="wrap">
+<header><h1>Alignment Grid</h1> <span class="tag">Fill the matrix, walk the traceback</span></header>
+<div class="statbar">
+  <div class="stat grow"><div class="lbl">Cells filled</div><div class="val" id="s1">0</div></div>
+  <div class="stat"><div class="lbl">Score</div><div class="val" id="s2">–</div></div>
+  <div class="stat hearts"><div class="lbl">Slips</div><div class="val" id="hearts">●●●</div></div>
+</div>
+<div class="stage"><canvas id="board" aria-label="Alignment Grid board"></canvas>
+<div class="overlay" id="overlay"><p class="eyebrow">Needleman–Wunsch · global alignment</p><h2>You are the algorithm — fill the table, then walk back.</h2><p>How similar are two protein sequences? Trying every possible alignment explodes exponentially. In 1970 Needleman &amp; Wunsch showed the best <strong>global</strong> (end-to-end) alignment falls out of one table filled cell by cell: each cell holds <strong>the best score aligning the first letters of A with the first letters of B</strong>, and it only needs its three finished neighbors — diagonal (pair the letters, match +2 / mismatch −1), from above or from the left (a gap, −2). The bottom-right cell is the optimal score, and <strong>walking the arrows back</strong> reconstructs the alignment itself. This is dynamic programming — the same idea that powers route planners and spell-checkers.</p><div class="learn"><b>After playing you can…</b><ul><li>Say what one cell of the matrix means, and name the three neighbors it is computed from.</li><li>Explain what the diagonal move is (pairing two letters) versus the up/left moves (gaps).</li><li>Explain what the traceback recovers, and why Needleman–Wunsch is exact and global — unlike BLASTP's fast local search.</li></ul></div><ol><li><span class="n">1</span><span>Each highlighted cell shows its <strong>three candidate scores</strong> — tap the move with the <strong>largest</strong> one. That maximum IS the cell's value.</span></li><li><span class="n">2</span><span>Fill the whole grid. Your first 2 wrong picks are free practice; after that, 3 slips end the run.</span></li><li><span class="n">3</span><span>Then <strong>trace back</strong> from the bottom-right: at each cell, tap the move its value actually came from, and watch the alignment assemble.</span></li></ol><p class="muted">Scoring here is training wheels: match +2, mismatch −1, gap −2. Real protein alignment scores every pair with the BLOSUM62 matrix.</p><button class="btn" id="start-btn">Start aligning</button></div></div>
+<div class="banner" id="banner"></div>
+<div class="algnpad" id="algnpad">
+  <button id="ag-diag" data-m="d" aria-label="Diagonal move">↘ Pair<small id="ag-diag-s">–</small></button>
+  <button id="ag-up" data-m="u" aria-label="Gap from above">↓ Gap<small id="ag-up-s">–</small></button>
+  <button id="ag-left" data-m="l" aria-label="Gap from left">→ Gap<small id="ag-left-s">–</small></button>
+</div>
+<div class="scorekey"><span>Match <b>+2</b></span><span>Mismatch <b>−1</b></span><span>Gap <b>−2</b></span><span>Cell = <b>max of the three</b></span></div>
+<p class="ctrl-note">Tap the biggest candidate · desktop: 1 = diagonal, 2 = above, 3 = left</p><div class="quiz" id="quiz"><h2>Check what you learned</h2><p class="meta">6 questions · pass at 5 · retakes allowed</p><div class="q-dots" id="q-dots"></div><div id="q-stage"></div><div id="q-final"></div></div>
+<footer>Part of the AI in Biomedicine student training pathway · AR INBRE, supported
+by NIGMS of the NIH under award P20 GM103429. Educational content, not medical advice.
+Simplified on purpose: training-wheel scoring (match +2, mismatch −1, gap −2) so the arithmetic stays in your head — real protein alignment scores every pair with the BLOSUM62 matrix and uses affine gap penalties, and local alignment (Smith–Waterman) tweaks the recurrence. The table, the max-of-three rule, and the traceback are the true parts.</footer>
+<script>
+(function(){
+"use strict";
+
+var $=function(s){return document.querySelector(s);};
+var bannerTimer=null;
+function setBanner(msg,cls){
+  var b=$("#banner");b.textContent=msg;b.className="banner "+(cls||"");
+  clearTimeout(bannerTimer);bannerTimer=setTimeout(function(){b.textContent="";},2800);
+}
+function reducedMotion(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
+function isDark(){try{return (document.documentElement.dataset.theme==="dark")||(!document.documentElement.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);}catch(e){return false;}}
+function makeConfetti(W,H){
+  var pal=["#2F8C72","#C98F2C","#4A69C4","#B05A92","#8A4BD9","#B04A2F"],out=[];
+  for(var i=0;i<110;i++)out.push({x:Math.random()*W,y:-10-Math.random()*80,
+    vx:(Math.random()-0.5)*60,vy:60+Math.random()*110,rot:Math.random()*6.3,vr:(Math.random()-0.5)*8,c:pal[i%6]});
+  return out;
+}
+function stepConfetti(list,H,dt){
+  list.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=240*dt;p.rot+=p.vr*dt;});
+  return list.filter(function(p){return p.y<H+40;});
+}
+function drawConfetti(ctx,list){
+  list.forEach(function(p){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+    ctx.fillStyle=p.c;ctx.fillRect(-4,-2.5,8,5);ctx.restore();});
+}
+function rrp(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+var QUIZ=[{"stem": "One cell of the Needleman–Wunsch matrix holds:", "opts": ["The best score for aligning the first i letters of one sequence with the first j of the other", "A random guess refined later", "The number of mutations between the species"], "a": 0, "explain": "That is the dynamic-programming insight: every cell is the answer to a smaller version of the whole problem, built from answers already on the table."}, {"stem": "A cell's value is computed from:", "opts": ["The whole rest of the matrix", "Its three finished neighbors — diagonal, above, and left — taking the maximum", "The longest sequence only"], "a": 1, "explain": "Diagonal + pair score, above + gap, left + gap — the cell takes the largest. You tapped that maximum for every cell on the board."}, {"stem": "The diagonal move means:", "opts": ["Pairing the two letters — a match or a mismatch", "Inserting a gap in both sequences", "Skipping the rest of the row"], "a": 0, "explain": "Diagonal consumes one letter from each sequence and scores the pair. Up and left each consume a letter from only one sequence — that's what a gap is."}, {"stem": "Why fill a table instead of trying every alignment?", "opts": ["Tables are prettier", "Computers cannot try alignments", "The table is m × n cells of arithmetic; the number of possible alignments grows exponentially"], "a": 2, "explain": "Your board was a dozen-odd cells. The alignments it ruled out number in the hundreds — and for real sequences, more than atoms in the universe. Same answer, tiny cost."}, {"stem": "What does the traceback give you that the final score alone does not?", "opts": ["The alignment itself — which letters pair and where the gaps go", "A faster computer", "The protein's 3D structure"], "a": 0, "explain": "The bottom-right cell proves how good the best alignment is; following the arrows back reconstructs what that alignment actually is. You walked it letter by letter."}, {"stem": "Needleman–Wunsch versus BLASTP — which is true?", "opts": ["NW is exact and global (end-to-end); BLASTP is a fast heuristic local search, with Smith–Waterman as the exact local counterpart", "NW is the algorithm running inside BLASTP", "They are the same algorithm with different names"], "a": 0, "explain": "Different tools for different jobs: NW guarantees the best end-to-end alignment of two sequences; BLASTP trades that guarantee for the speed to search millions, and Smith–Waterman is the exact version of the local problem. NW is not 'inside' BLASTP."}];var CODEP="AG";
+
+var MATCH=2,MIS=-1,GAPP=-2;
+var PRESETS=[["ACDE","ACE"],["WYH","WFH"],["MKVL","MKL"],["GAVL","GVL"]];
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=300,dpr=1,g=null;
+function sub(x,y){return x===y?MATCH:MIS;}
+function reset(){
+  var p=PRESETS[Math.floor(Math.random()*PRESETS.length)];
+  var A=p[0],B=p[1],n=A.length,m=B.length,F=[],D=[];
+  for(var i=0;i<=m;i++){F[i]=[];D[i]=[];for(var j=0;j<=n;j++){F[i][j]=null;D[i][j]=null;}}
+  F[0][0]=0;D[0][0]="s";
+  for(var j2=1;j2<=n;j2++){F[0][j2]=GAPP*j2;D[0][j2]="l";}
+  for(var i2=1;i2<=m;i2++){F[i2][0]=GAPP*i2;D[i2][0]="u";}
+  g={A:A,B:B,n:n,m:m,F:F,D:D,ci:1,cj:1,phase:"fill",filled:0,total:m*n,
+     ti:m,tj:n,alnA:"",alnB:"",alnM:"",hearts:3,practice:2,over:false,confetti:null};
+  updHud();updPad();draw();
+}
+function cands(i,j){
+  return {d:g.F[i-1][j-1]+sub(g.A[j-1],g.B[i-1]), u:g.F[i-1][j]+GAPP, l:g.F[i][j-1]+GAPP};
+}
+function bestOf(c){return Math.max(c.d,c.u,c.l);}
+function argBest(c){ if(c.d>=c.u&&c.d>=c.l)return "d"; if(c.u>=c.l)return "u"; return "l"; }
+function updHud(){
+  $("#s1").textContent=g.filled+" / "+g.total;
+  $("#s2").textContent= g.phase==="fill"? "–" : String(g.F[g.m][g.n]);
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function updPad(){
+  var bd=$("#ag-diag"),bu=$("#ag-up"),bl=$("#ag-left");
+  if(g.phase==="fill"){
+    var c=cands(g.ci,g.cj);
+    bd.firstChild.textContent="↘ Pair "+g.A[g.cj-1]+"·"+g.B[g.ci-1];
+    $("#ag-diag-s").textContent=(c.d>=0?"+":"")+c.d;
+    bu.firstChild.textContent="↓ Gap";$("#ag-up-s").textContent=(c.u>=0?"+":"")+c.u;
+    bl.firstChild.textContent="→ Gap";$("#ag-left-s").textContent=(c.l>=0?"+":"")+c.l;
+    bd.disabled=bu.disabled=bl.disabled=false;
+  } else if(g.phase==="trace"){
+    bd.firstChild.textContent="↖ From diagonal";$("#ag-diag-s").textContent="pair";
+    bu.firstChild.textContent="↑ From above";$("#ag-up-s").textContent="gap";
+    bl.firstChild.textContent="← From left";$("#ag-left-s").textContent="gap";
+    bd.disabled=(g.ti===0||g.tj===0);bu.disabled=(g.ti===0);bl.disabled=(g.tj===0);
+  } else { bd.disabled=bu.disabled=bl.disabled=true; }
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","bad");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;g.phase="over";updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Out of slips</p><h2>The matrix defeats guessing — but not arithmetic.</h2><p>Each cell is just the <strong>largest</strong> of three sums: diagonal + pair score, above − 2, left − 2. Work the three numbers, then pick.</p><button class="btn" id="start-btn">Try again</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"bad");
+}
+function pick(mv){
+  if(!g||g.over)return;
+  if(g.phase==="fill"){
+    var c=cands(g.ci,g.cj),best=bestOf(c);
+    if(c[mv]===best){
+      g.F[g.ci][g.cj]=best;g.D[g.ci][g.cj]=argBest(c);g.filled++;
+      setBanner("Cell = "+best+" ✓","good");
+      if(g.cj<g.n)g.cj++;else if(g.ci<g.m){g.ci++;g.cj=1;}
+      if(g.filled>=g.total){g.phase="trace";g.ti=g.m;g.tj=g.n;
+        setBanner("Matrix complete — optimal score "+g.F[g.m][g.n]+". Now trace back from the corner.","good");}
+      updHud();updPad();draw();
+    } else slip("Not the max — the cell takes the LARGEST of the three ("+best+")");
+  } else if(g.phase==="trace"){
+    var want=g.D[g.ti][g.tj];
+    if(want==="s"){return;}
+    if(mv===want){
+      if(mv==="d"){g.alnA=g.A[g.tj-1]+g.alnA;g.alnB=g.B[g.ti-1]+g.alnB;
+        g.alnM=(g.A[g.tj-1]===g.B[g.ti-1]?"|":"·")+g.alnM;g.ti--;g.tj--;}
+      else if(mv==="u"){g.alnA="-"+g.alnA;g.alnB=g.B[g.ti-1]+g.alnB;g.alnM=" "+g.alnM;g.ti--;}
+      else{g.alnA=g.A[g.tj-1]+g.alnA;g.alnB="-"+g.alnB;g.alnM=" "+g.alnM;g.tj--;}
+      if(g.ti===0&&g.tj===0)win();else{setBanner("Step ✓","good");updPad();draw();}
+    } else slip("That's not where "+g.F[g.ti][g.tj]+" came from — recompute the three candidates");
+  }
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion())g.confetti=makeConfetti(W,H),animConfetti();
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Optimal alignment found</p><h2>Score '+g.F[g.m][g.n]+' — and you can prove nothing beats it.</h2>'+
+    '<div class="alnout">'+g.alnA+"\n"+g.alnM+"\n"+g.alnB+'</div>'+
+    '<p>Every alignment of these sequences scores at most <strong>'+g.F[g.m][g.n]+'</strong> — that is what filling the table guarantees, with only '+g.total+' cells of arithmetic instead of exponentially many alignments. <strong>Needleman–Wunsch is exact and global</strong>: end to end. BLASTP plays a different game — fast, heuristic, local — and that is the next module, Seed &amp; Extend.</p>'+
+    '<button class="btn" id="start-btn">Align another pair</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(w*0.84);
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function draw(){
+  if(!g)return;
+  var ink=isDark()?"#E8EAED":"#1F2933",muted=isDark()?"#9AA5B1":"#52606D",
+      line=isDark()?"rgba(255,255,255,.18)":"rgba(0,0,0,.14)",
+      acc=isDark()?"#D68264":"#B04A2F",good=isDark()?"#5FB084":"#2F7D52",
+      soft=isDark()?"#3A251D":"#F4E4DD";
+  ctx.clearRect(0,0,W,H);
+  var cols=g.n+2,rows=g.m+2;
+  var cell=Math.min(Math.floor((W-24)/cols),Math.floor((H-24)/rows));
+  var ox=Math.round((W-cell*cols)/2)+cell,oy=18+cell;
+  ctx.font="700 "+Math.round(cell*0.42)+"px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  for(var j=0;j<g.n;j++){ctx.fillStyle=acc;ctx.fillText(g.A[j],ox+(j+1)*cell+cell/2,oy-cell/2-2);}
+  for(var i=0;i<g.m;i++){ctx.fillStyle=acc;ctx.fillText(g.B[i],ox-cell/2-2,oy+(i+1)*cell+cell/2);}
+  for(var ii=0;ii<=g.m;ii++)for(var jj=0;jj<=g.n;jj++){
+    var x=ox+jj*cell,y=oy+ii*cell;
+    var cur=(g.phase==="fill"&&ii===g.ci&&jj===g.cj);
+    var tr=(g.phase!=="fill"&&ii===g.ti&&jj===g.tj);
+    ctx.fillStyle= cur? soft : tr? soft : "transparent";
+    if(cur||tr){rrp(ctx,x+2,y+2,cell-4,cell-4,6);ctx.fill();}
+    ctx.strokeStyle=line;ctx.lineWidth=1;ctx.strokeRect(x,y,cell,cell);
+    var v=g.F[ii][jj];
+    if(v!==null){
+      ctx.fillStyle= (ii===0||jj===0)? muted : ink;
+      ctx.font=(cur||tr?"800 ":"600 ")+Math.round(cell*0.38)+"px "+getComputedStyle(document.body).fontFamily;
+      ctx.fillText(String(v),x+cell/2,y+cell/2);
+      var d=g.D[ii][jj];
+      if(d&&d!=="s"&&ii>0&&jj>0){ctx.fillStyle=good;ctx.font="600 "+Math.round(cell*0.26)+"px sans-serif";
+        ctx.fillText(d==="d"?"↖":d==="u"?"↑":"←",x+cell*0.22,y+cell*0.24);}
+    } else if(cur){ctx.fillStyle=acc;ctx.font="800 "+Math.round(cell*0.38)+"px sans-serif";ctx.fillText("?",x+cell/2,y+cell/2);}
+  }
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.AGstate=function(){return g?{phase:g.phase,ci:g.ci,cj:g.cj,ti:g.ti,tj:g.tj,filled:g.filled,total:g.total,hearts:g.hearts,over:g.over,F:g.F,D:g.D,A:g.A,B:g.B}:null;};
+$("#algnpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled)pick(b.getAttribute("data-m"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="1")pick("d");else if(e.key==="2")pick("u");else if(e.key==="3")pick("l");
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+
+/* ---------- shared quiz engine ---------- */
+var qi=0,qres=[];
+function qDots(){
+  var d=$("#q-dots");d.innerHTML="";
+  QUIZ.forEach(function(_,i){
+    var s=document.createElement("span");
+    if(i<qres.length)s.className=qres[i]?"ok":"no";
+    else if(i===qi)s.className="cur";
+    d.appendChild(s);
+  });
+}
+function qRender(){
+  var q=QUIZ[qi],st=$("#q-stage");
+  st.innerHTML='<div class="q"><div class="stem">Q'+(qi+1)+'. '+q.stem+'</div>'+
+    q.opts.map(function(o,i){return '<label><input type="radio" name="qq" value="'+i+'" id="qq'+qi+'o'+i+'"><span>'+o+'</span></label>';}).join("")+
+    '<div class="fb"></div><button class="qbtn" id="q-check">Check answer</button></div>';
+  $("#q-check").addEventListener("click",qCheck);
+  qDots();
+}
+function qCheck(){
+  var q=QUIZ[qi],sel=document.querySelector('input[name="qq"]:checked');
+  var el=$("#q-stage .q"),fb=el.querySelector(".fb");
+  if(!sel){fb.innerHTML='<div class="verdict no">Pick an answer first.</div>';return;}
+  var pick=+sel.value,ok=pick===q.a;
+  qres.push(ok);el.classList.add("graded");
+  el.querySelectorAll("label").forEach(function(l,i){
+    l.querySelector("input").disabled=true;
+    if(i===q.a)l.classList.add("right");else if(i===pick)l.classList.add("wrong-pick");
+  });
+  fb.innerHTML='<div class="verdict '+(ok?"ok":"no")+'">'+(ok?"Correct.":"Not quite — see the highlighted answer.")+'</div><div class="explain">'+q.explain+'</div>';
+  var btn=el.querySelector(".qbtn");
+  btn.textContent=qi===QUIZ.length-1?"See my score":"Next question";
+  btn.removeEventListener("click",qCheck);
+  btn.addEventListener("click",function(){
+    if(qi===QUIZ.length-1)qFinish();else{qi++;qRender();}
+  });
+  qDots();
+}
+function qFinish(){
+  var score=qres.filter(Boolean).length,pass=score>=5;
+  var s=(CODEP+"|"+score+"|"+new Date().toISOString().slice(0,10));
+  var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;
+  $("#q-stage").innerHTML="";
+  $("#q-final").innerHTML='<div class="score-final"><strong>'+score+' / 6'+(pass?' — passed':'')+'</strong>'+
+    (pass?' Concept locked in.':' Replay the game, reread the win-screen facts, and try again — attempts are unlimited.')+
+    '<span class="code">verification code: '+CODEP+'-'+score+'-'+h.toString(36).toUpperCase()+'</span>'+
+    '<button class="qbtn" id="q-retry">Try again</button></div>';
+  $("#q-retry").addEventListener("click",function(){qi=0;qres=[];$("#q-final").innerHTML="";qRender();});
+  qDots();
+}
+
+qRender();
+})();
+</script>
+
+</body>
+</html>

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light"><!-- data-theme="light" pins the arcade to the site's light look; remove it to re-enable auto dark mode -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bio Arcade — AR INBRE</title>
-<meta name="description" content="Six short browser games that each teach one biomedical concept: flashcard, play, quiz. Built under AR INBRE for Arkansas undergraduates.">
+<meta name="description" content="Eight short browser games that each teach one biomedical or bioinformatics concept: flashcard, play, quiz. Built under AR INBRE for Arkansas undergraduates.">
 <style>
 /* ============================================================
    THEME — swap these tokens to restyle the whole hub.
@@ -22,7 +22,7 @@
   --radius:14px;
 }
 @media (prefers-color-scheme: dark){
-  :root{
+  :root:not([data-theme="light"]){
     --bg:#15181C; --ink:#ECEFF2; --muted:#9AA5B1;
     --accent:#D97757; --accent-soft:#3A2A24; --violet:#A97BE8;
     --line:rgba(255,255,255,.14); --card:#1D2126;
@@ -40,8 +40,9 @@ body{
 header h1{font-size:1.7rem;line-height:1.25;margin:0 0 6px}
 .eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 10px}
 .lede{color:var(--muted);margin:0 0 8px;max-width:58ch}
-.loop{display:inline-block;background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:5px 14px;font-size:.85rem;margin:10px 0 26px}
+.loop{display:inline-block;background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:5px 14px;font-size:.85rem;margin:10px 0 10px}
 .loop b{color:var(--accent)}
+.cat{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:28px 0 12px;padding-top:20px;border-top:1px solid var(--line)}
 .grid{display:grid;grid-template-columns:1fr;gap:14px}
 @media (min-width:560px){.grid{grid-template-columns:1fr 1fr}}
 .card{
@@ -70,10 +71,11 @@ a{color:var(--accent)}
   <header>
     <p class="eyebrow">AR INBRE · Student Training</p>
     <h1>Bio Arcade</h1>
-    <p class="lede">Six short games. Each one teaches a single biomedical concept — the game mechanic <em>is</em> the biology, not decoration on top of it.</p>
+    <p class="lede">Eight short games. Each one teaches a single biomedical or bioinformatics concept — the game mechanic <em>is</em> the science, not decoration on top of it.</p>
     <span class="loop"><b>Learn</b> (flashcard) → <b>Play</b> (the mechanic is the concept) → <b>Check</b> (6-question quiz, pass at 5)</span>
   </header>
 
+  <h2 class="cat">Molecular biology</h2>
   <div class="grid">
     <div class="card">
       <span class="mod">Module 1 · Central Dogma I</span>
@@ -82,7 +84,6 @@ a{color:var(--accent)}
       <span class="meta">~6 min · phone-friendly</span>
       <a class="play" href="games/polymerase-runner/">Play</a>
     </div>
-
     <div class="card">
       <span class="mod">Module 2 · Central Dogma II</span>
       <h2>Ribosome Snake</h2>
@@ -90,7 +91,6 @@ a{color:var(--accent)}
       <span class="meta">~6 min · phone-friendly</span>
       <a class="play" href="games/ribosome-snake/">Play</a>
     </div>
-
     <div class="card">
       <span class="mod">Module 3 · Protein Folding</span>
       <h2>Fold-Tris</h2>
@@ -98,7 +98,9 @@ a{color:var(--accent)}
       <span class="meta">~6 min · phone-friendly</span>
       <a class="play" href="games/fold-tris/">Play</a>
     </div>
-
+  </div>
+  <h2 class="cat">Body & medicine</h2>
+  <div class="grid">
     <div class="card">
       <span class="mod">Module 4 · Immunology</span>
       <h2>Phagocyte Patrol</h2>
@@ -106,7 +108,6 @@ a{color:var(--accent)}
       <span class="meta">~6 min · phone-friendly</span>
       <a class="play" href="games/phagocyte-patrol/">Play</a>
     </div>
-
     <div class="card">
       <span class="mod">Module 5 · Pharmacology</span>
       <h2>Drug Flight</h2>
@@ -114,7 +115,6 @@ a{color:var(--accent)}
       <span class="meta">~5 min · phone-friendly</span>
       <a class="play" href="games/drug-flight/">Play</a>
     </div>
-
     <div class="card">
       <span class="mod">Module 6 · Microbiology</span>
       <h2>Lysis Lab</h2>
@@ -123,11 +123,28 @@ a{color:var(--accent)}
       <a class="play" href="games/lysis-lab/">Play</a>
     </div>
   </div>
+  <h2 class="cat">Bioinformatics algorithms</h2>
+  <div class="grid">
+    <div class="card">
+      <span class="mod">Module 7 · Sequence Alignment I</span>
+      <h2>Alignment Grid</h2>
+      <p class="teach"><b>Needleman–Wunsch:</b> fill the dynamic-programming matrix cell by cell — each cell is the best score so far — then walk the traceback and read the optimal global alignment you just computed.</p>
+      <span class="meta">~7 min · phone-friendly</span>
+      <a class="play" href="games/alignment-grid/">Play</a>
+    </div>
+    <div class="card">
+      <span class="mod">Module 8 · Sequence Alignment II</span>
+      <h2>Seed &amp; Extend</h2>
+      <p class="teach"><b>Why BLASTP is fast:</b> hunt the 3-letter seed word, extend the hit while the score holds, and skip sequences with no seed — trading guaranteed-best for fast, then reading the E-value.</p>
+      <span class="meta">~7 min · phone-friendly</span>
+      <a class="play" href="games/seed-extend/">Play</a>
+    </div>
+  </div>
 
   <footer>
     <p><b>Arkansas INBRE</b> — supported by the National Institute of General Medical Sciences of the NIH under grant P20&nbsp;GM103429.</p>
     <p>Educational content, not medical advice. Each game states its simplifications; the mechanics model one concept, not full biological reality.</p>
-    <p>Part of the <a href="https://kalyanidhusia.github.io/student_training/">AR INBRE student training</a> materials · v1.0</p>
+    <p>Part of the <a href="https://kalyanidhusia.github.io/student_training/">AR INBRE student training</a> materials · v1.1 · catalog generated from games.json</p>
   </footer>
 </div>
 </body>

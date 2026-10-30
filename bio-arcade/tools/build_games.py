@@ -1503,32 +1503,596 @@ $("#start-btn").addEventListener("click",start);
   ],
   simplification="Simplified on purpose: antibiotics don’t bounce off paddles — they block wall-building chemistry as the bacterium grows. The mechanism, the resistance enzyme, and the inhibitor combo are the true parts.")
 
-EXPORT_DESC = {
- "poly":"Play transcription: pair bases by hydrogen bonds, shatter T into U at the transcription zone, and build an mRNA.",
- "fold":"Play protein folding: bury the hydrophobic core, avoid aggregation, meet the chaperones.",
- "phago":"Play innate immunity: patrol the tissue, grab the antibody power-up, engulf opsonized pathogens.",
- "drug":"Play pharmacokinetics: dose against clearance and stay inside the therapeutic window.",
- "lysis":"Play antibiotic mechanisms: break the peptidoglycan wall, beat beta-lactamase with clavulanate."}
+# ============================================================ ALIGNMENT GRID
+GAMES["align"] = dict(
+  title="Alignment Grid", tag="Fill the matrix, walk the traceback",
+  codep="AG",
+  extra_css="""
+.algnpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.algnpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1rem;font-weight:700;min-width:104px;padding:12px 8px;line-height:1.3}
+.algnpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.algnpad button small{display:block;font-weight:400;font-size:.78rem;color:var(--muted)}
+.algnpad button:disabled{opacity:.35;cursor:default}
+.scorekey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.scorekey b{color:var(--ink)}
+.alnout{font-family:var(--mono);font-size:1.05rem;line-height:1.5;white-space:pre;background:var(--accent-soft);border-radius:10px;padding:10px 14px;display:inline-block;margin:10px 0}
+""",
+  hud=STD_HUD.replace("{L1}","Cells filled").replace("{V1}","0")
+            .replace("{L2}","Score").replace("{V2}","–")
+            .replace("{L3}","Slips"),
+  stage_inner=flashcard(
+    "Needleman–Wunsch · global alignment",
+    "You are the algorithm — fill the table, then walk back.",
+    "How similar are two protein sequences? Trying every possible alignment explodes exponentially. In 1970 Needleman &amp; Wunsch showed the best <strong>global</strong> (end-to-end) alignment falls out of one table filled cell by cell: each cell holds <strong>the best score aligning the first letters of A with the first letters of B</strong>, and it only needs its three finished neighbors — diagonal (pair the letters, match +2 / mismatch −1), from above or from the left (a gap, −2). The bottom-right cell is the optimal score, and <strong>walking the arrows back</strong> reconstructs the alignment itself. This is dynamic programming — the same idea that powers route planners and spell-checkers.",
+    ["Say what one cell of the matrix means, and name the three neighbors it is computed from.",
+     "Explain what the diagonal move is (pairing two letters) versus the up/left moves (gaps).",
+     "Explain what the traceback recovers, and why Needleman–Wunsch is exact and global — unlike BLASTP's fast local search."],
+    ["Each highlighted cell shows its <strong>three candidate scores</strong> — tap the move with the <strong>largest</strong> one. That maximum IS the cell's value.",
+     "Fill the whole grid. Your first 2 wrong picks are free practice; after that, 3 slips end the run.",
+     "Then <strong>trace back</strong> from the bottom-right: at each cell, tap the move its value actually came from, and watch the alignment assemble."],
+    "Scoring here is training wheels: match +2, mismatch −1, gap −2. Real protein alignment scores every pair with the BLOSUM62 matrix.",
+    "Start aligning"),
+  controls="""<div class="algnpad" id="algnpad">
+  <button id="ag-diag" data-m="d" aria-label="Diagonal move">↘ Pair<small id="ag-diag-s">–</small></button>
+  <button id="ag-up" data-m="u" aria-label="Gap from above">↓ Gap<small id="ag-up-s">–</small></button>
+  <button id="ag-left" data-m="l" aria-label="Gap from left">→ Gap<small id="ag-left-s">–</small></button>
+</div>
+<div class="scorekey"><span>Match <b>+2</b></span><span>Mismatch <b>−1</b></span><span>Gap <b>−2</b></span><span>Cell = <b>max of the three</b></span></div>
+<p class="ctrl-note">Tap the biggest candidate · desktop: 1 = diagonal, 2 = above, 3 = left</p>""",
+  js=r"""
+var MATCH=2,MIS=-1,GAPP=-2;
+var PRESETS=[["ACDE","ACE"],["WYH","WFH"],["MKVL","MKL"],["GAVL","GVL"]];
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=300,dpr=1,g=null;
+function sub(x,y){return x===y?MATCH:MIS;}
+function reset(){
+  var p=PRESETS[Math.floor(Math.random()*PRESETS.length)];
+  var A=p[0],B=p[1],n=A.length,m=B.length,F=[],D=[];
+  for(var i=0;i<=m;i++){F[i]=[];D[i]=[];for(var j=0;j<=n;j++){F[i][j]=null;D[i][j]=null;}}
+  F[0][0]=0;D[0][0]="s";
+  for(var j2=1;j2<=n;j2++){F[0][j2]=GAPP*j2;D[0][j2]="l";}
+  for(var i2=1;i2<=m;i2++){F[i2][0]=GAPP*i2;D[i2][0]="u";}
+  g={A:A,B:B,n:n,m:m,F:F,D:D,ci:1,cj:1,phase:"fill",filled:0,total:m*n,
+     ti:m,tj:n,alnA:"",alnB:"",alnM:"",hearts:3,practice:2,over:false,confetti:null};
+  updHud();updPad();draw();
+}
+function cands(i,j){
+  return {d:g.F[i-1][j-1]+sub(g.A[j-1],g.B[i-1]), u:g.F[i-1][j]+GAPP, l:g.F[i][j-1]+GAPP};
+}
+function bestOf(c){return Math.max(c.d,c.u,c.l);}
+function argBest(c){ if(c.d>=c.u&&c.d>=c.l)return "d"; if(c.u>=c.l)return "u"; return "l"; }
+function updHud(){
+  $("#s1").textContent=g.filled+" / "+g.total;
+  $("#s2").textContent= g.phase==="fill"? "–" : String(g.F[g.m][g.n]);
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function updPad(){
+  var bd=$("#ag-diag"),bu=$("#ag-up"),bl=$("#ag-left");
+  if(g.phase==="fill"){
+    var c=cands(g.ci,g.cj);
+    bd.firstChild.textContent="↘ Pair "+g.A[g.cj-1]+"·"+g.B[g.ci-1];
+    $("#ag-diag-s").textContent=(c.d>=0?"+":"")+c.d;
+    bu.firstChild.textContent="↓ Gap";$("#ag-up-s").textContent=(c.u>=0?"+":"")+c.u;
+    bl.firstChild.textContent="→ Gap";$("#ag-left-s").textContent=(c.l>=0?"+":"")+c.l;
+    bd.disabled=bu.disabled=bl.disabled=false;
+  } else if(g.phase==="trace"){
+    bd.firstChild.textContent="↖ From diagonal";$("#ag-diag-s").textContent="pair";
+    bu.firstChild.textContent="↑ From above";$("#ag-up-s").textContent="gap";
+    bl.firstChild.textContent="← From left";$("#ag-left-s").textContent="gap";
+    bd.disabled=(g.ti===0||g.tj===0);bu.disabled=(g.ti===0);bl.disabled=(g.tj===0);
+  } else { bd.disabled=bu.disabled=bl.disabled=true; }
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","bad");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;g.phase="over";updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Out of slips</p><h2>The matrix defeats guessing — but not arithmetic.</h2><p>Each cell is just the <strong>largest</strong> of three sums: diagonal + pair score, above − 2, left − 2. Work the three numbers, then pick.</p><button class="btn" id="start-btn">Try again</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"bad");
+}
+function pick(mv){
+  if(!g||g.over)return;
+  if(g.phase==="fill"){
+    var c=cands(g.ci,g.cj),best=bestOf(c);
+    if(c[mv]===best){
+      g.F[g.ci][g.cj]=best;g.D[g.ci][g.cj]=argBest(c);g.filled++;
+      setBanner("Cell = "+best+" ✓","good");
+      if(g.cj<g.n)g.cj++;else if(g.ci<g.m){g.ci++;g.cj=1;}
+      if(g.filled>=g.total){g.phase="trace";g.ti=g.m;g.tj=g.n;
+        setBanner("Matrix complete — optimal score "+g.F[g.m][g.n]+". Now trace back from the corner.","good");}
+      updHud();updPad();draw();
+    } else slip("Not the max — the cell takes the LARGEST of the three ("+best+")");
+  } else if(g.phase==="trace"){
+    var want=g.D[g.ti][g.tj];
+    if(want==="s"){return;}
+    if(mv===want){
+      if(mv==="d"){g.alnA=g.A[g.tj-1]+g.alnA;g.alnB=g.B[g.ti-1]+g.alnB;
+        g.alnM=(g.A[g.tj-1]===g.B[g.ti-1]?"|":"·")+g.alnM;g.ti--;g.tj--;}
+      else if(mv==="u"){g.alnA="-"+g.alnA;g.alnB=g.B[g.ti-1]+g.alnB;g.alnM=" "+g.alnM;g.ti--;}
+      else{g.alnA=g.A[g.tj-1]+g.alnA;g.alnB="-"+g.alnB;g.alnM=" "+g.alnM;g.tj--;}
+      if(g.ti===0&&g.tj===0)win();else{setBanner("Step ✓","good");updPad();draw();}
+    } else slip("That's not where "+g.F[g.ti][g.tj]+" came from — recompute the three candidates");
+  }
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion())g.confetti=makeConfetti(W,H),animConfetti();
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Optimal alignment found</p><h2>Score '+g.F[g.m][g.n]+' — and you can prove nothing beats it.</h2>'+
+    '<div class="alnout">'+g.alnA+"\n"+g.alnM+"\n"+g.alnB+'</div>'+
+    '<p>Every alignment of these sequences scores at most <strong>'+g.F[g.m][g.n]+'</strong> — that is what filling the table guarantees, with only '+g.total+' cells of arithmetic instead of exponentially many alignments. <strong>Needleman–Wunsch is exact and global</strong>: end to end. BLASTP plays a different game — fast, heuristic, local — and that is the next module, Seed &amp; Extend.</p>'+
+    '<button class="btn" id="start-btn">Align another pair</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(w*0.84);
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function draw(){
+  if(!g)return;
+  var ink=isDark()?"#E8EAED":"#1F2933",muted=isDark()?"#9AA5B1":"#52606D",
+      line=isDark()?"rgba(255,255,255,.18)":"rgba(0,0,0,.14)",
+      acc=isDark()?"#D68264":"#B04A2F",good=isDark()?"#5FB084":"#2F7D52",
+      soft=isDark()?"#3A251D":"#F4E4DD";
+  ctx.clearRect(0,0,W,H);
+  var cols=g.n+2,rows=g.m+2;
+  var cell=Math.min(Math.floor((W-24)/cols),Math.floor((H-24)/rows));
+  var ox=Math.round((W-cell*cols)/2)+cell,oy=18+cell;
+  ctx.font="700 "+Math.round(cell*0.42)+"px "+getComputedStyle(document.body).fontFamily;
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  for(var j=0;j<g.n;j++){ctx.fillStyle=acc;ctx.fillText(g.A[j],ox+(j+1)*cell+cell/2,oy-cell/2-2);}
+  for(var i=0;i<g.m;i++){ctx.fillStyle=acc;ctx.fillText(g.B[i],ox-cell/2-2,oy+(i+1)*cell+cell/2);}
+  for(var ii=0;ii<=g.m;ii++)for(var jj=0;jj<=g.n;jj++){
+    var x=ox+jj*cell,y=oy+ii*cell;
+    var cur=(g.phase==="fill"&&ii===g.ci&&jj===g.cj);
+    var tr=(g.phase!=="fill"&&ii===g.ti&&jj===g.tj);
+    ctx.fillStyle= cur? soft : tr? soft : "transparent";
+    if(cur||tr){rrp(ctx,x+2,y+2,cell-4,cell-4,6);ctx.fill();}
+    ctx.strokeStyle=line;ctx.lineWidth=1;ctx.strokeRect(x,y,cell,cell);
+    var v=g.F[ii][jj];
+    if(v!==null){
+      ctx.fillStyle= (ii===0||jj===0)? muted : ink;
+      ctx.font=(cur||tr?"800 ":"600 ")+Math.round(cell*0.38)+"px "+getComputedStyle(document.body).fontFamily;
+      ctx.fillText(String(v),x+cell/2,y+cell/2);
+      var d=g.D[ii][jj];
+      if(d&&d!=="s"&&ii>0&&jj>0){ctx.fillStyle=good;ctx.font="600 "+Math.round(cell*0.26)+"px sans-serif";
+        ctx.fillText(d==="d"?"↖":d==="u"?"↑":"←",x+cell*0.22,y+cell*0.24);}
+    } else if(cur){ctx.fillStyle=acc;ctx.font="800 "+Math.round(cell*0.38)+"px sans-serif";ctx.fillText("?",x+cell/2,y+cell/2);}
+  }
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.AGstate=function(){return g?{phase:g.phase,ci:g.ci,cj:g.cj,ti:g.ti,tj:g.tj,filled:g.filled,total:g.total,hearts:g.hearts,over:g.over,F:g.F,D:g.D,A:g.A,B:g.B}:null;};
+$("#algnpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled)pick(b.getAttribute("data-m"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="1")pick("d");else if(e.key==="2")pick("u");else if(e.key==="3")pick("l");
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+""",
+  quiz=[
+   dict(stem="One cell of the Needleman–Wunsch matrix holds:",opts=["The best score for aligning the first i letters of one sequence with the first j of the other","A random guess refined later","The number of mutations between the species"],a=0,
+        explain="That is the dynamic-programming insight: every cell is the answer to a smaller version of the whole problem, built from answers already on the table."),
+   dict(stem="A cell's value is computed from:",opts=["The whole rest of the matrix","Its three finished neighbors — diagonal, above, and left — taking the maximum","The longest sequence only"],a=1,
+        explain="Diagonal + pair score, above + gap, left + gap — the cell takes the largest. You tapped that maximum for every cell on the board."),
+   dict(stem="The diagonal move means:",opts=["Pairing the two letters — a match or a mismatch","Inserting a gap in both sequences","Skipping the rest of the row"],a=0,
+        explain="Diagonal consumes one letter from each sequence and scores the pair. Up and left each consume a letter from only one sequence — that's what a gap is."),
+   dict(stem="Why fill a table instead of trying every alignment?",opts=["Tables are prettier","Computers cannot try alignments","The table is m × n cells of arithmetic; the number of possible alignments grows exponentially"],a=2,
+        explain="Your board was a dozen-odd cells. The alignments it ruled out number in the hundreds — and for real sequences, more than atoms in the universe. Same answer, tiny cost."),
+   dict(stem="What does the traceback give you that the final score alone does not?",opts=["The alignment itself — which letters pair and where the gaps go","A faster computer","The protein's 3D structure"],a=0,
+        explain="The bottom-right cell proves how good the best alignment is; following the arrows back reconstructs what that alignment actually is. You walked it letter by letter."),
+   dict(stem="Needleman–Wunsch versus BLASTP — which is true?",opts=["NW is exact and global (end-to-end); BLASTP is a fast heuristic local search, with Smith–Waterman as the exact local counterpart","NW is the algorithm running inside BLASTP","They are the same algorithm with different names"],a=0,
+        explain="Different tools for different jobs: NW guarantees the best end-to-end alignment of two sequences; BLASTP trades that guarantee for the speed to search millions, and Smith–Waterman is the exact version of the local problem. NW is not 'inside' BLASTP."),
+  ],
+  simplification="Simplified on purpose: training-wheel scoring (match +2, mismatch −1, gap −2) so the arithmetic stays in your head — real protein alignment scores every pair with the BLOSUM62 matrix and uses affine gap penalties, and local alignment (Smith–Waterman) tweaks the recurrence. The table, the max-of-three rule, and the traceback are the true parts.")
+
+# ============================================================ SEED & EXTEND
+GAMES["seed"] = dict(
+  title="Seed & Extend", tag="How BLASTP searches millions, fast",
+  codep="SE",
+  extra_css="""
+.seedpad{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.seedpad button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;font-size:1rem;font-weight:700;min-width:104px;padding:12px 8px;line-height:1.3}
+.seedpad button:active{background:var(--accent-soft);border-color:var(--accent)}
+.seedpad button small{display:block;font-weight:400;font-size:.78rem;color:var(--muted)}
+.seedpad button:disabled{opacity:.35;cursor:default}
+.seedpad .skipb{border-color:var(--violet);color:var(--violet)}
+.scorekey{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.88rem;color:var(--muted);justify-content:center}
+.scorekey b{color:var(--ink)}
+.hitrep{font-family:var(--mono);font-size:.95rem;line-height:1.6;white-space:pre;background:var(--accent-soft);border-radius:10px;padding:10px 14px;display:inline-block;margin:10px 0;text-align:left}
+""",
+  hud=STD_HUD.replace("{L1}","Database sequence").replace("{V1}","1 / 3")
+            .replace("{L2}","Hit score").replace("{V2}","0")
+            .replace("{L3}","Slips"),
+  stage_inner=flashcard(
+    "BLASTP · heuristic local search",
+    "You are BLAST — too busy for the full matrix.",
+    "A protein database holds millions of sequences. Filling a Needleman–Wunsch table against every one would take forever, so <strong>BLASTP cheats, brilliantly</strong>: it chops the query into short <strong>words</strong> (3 amino acids), looks only where a word already matches — a <strong>seed</strong> — and <strong>extends</strong> outward from it while the score stays good. No seed? The sequence is <strong>skipped entirely</strong>, even if a decent alignment was hiding there. That is the trade: guaranteed-best is swapped for fast, and the <strong>E-value</strong> then says how many hits this good you'd expect by pure chance.",
+    ["Explain seeding: why matching a short word first makes search fast, and what happens to sequences with no seed.",
+     "Explain extension: grow the hit outward while the score holds, and stop when it decays — a local alignment.",
+     "Give the E-value idea — expected chance hits at this score — and name Smith–Waterman as the exact local counterpart."],
+    ["<strong>Find the seed:</strong> the query's 3-letter word glows gold — tap where those 3 letters sit in the database sequence. No seed anywhere? Hit <strong>Skip</strong>: BLAST wouldn't look twice.",
+     "<strong>Extend</strong> the hit left and right: matches +2, mismatches −1. Watch the running score.",
+     "<strong>Stop at the peak.</strong> Extending into junk bleeds points — stopping while the score is high is exactly BLAST's drop-off rule. 2 free practice taps, then 3 slips end the run."],
+    "Three database sequences, one query. Rack up the best total hit score you can.",
+    "Start searching"),
+  controls="""<div class="seedpad" id="seedpad">
+  <button id="se-left" data-m="left" aria-label="Extend left">⟵ Extend<small id="se-left-s">–</small></button>
+  <button id="se-stop" data-m="stop" aria-label="Stop and lock hit">✓ Stop<small>lock the hit</small></button>
+  <button id="se-right" data-m="right" aria-label="Extend right">Extend ⟶<small id="se-right-s">–</small></button>
+  <button id="se-skip" data-m="skip" class="skipb" aria-label="Skip sequence">Skip<small>no seed here</small></button>
+</div>
+<div class="scorekey"><span>Match <b>+2</b></span><span>Mismatch <b>−1</b></span><span>Seed = <b>3 exact letters</b></span></div>
+<p class="ctrl-note">Tap the database letters to place the seed · then extend / stop · S = skip</p>""",
+  js=r"""
+var MATCH=2,MIS=-1;
+var QSEQ="KMLWAVFSD",SEED_AT=2,SEEDW=QSEQ.substr(SEED_AT,3);
+var ROUNDS=[
+ {db:"GPLWAVFNT",seedAt:2,hint:"a strong hit — extend while it holds"},
+ {db:"DNLWATRGE",seedAt:2,hint:"a weak hit — know when to stop"},
+ {db:"QRSTGENDH",seedAt:-1,hint:"no seed — what does BLAST do?"}
+];
+var canvas=$("#board"),ctx=canvas.getContext("2d");
+var W=360,H=300,dpr=1,g=null;
+function reset(){
+  g={r:0,phase:"seek",hearts:3,practice:2,total:0,hits:[],over:false,confetti:null};
+  loadRound();updHud();updPad();draw();
+}
+function loadRound(){
+  var R=ROUNDS[g.r];
+  g.db=R.db;g.seedAt=R.seedAt;g.phase="seek";
+  g.L=0;g.Rr=0;g.score=0;g.peak=0;g.locked=false;
+  updHud();updPad();draw();
+  setBanner("Sequence "+(g.r+1)+" of 3: "+R.hint,"good");
+}
+function updHud(){
+  $("#s1").textContent=(g.r+1)+" / 3";
+  $("#s2").textContent=String(g.phase==="seek"?g.total:g.total+g.score);
+  var h=g.hearts;$("#hearts").innerHTML="●".repeat(h)+'<span class="off">'+"●".repeat(3-h)+"</span>";
+}
+function extDelta(side){
+  /* next pair when extending: align QSEQ against db anchored at seed */
+  var off=g.seedAt-SEED_AT; /* db index = query index + off */
+  if(side==="left"){var qi=SEED_AT-g.L-1,di=qi+off;
+    if(qi<0||di<0)return null;return {q:QSEQ[qi],d:g.db[di],v:QSEQ[qi]===g.db[di]?MATCH:MIS};}
+  var qj=SEED_AT+3+g.Rr,dj=qj+off;
+  if(qj>=QSEQ.length||dj>=g.db.length)return null;
+  return {q:QSEQ[qj],d:g.db[dj],v:QSEQ[qj]===g.db[dj]?MATCH:MIS};
+}
+function updPad(){
+  var seek=(g.phase==="seek"),ext=(g.phase==="extend");
+  $("#se-skip").disabled=!seek;
+  var dl=ext?extDelta("left"):null,dr=ext?extDelta("right"):null;
+  $("#se-left").disabled=!ext||!dl; $("#se-right").disabled=!ext||!dr; $("#se-stop").disabled=!ext;
+  $("#se-left-s").textContent= dl? dl.q+"·"+dl.d+" "+(dl.v>0?"+2":"−1") : "–";
+  $("#se-right-s").textContent= dr? dr.q+"·"+dr.d+" "+(dr.v>0?"+2":"−1") : "–";
+}
+function slip(why){
+  if(g.practice>0){g.practice--;setBanner(why+" — free practice ("+g.practice+" left)","bad");return;}
+  g.hearts--;updHud();
+  if(g.hearts<=0){g.over=true;g.phase="over";updPad();
+    var ov=$("#overlay");ov.hidden=false;
+    ov.innerHTML='<p class="eyebrow">Out of slips</p><h2>Wasted compute — the one thing BLAST never spends.</h2><p>Scan for the gold word\'s <strong>exact</strong> 3 letters before tapping, and when no seed exists, Skip is the right move — that skip is the whole speed trick.</p><button class="btn" id="start-btn">Search again</button>';
+    $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  } else setBanner(why,"bad");
+}
+function tapDb(idx){
+  if(g.phase!=="seek"||g.over)return;
+  if(g.seedAt>=0&&idx===g.seedAt){
+    g.phase="extend";g.score=3*MATCH;g.peak=g.score;
+    setBanner("Seed found — "+SEEDW+" sits here. Base score +6. Now extend.","good");
+    updHud();updPad();draw();
+  } else if(g.seedAt<0){
+    slip("No seed exists in this sequence — BLAST would Skip it entirely");
+  } else slip("Not the seed — the word must match exactly, letter for letter");
+}
+function act(mv){
+  if(!g||g.over)return;
+  if(mv==="skip"){
+    if(g.phase!=="seek")return;
+    if(g.seedAt<0){
+      g.hits.push({r:g.r+1,score:0,note:"skipped — no seed"});
+      setBanner("Correct — no seed, no alignment. Millions of skips like this are BLAST's speed.","good");
+      nextRound();
+    } else slip("There IS a seed here — "+SEEDW+" appears in this sequence. Find it");
+    return;
+  }
+  if(g.phase!=="extend")return;
+  if(mv==="left"||mv==="right"){
+    var d=extDelta(mv);if(!d)return;
+    if(mv==="left")g.L++;else g.Rr++;
+    g.score+=d.v;if(g.score>g.peak)g.peak=g.score;
+    setBanner((d.v>0?"Match ":"Mismatch ")+d.q+"·"+d.d+" → score "+g.score,d.v>0?"good":"bad");
+    updHud();updPad();draw();
+  } else if(mv==="stop"){
+    var left=g.peak-g.score;
+    g.hits.push({r:g.r+1,score:g.score,note: left===0? "stopped at the peak ✓" : "overshot by "+left+" — BLAST stops when the score falls"});
+    setBanner(left===0? "Locked at the peak — exactly BLAST's drop-off rule.":"Locked "+left+" below your peak — extending into junk bleeds score.","good");
+    g.total+=g.score;nextRound();
+  }
+}
+function nextRound(){
+  g.r++;
+  if(g.r>=ROUNDS.length)win();else loadRound();
+}
+function win(){
+  g.phase="over";g.over=true;updPad();updHud();
+  if(!reducedMotion())g.confetti=makeConfetti(W,H),animConfetti();
+  var rep=g.hits.map(function(h){return "seq "+h.r+"   score "+String(h.score).padStart(2)+"   "+h.note;}).join("\n");
+  var ov=$("#overlay");ov.hidden=false;
+  ov.innerHTML='<p class="eyebrow">Search complete</p><h2>Total hit score '+g.total+' — your BLASTP-style report.</h2>'+
+    '<div class="hitrep">'+rep+'</div>'+
+    '<p>High-scoring hits are the ones worth trusting: the <strong>E-value</strong> turns each score into "how many hits this good would chance alone produce in a database this size" — tiny E-value, real relationship. And remember what you skipped: that unexamined sequence is the price of speed. The exact way to never miss a local hit is <strong>Smith–Waterman</strong> — a Needleman–Wunsch cousin, far too slow for millions of sequences.</p>'+
+    '<button class="btn" id="start-btn">Search again</button>';
+  $("#start-btn").addEventListener("click",function(){ov.hidden=true;reset();});
+  draw();
+}
+function animConfetti(){
+  if(!g.confetti||!g.confetti.length)return;
+  g.confetti=stepConfetti(g.confetti,H,1/60);draw();
+  requestAnimationFrame(animConfetti);
+}
+function sizeCanvas(){
+  var w=canvas.parentElement.clientWidth||360;dpr=window.devicePixelRatio||1;
+  W=w;H=Math.round(w*0.62);
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  g&&computeTiles();
+}
+var tiles=[];
+function computeTiles(){
+  tiles=[];
+  var n=Math.max(QSEQ.length,g.db.length);
+  var cell=Math.min(Math.floor((W-24)/n),46);
+  var ox=Math.round((W-cell*g.db.length)/2);
+  for(var i=0;i<g.db.length;i++)tiles.push({x:ox+i*cell,w:cell,i:i});
+}
+function draw(){
+  if(!g)return;computeTiles();
+  var ink=isDark()?"#E8EAED":"#1F2933",muted=isDark()?"#9AA5B1":"#52606D",
+      line=isDark()?"rgba(255,255,255,.18)":"rgba(0,0,0,.14)",
+      gold=isDark()?"#E0B458":"#C98F2C",good=isDark()?"#5FB084":"#2F7D52",
+      bad=isDark()?"#D98378":"#A83E32",soft=isDark()?"#3A251D":"#F4E4DD";
+  ctx.clearRect(0,0,W,H);
+  var n=Math.max(QSEQ.length,g.db.length);
+  var cell=Math.min(Math.floor((W-24)/n),46);
+  var qx=Math.round((W-cell*QSEQ.length)/2),qy=Math.round(H*0.2);
+  var dy=Math.round(H*0.62);
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillStyle=muted;ctx.font="700 11px sans-serif";
+  ctx.fillText("QUERY — seed word in gold",W/2,qy-cell*0.75);
+  ctx.fillText("DATABASE SEQUENCE "+(g.phase==="seek"?"— tap the first letter of the matching word":""),W/2,dy-cell*0.75);
+  for(var i=0;i<QSEQ.length;i++){
+    var x=qx+i*cell,inSeed=(i>=SEED_AT&&i<SEED_AT+3);
+    var qiLo=SEED_AT-g.L,qiHi=SEED_AT+2+g.Rr;
+    var inExt=(g.phase!=="seek")&&(i>=qiLo&&i<=qiHi)&&!inSeed;
+    if(inSeed){rrp(ctx,x+1,qy,cell-2,cell,7);ctx.fillStyle=gold;ctx.globalAlpha=.25;ctx.fill();ctx.globalAlpha=1;}
+    else if(inExt){rrp(ctx,x+1,qy,cell-2,cell,7);ctx.fillStyle=good;ctx.globalAlpha=.16;ctx.fill();ctx.globalAlpha=1;}
+    ctx.fillStyle=inSeed?gold:ink;ctx.font=(inSeed?"800 ":"600 ")+Math.round(cell*0.5)+"px "+getComputedStyle(document.body).fontFamily;
+    ctx.fillText(QSEQ[i],x+cell/2,qy+cell/2);
+  }
+  var off=g.seedAt-SEED_AT;
+  for(var k=0;k<g.db.length;k++){
+    var t=tiles[k],x2=t.x;
+    var seeded=(g.phase!=="seek")&&g.seedAt>=0&&(k>=g.seedAt&&k<g.seedAt+3);
+    var kq=k-off;
+    var extd=(g.phase!=="seek")&&g.seedAt>=0&&((kq>=SEED_AT-g.L&&kq<SEED_AT)||(kq>SEED_AT+2&&kq<=SEED_AT+2+g.Rr));
+    var isM=extd&&QSEQ[kq]===g.db[k];
+    ctx.strokeStyle=line;ctx.lineWidth=1;
+    rrp(ctx,x2+1,dy,t.w-2,cell,7);
+    if(seeded){ctx.fillStyle=gold;ctx.globalAlpha=.25;ctx.fill();ctx.globalAlpha=1;}
+    else if(extd){ctx.fillStyle=isM?good:bad;ctx.globalAlpha=.18;ctx.fill();ctx.globalAlpha=1;}
+    else{ctx.fillStyle=soft;ctx.globalAlpha=.0;ctx.fill();ctx.globalAlpha=1;}
+    ctx.stroke();
+    ctx.fillStyle= seeded? gold : extd? (isM?good:bad) : ink;
+    ctx.font=(seeded?"800 ":"600 ")+Math.round(cell*0.5)+"px "+getComputedStyle(document.body).fontFamily;
+    ctx.fillText(g.db[k],x2+t.w/2,dy+cell/2);
+  }
+  if(g.phase==="extend"){
+    ctx.fillStyle=muted;ctx.font="700 12px sans-serif";
+    ctx.fillText("hit score "+g.score+" · peak "+g.peak,W/2,dy+cell+18);
+  }
+  if(g.confetti)drawConfetti(ctx,g.confetti);
+}
+window.SEstate=function(){return g?{phase:g.phase,r:g.r,seedAt:g.seedAt,score:g.score,peak:g.peak,total:g.total,hearts:g.hearts,over:g.over,db:g.db,L:g.L,Rr:g.Rr}:null;};
+canvas.addEventListener("click",function(e){
+  var r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+  var n=Math.max(QSEQ.length,g.db.length);
+  var cell=Math.min(Math.floor((W-24)/n),46);
+  var dy=Math.round(H*0.62);
+  if(y<dy-10||y>dy+cell+10)return;
+  for(var i=0;i<tiles.length;i++)if(x>=tiles[i].x&&x<tiles[i].x+tiles[i].w){tapDb(tiles[i].i);break;}
+});
+$("#seedpad").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled)act(b.getAttribute("data-m"));});
+document.addEventListener("keydown",function(e){
+  if($("#overlay")&&!$("#overlay").hidden)return;
+  if(e.key==="s"||e.key==="S")act("skip");
+  else if(e.key==="ArrowLeft")act("left");else if(e.key==="ArrowRight")act("right");
+  else if(e.key==="Enter")act("stop");
+});
+window.addEventListener("resize",function(){sizeCanvas();draw();});
+sizeCanvas();
+$("#start-btn").addEventListener("click",function(){$("#overlay").hidden=true;reset();});
+""",
+  quiz=[
+   dict(stem="BLASTP searches a huge database quickly by:",opts=["Aligning every sequence end-to-end with Needleman–Wunsch","Only running alignment where a short word of the query already matches exactly — a seed","Guessing randomly"],a=1,
+        explain="Chop the query into 3-letter words, look only where one lands, extend from there. Everything else is never examined — that is where the speed comes from."),
+   dict(stem="A database sequence with no seed word is:",opts=["Skipped entirely — even if a fair alignment was hiding in it","Aligned extra carefully","Reported as the best hit"],a=0,
+        explain="The round-3 skip you played. It is the honest cost of the heuristic: speed is bought with the risk of missing a hit no seed pointed to."),
+   dict(stem="After finding a seed, BLAST:",opts=["Stops immediately and reports it","Restarts from the beginning of the query","Extends the match outward in both directions while the score stays good"],a=2,
+        explain="Extension grows the local alignment around the seed; when the score falls off, BLAST stops — just like locking your hit at the peak."),
+   dict(stem="BLASTP alignments are local, meaning:",opts=["They cover the best-matching region, not necessarily either sequence end-to-end","They only work on your own computer","They ignore the middle of sequences"],a=0,
+        explain="Local = the best island of similarity. Global (Needleman–Wunsch) forces end-to-end. Proteins often share one domain, not their whole length — local is usually what biology wants."),
+   dict(stem="An E-value of a hit tells you:",opts=["The exact evolutionary distance in years","How many hits at least this good you would expect by pure chance in a database this size","The protein's molecular weight"],a=1,
+        explain="Small E-value = chance alone almost never produces a score like this = the similarity likely means something. It scales with database size — the same score means less in a bigger haystack."),
+   dict(stem="The exact algorithm for the local-alignment problem (what BLAST approximates) is:",opts=["Smith–Waterman","Needleman–Wunsch — it runs inside BLASTP","Bubble sort"],a=0,
+        explain="Smith–Waterman is the exact local counterpart — too slow for millions of sequences, which is why BLAST exists. Needleman–Wunsch is exact but GLOBAL, and it is not the algorithm inside BLASTP."),
+  ],
+  simplification="Simplified on purpose: real BLASTP scores with BLOSUM62 (so near-matching 'neighborhood words' can seed too, not just exact ones), uses two-hit triggers and an X-drop rule for extension, and computes E-values from Karlin–Altschul statistics. Our exact-match seeds, +2/−1 scoring, and stop-at-the-peak rule are the training-wheel versions of those ideas.")
+
+# ============================================================ BUILD
+# games.json (repo root) is the single source of truth for the catalog:
+# the hub index.html is generated from it, and every manifest entry with
+# "generated": true must have a matching GAMES[key] block above.
+# Hand-built games ("generated": false, e.g. ribosome-snake) are listed
+# in the manifest for the hub only and are never overwritten.
+
+import tempfile
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MANIFEST = json.load(open(os.path.join(ROOT, "games.json")))
+MF = {m["key"]: m for m in MANIFEST["games"]}
+
+missing = [m["key"] for m in MANIFEST["games"] if m.get("generated") and m["key"] not in GAMES]
+extra = [k for k in GAMES if k not in MF]
+if missing: raise SystemExit("manifest marks these generated but GAMES has no block: %s" % missing)
+if extra: raise SystemExit("GAMES has blocks missing from games.json: %s" % extra)
 
 for key, G in GAMES.items():
+    m = MF[key]
     html = page(G["title"], G["tag"], G["extra_css"], G["hud"], G["stage_inner"],
                 G["controls"], G["js"], G["quiz"], G["codep"], G["simplification"])
-    d = "/home/claude/games/" + key
-    os.makedirs(d, exist_ok=True)
-    open(d + "/index.html", "w").write(html)
-    # standalone export
     content = html.replace('<meta name="claude:viewport-fit-sides" content="cover">\n','')
     content = content.replace("<title>%s</title>\n" % G["title"], "")
-    export = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    export = ('<!doctype html>\n<html lang="en" data-theme="light">\n<head>\n<meta charset="utf-8">\n'
       '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
       '<title>%s</title>\n<meta name="description" content="%s">\n'
       '<style>[hidden]{display:none!important}img{max-width:100%%}</style>\n'
-      '</head>\n<body>\n' % (G["title"], EXPORT_DESC[key]) + content + '\n</body>\n</html>\n')
-    slug = {"poly":"polymerase-runner","fold":"fold-tris","phago":"phagocyte-patrol","drug":"drug-flight","lysis":"lysis-lab"}[key]
-    open(d + "/" + slug + ".html", "w").write(export)
+      '</head>\n<body>\n' % (G["title"], m["description"]) + content + '\n</body>\n</html>\n')
+    d = os.path.join(ROOT, "games", m["slug"])
+    os.makedirs(d, exist_ok=True)
+    open(os.path.join(d, "index.html"), "w").write(export)
     # syntax check
-    m = re.search(r'<script>\n(.*)\n</script>', html, re.S)
-    open("/tmp/claude-0/check.js","w").write(m.group(1))
-    r = subprocess.run(["node","--check","/tmp/claude-0/check.js"],capture_output=True,text=True)
-    print(key, "built:", len(html), "bytes; node check:", r.returncode, r.stderr[:200])
+    mt = re.search(r'<script>\n(.*)\n</script>', html, re.S)
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as tf:
+        tf.write(mt.group(1)); checkpath = tf.name
+    r = subprocess.run(["node","--check",checkpath],capture_output=True,text=True)
+    os.unlink(checkpath)
+    print(key, "->", m["slug"], "built:", len(export), "bytes; node check:", r.returncode, r.stderr[:200])
+
+# ---------- hub ----------
+NUMWORD = {6:"Six",7:"Seven",8:"Eight",9:"Nine",10:"Ten",11:"Eleven",12:"Twelve"}
+ngames = len(MANIFEST["games"])
+numword = NUMWORD.get(ngames, str(ngames))
+
+CARD_T = """    <div class="card">
+      <span class="mod">%s</span>
+      <h2>%s</h2>
+      <p class="teach">%s</p>
+      <span class="meta">%s</span>
+      <a class="play" href="games/%s/">Play</a>
+    </div>
+"""
+SECTION_T = """  <h2 class="cat">%s</h2>
+  <div class="grid">
+%s  </div>
+"""
+sections = ""
+for cat in MANIFEST["categories"]:
+    gs = sorted([x for x in MANIFEST["games"] if x["category"] == cat], key=lambda x: x["module"])
+    if not gs: continue
+    cards = "".join(CARD_T % (gx["mod_label"], gx["title"], gx["teach"], gx["meta"], gx["slug"]) for gx in gs)
+    sections += SECTION_T % (cat, cards)
+
+HUB = """<!doctype html>
+<html lang="en" data-theme="light"><!-- data-theme="light" pins the arcade to the site's light look; remove it to re-enable auto dark mode -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bio Arcade — AR INBRE</title>
+<meta name="description" content="%(numword)s short browser games that each teach one biomedical or bioinformatics concept: flashcard, play, quiz. Built under AR INBRE for Arkansas undergraduates.">
+<style>
+/* ============================================================
+   THEME — swap these tokens to restyle the whole hub.
+   Matches kalyanidhusia.github.io/student_training/ by default.
+   ============================================================ */
+:root{
+  --bg:#FAFAF7;
+  --ink:#1F2933;
+  --muted:#52606D;
+  --accent:#B04A2F;
+  --accent-soft:#F4E4DD;
+  --violet:#8A4BD9;
+  --line:rgba(0,0,0,.10);
+  --card:#FFFFFF;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15181C; --ink:#ECEFF2; --muted:#9AA5B1;
+    --accent:#D97757; --accent-soft:#3A2A24; --violet:#A97BE8;
+    --line:rgba(255,255,255,.14); --card:#1D2126;
+  }
+}
+/* ============================================================ */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-text-size-adjust:100%%;
+}
+.wrap{max-width:720px;margin:0 auto;padding:28px 16px 48px}
+header h1{font-size:1.7rem;line-height:1.25;margin:0 0 6px}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 10px}
+.lede{color:var(--muted);margin:0 0 8px;max-width:58ch}
+.loop{display:inline-block;background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:5px 14px;font-size:.85rem;margin:10px 0 10px}
+.loop b{color:var(--accent)}
+.cat{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:28px 0 12px;padding-top:20px;border-top:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:560px){.grid{grid-template-columns:1fr 1fr}}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;min-width:0;
+}
+.card .mod{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.card h2{font-size:1.12rem;margin:0;line-height:1.3}
+.card .teach{font-size:.9rem;color:var(--muted);margin:0;flex:1}
+.card .teach b{color:var(--ink);font-weight:600}
+.meta{font-size:.78rem;color:var(--muted)}
+.play{
+  display:inline-block;align-self:flex-start;background:var(--accent);color:#fff;
+  text-decoration:none;border-radius:999px;padding:9px 22px;font-weight:600;font-size:.92rem;
+  touch-action:manipulation;
+}
+.play:active{transform:translateY(1px)}
+.rna{color:var(--violet);font-weight:700}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+footer p{margin:4px 0}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">AR INBRE · Student Training</p>
+    <h1>Bio Arcade</h1>
+    <p class="lede">%(numword)s short games. Each one teaches a single biomedical or bioinformatics concept — the game mechanic <em>is</em> the science, not decoration on top of it.</p>
+    <span class="loop"><b>Learn</b> (flashcard) → <b>Play</b> (the mechanic is the concept) → <b>Check</b> (6-question quiz, pass at 5)</span>
+  </header>
+
+%(sections)s
+  <footer>
+    <p><b>Arkansas INBRE</b> — supported by the National Institute of General Medical Sciences of the NIH under grant P20&nbsp;GM103429.</p>
+    <p>Educational content, not medical advice. Each game states its simplifications; the mechanics model one concept, not full biological reality.</p>
+    <p>Part of the <a href="https://kalyanidhusia.github.io/student_training/">AR INBRE student training</a> materials · v1.1 · catalog generated from games.json</p>
+  </footer>
+</div>
+</body>
+</html>
+""" % {"numword": numword, "sections": sections}
+open(os.path.join(ROOT, "index.html"), "w").write(HUB)
+print("hub built:", ngames, "games in", len([c for c in MANIFEST["categories"]]), "categories")
 print("done")
