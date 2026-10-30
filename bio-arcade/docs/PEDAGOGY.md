@@ -137,6 +137,20 @@ All modules are single-file HTML (no build step, no dependencies, no tracking, z
 
 **The second pair is a deliberate arc.** Modules 9–10 extend the algorithmic story (align → assemble → call) that recruits computing students into biology; Modules 11–12 are research readiness — the evaluation discipline and computational hygiene students need before contributing to a real project.
 
+## Research frontiers (Modules 13+)
+
+This section hosts modules whose concepts come from **active research programs**: a researcher contributes the concept and the scientific sign-off; the arcade contributes the module loop, the framework, and the honesty rules. The section exists to be added to — any teachable research concept with a mechanic inside it is a candidate. The same loop, quiz contract, and named-simplifications requirement apply without exception.
+
+## Module 13 — Chromatin Command (cardiovascular epigenetics: the acetylation switch)
+
+**Concept.** Heart cells tune gene activity with reversible acetyl marks on histone tails: writers (HATs) add marks and open chromatin for transcription, erasers (HDACs) remove them and silence it, readers (e.g., BRD4) couple marks to the transcription machinery. The acetyl groups come from acetyl-CoA, wiring metabolism directly into gene regulation — the axis that makes HDAC inhibitors (e.g., SAHA/vorinostat) candidate cardiometabolic therapeutics, and the reason they are double-edged: blocking the erasers de-represses everything they were holding shut.
+
+**Mechanic → biology.** A fixed-shooter where the player IS the HAT writer: firing an acetyl mark (spending a regenerating acetyl-CoA budget — metabolism as ammunition) opens a gene gate, and the player can only open, never close. Protective adult-program genes (SERCA2a, MYH6, RYR2, PGC-1α, CPT1B) score when transcribed; fetal stress-program genes (NPPA, NPPB, MYH7) damage the heart when transcribed. HDAC ships close any gate they cross — rendered as regulators, not villains, because they are the only mechanism that can close a stress gate opened by mistake. The SAHA blockade freezes every eraser and locks all gates: the ultimate defense for protective genes that simultaneously locks open any leaking stress gate — the drug's indiscriminate de-repression experienced inside the mechanic. First 2 mistakes are free practice; survive 10 polymerase waves.
+
+**Objectives.** Name writer/eraser/reader (HAT, HDAC, BRD4) and what each does; state what acetylation does to chromatin and transcription; explain why an HDAC inhibitor raises expression of helpful and harmful genes alike; connect acetyl-CoA supply to epigenetic regulation.
+
+**Named simplifications.** Real chromatin is 3D with dozens of modifiable residues and locus-specific targeting, not eight binary gates; HDACs span four classes with different (often non-histone) substrates, and no drug inhibits all of them equally or in five-second pulses; "protective vs. stress" is the adult-vs-fetal gene program as a teaching split; polymerase is recruited by readers and transcription factors, not dive-bombing. The true parts: acetylation is reversible, writer/eraser balance sets gene output, the marks are paid for in acetyl-CoA, and eraser inhibition de-represses indiscriminately.
+
 ---
 
 ## Assessment & evidence

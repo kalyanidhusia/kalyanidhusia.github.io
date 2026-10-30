@@ -4,7 +4,8 @@
     "Molecular biology",
     "Biomedicine",
     "Bioinformatics algorithms",
-    "Research readiness"
+    "Research readiness",
+    "Research frontiers"
   ],
   "games": [
     {
@@ -150,6 +151,21 @@
       "meta": "~6 min · phone-friendly",
       "generated": true,
       "description": "Play reproducible computing: wire the pipeline DAG, find the root cause of a failure, and cache-and-resume without rerunning the world."
+    },
+    {
+      "key": "chromatin",
+      "slug": "chromatin-command",
+      "module": 13,
+      "title": "Chromatin Command",
+      "category": "Research frontiers",
+      "mod_label": "Module 13 · Cardiovascular Epigenetics",
+      "teach": "<b>The acetylation switch:</b> you are the HAT writer — spend acetyl-CoA to open protective gene gates, let HDAC erasers close the stress genes, and feel in-mechanic why an HDAC-inhibitor blockade is powerful and double-edged.",
+      "meta": "~8 min · phone-friendly · sound (mutable)",
+      "generated": false,
+      "description": "Play cardiac epigenetics: write acetyl marks, balance writers against erasers, and learn why HDAC inhibitors de-repress helpful and harmful genes alike."
     }
-  ]
+  ],
+  "category_notes": {
+    "Research frontiers": "Concepts from active research programs, turned into playable mechanics. Studying something teachable? The module framework is open — bring your concept."
+  }
 }

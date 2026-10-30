@@ -3061,7 +3061,7 @@ for key, G in GAMES.items():
     print(key, "->", m["slug"], "built:", len(export), "bytes; node check:", r.returncode, r.stderr[:200])
 
 # ---------- hub ----------
-NUMWORD = {6:"Six",7:"Seven",8:"Eight",9:"Nine",10:"Ten",11:"Eleven",12:"Twelve"}
+NUMWORD = {6:"Six",7:"Seven",8:"Eight",9:"Nine",10:"Ten",11:"Eleven",12:"Twelve",13:"Thirteen",14:"Fourteen",15:"Fifteen",16:"Sixteen"}
 ngames = len(MANIFEST["games"])
 numword = NUMWORD.get(ngames, str(ngames))
 
@@ -3074,15 +3074,18 @@ CARD_T = """    <div class="card">
     </div>
 """
 SECTION_T = """  <h2 class="cat">%s</h2>
-  <div class="grid">
+%s  <div class="grid">
 %s  </div>
+"""
+NOTE_T = """  <p class="catnote">%s</p>
 """
 sections = ""
 for cat in MANIFEST["categories"]:
     gs = sorted([x for x in MANIFEST["games"] if x["category"] == cat], key=lambda x: x["module"])
     if not gs: continue
     cards = "".join(CARD_T % (gx["mod_label"], gx["title"], gx["teach"], gx["meta"], gx["slug"]) for gx in gs)
-    sections += SECTION_T % (cat, cards)
+    note = MANIFEST.get("category_notes", {}).get(cat, "")
+    sections += SECTION_T % (cat, (NOTE_T % note) if note else "", cards)
 
 HUB = """<!doctype html>
 <html lang="en" data-theme="light"><!-- data-theme="light" pins the arcade to the site's light look; remove it to re-enable auto dark mode -->
@@ -3129,6 +3132,7 @@ header h1{font-size:1.7rem;line-height:1.25;margin:0 0 6px}
 .loop{display:inline-block;background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:5px 14px;font-size:.85rem;margin:10px 0 10px}
 .loop b{color:var(--accent)}
 .cat{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:28px 0 12px;padding-top:20px;border-top:1px solid var(--line)}
+.catnote{color:var(--muted);font-size:.88rem;margin:-6px 0 12px;max-width:58ch}
 .grid{display:grid;grid-template-columns:1fr;gap:14px}
 @media (min-width:560px){.grid{grid-template-columns:1fr 1fr}}
 .card{

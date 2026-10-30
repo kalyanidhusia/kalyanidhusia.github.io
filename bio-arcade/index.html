@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bio Arcade — AR INBRE</title>
-<meta name="description" content="Twelve short browser games that each teach one biomedical or bioinformatics concept: flashcard, play, quiz. Built under AR INBRE for Arkansas undergraduates.">
+<meta name="description" content="Thirteen short browser games that each teach one biomedical or bioinformatics concept: flashcard, play, quiz. Built under AR INBRE for Arkansas undergraduates.">
 <style>
 /* ============================================================
    THEME — swap these tokens to restyle the whole hub.
@@ -43,6 +43,7 @@ header h1{font-size:1.7rem;line-height:1.25;margin:0 0 6px}
 .loop{display:inline-block;background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:5px 14px;font-size:.85rem;margin:10px 0 10px}
 .loop b{color:var(--accent)}
 .cat{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:28px 0 12px;padding-top:20px;border-top:1px solid var(--line)}
+.catnote{color:var(--muted);font-size:.88rem;margin:-6px 0 12px;max-width:58ch}
 .grid{display:grid;grid-template-columns:1fr;gap:14px}
 @media (min-width:560px){.grid{grid-template-columns:1fr 1fr}}
 .card{
@@ -71,7 +72,7 @@ a{color:var(--accent)}
   <header>
     <p class="eyebrow">AR INBRE · Student Training</p>
     <h1>Bio Arcade</h1>
-    <p class="lede">Twelve short games. Each one teaches a single biomedical or bioinformatics concept — the game mechanic <em>is</em> the science, not decoration on top of it.</p>
+    <p class="lede">Thirteen short games. Each one teaches a single biomedical or bioinformatics concept — the game mechanic <em>is</em> the science, not decoration on top of it.</p>
     <span class="loop"><b>Learn</b> (flashcard) → <b>Play</b> (the mechanic is the concept) → <b>Check</b> (6-question quiz, pass at 5)</span>
   </header>
 
@@ -169,6 +170,17 @@ a{color:var(--accent)}
       <p class="teach"><b>Workflows as DAGs:</b> wire tasks to their real inputs, trace a crash to its root cause, and resume by rerunning exactly the stale tasks — cached results stay, CPU hours get banked.</p>
       <span class="meta">~6 min · phone-friendly</span>
       <a class="play" href="games/pipeline-rescue/">Play</a>
+    </div>
+  </div>
+  <h2 class="cat">Research frontiers</h2>
+  <p class="catnote">Concepts from active research programs, turned into playable mechanics. Studying something teachable? The module framework is open — bring your concept.</p>
+  <div class="grid">
+    <div class="card">
+      <span class="mod">Module 13 · Cardiovascular Epigenetics</span>
+      <h2>Chromatin Command</h2>
+      <p class="teach"><b>The acetylation switch:</b> you are the HAT writer — spend acetyl-CoA to open protective gene gates, let HDAC erasers close the stress genes, and feel in-mechanic why an HDAC-inhibitor blockade is powerful and double-edged.</p>
+      <span class="meta">~8 min · phone-friendly · sound (mutable)</span>
+      <a class="play" href="games/chromatin-command/">Play</a>
     </div>
   </div>
 
