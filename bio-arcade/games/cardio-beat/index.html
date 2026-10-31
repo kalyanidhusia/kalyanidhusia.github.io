@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cardio Beat</title>
+<meta name="description" content="The acetylation switch as a rhythm game: tap to acetylate protective genes on the beat, leave the stress lane alone, and feel why SAHA overdrive is double-edged. Same concept as Chromatin Command, second mechanic.">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+<style>
+/* THEME — Bio Arcade shared tokens. Mobile-first. Hand-built module.
+   Same concept as Chromatin Command (Module 13); rhythm mechanic variant. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2933; --muted:#52606D;
+  --line:rgba(0,0,0,.10); --accent:#B04A2F; --accent-soft:#F4E4DD;
+  --good:#2F7D52; --bad:#A83E32; --violet:#8A4BD9; --gold:#C98F2C; --pink:#B05A92;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+    --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+    --good:#5FB084; --bad:#D98378; --violet:#B08CE8; --gold:#D4A94C; --pink:#D191BE; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17191D; --surface:#1F2228; --ink:#E8EAED; --muted:#9AA5B1;
+  --line:rgba(255,255,255,.14); --accent:#D68264; --accent-soft:#3A251D;
+  --good:#5FB084; --bad:#D98378; --violet:#B08CE8; --gold:#D4A94C; --pink:#D191BE; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  font-size:1.1rem;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{padding-block:18px 0}
+header h1{font-size:1.5rem;font-weight:700;margin:0}
+header .tag{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:18px}
+.card h2{font-size:1.25rem;margin:0 0 8px;line-height:1.25}
+.card h3{margin:14px 0 6px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.rules{display:flex;flex-direction:column;gap:7px;margin:0;padding:0;list-style:none}
+.rules li{background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;font-size:.93rem}
+.k{display:inline-block;border:1.5px solid var(--line);border-bottom-width:3px;border-radius:6px;
+   padding:0 7px;font-size:.82rem;background:var(--surface);font-family:var(--mono)}
+.tag2{font-weight:700}
+.tag2.c{color:var(--accent)} .tag2.g{color:var(--good)} .tag2.r{color:var(--bad)}
+.tag2.m{color:var(--violet)} .tag2.a{color:var(--pink)} .tag2.y{color:var(--gold)}
+.objectives{margin:6px 0 0;padding-left:20px;font-size:.95rem}
+.objectives li{margin:.25em 0}
+.sibling{background:var(--accent-soft);border-radius:12px;padding:10px 14px;font-size:.92rem;margin:10px 0 0}
+.btn{border:none;border-radius:999px;padding:13px 26px;font-weight:700;font-size:1.05rem;background:var(--accent);color:#fff}
+.btn.ghost{background:var(--surface);color:var(--ink);border:2px solid var(--line)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+/* HUD */
+.hud{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;font-size:.8rem}
+.hud .meter{display:flex;flex-direction:column;gap:3px;min-width:0}
+.meter .lbl{display:flex;justify-content:space-between;color:var(--muted);
+  letter-spacing:.06em;text-transform:uppercase;font-size:.72rem;font-weight:700}
+.bar{height:10px;background:var(--bg);border:1.5px solid var(--line);border-radius:6px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0%;border-radius:4px;transition:width .12s linear}
+#healthFill{background:var(--good)} #healthFill.low{background:var(--bad)}
+#sahaFill{background:var(--pink)}
+.hud .stat{display:flex;align-items:center;justify-content:space-between;color:var(--muted);
+  letter-spacing:.06em;text-transform:uppercase;font-size:.72rem;font-weight:700}
+.hud .stat b{color:var(--ink);font-size:1.05rem;font-family:var(--mono);font-variant-numeric:tabular-nums}
+#stage{position:relative;width:100%}
+canvas{display:block;width:100%;height:auto;background:var(--surface);border:1.5px solid var(--line);
+  border-radius:14px;touch-action:none}
+/* lane pads */
+.lanepad{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1.3fr;gap:8px;margin-top:10px}
+.lanepad button{
+  font-weight:700;user-select:none;-webkit-user-select:none;
+  background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;
+  border-radius:14px;padding:16px 4px;font-size:.95rem;font-family:var(--mono)}
+.lanepad button:active{transform:translateY(2px);border-bottom-width:2px;background:var(--accent-soft)}
+.lanepad .gl{color:var(--good);border-color:var(--good)}
+.lanepad .rl{color:var(--bad);border-color:var(--bad)}
+.lanepad #btnSaha{color:var(--pink);border-color:var(--pink);font-family:var(--font)}
+.lanepad #btnSaha:disabled{opacity:.4;cursor:default}
+.padhint{color:var(--muted);font-size:.85rem;text-align:center;margin-top:6px}
+/* quiz */
+.qmeta{display:flex;justify-content:space-between;color:var(--muted);font-size:.85rem;margin-bottom:8px}
+.qprompt{font-weight:700;margin:0 0 12px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;background:var(--surface);color:var(--ink);
+  border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:1rem}
+.opt:hover{border-color:var(--accent)}
+.opt.correct{border-color:var(--good);background:var(--accent-soft)}
+.opt.wrong{border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.explain{margin-top:12px;padding:2px 12px;border-left:3px solid var(--line);color:var(--muted);font-size:.92rem}
+.explain b.good{color:var(--good)} .explain b.bad{color:var(--bad)}
+.scorecode{display:inline-block;margin-top:6px;padding:6px 12px;background:var(--accent-soft);
+  border-radius:8px;color:var(--ink);font-size:1rem;font-family:var(--mono);letter-spacing:.08em;user-select:all}
+.bigresult{font-size:clamp(20px,6vw,28px);margin:0 0 6px;text-wrap:balance}
+.bigresult.win{color:var(--good)} .bigresult.lose{color:var(--bad)}
+.endstats{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.9rem;margin:8px 0}
+.endstats b{color:var(--ink);font-family:var(--mono);font-variant-numeric:tabular-nums}
+.simp{margin:0;padding-left:20px;font-size:.9rem;color:var(--muted)}
+.simp li{margin-bottom:5px}
+.simp .true{color:var(--ink)}
+footer{margin-top:16px;color:var(--muted);font-size:.82rem;max-width:60ch}
+footer p{margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Cardiovascular epigenetics · Research frontiers</p>
+    <h1>Cardio Beat</h1>
+    <span class="tag">The acetylation switch, played as rhythm</span>
+  </header>
+
+  <!-- ============ LEARN ============ -->
+  <section id="screen-learn" class="card">
+    <h2>Same switchboard, new instrument.</h2>
+    <p style="font-size:1rem;margin:0 0 4px">
+      Heart cells tune gene activity with removable <b style="color:var(--accent)">acetyl marks</b> on histone tails.
+      <span class="tag2 c">Writers (HATs)</span> add marks — chromatin relaxes and the gene can be transcribed.
+      <span class="tag2 m">Erasers (HDACs)</span> remove marks — the gene goes quiet. Readers such as BRD4 dock on
+      the marks and recruit RNA polymerase, and the acetyl groups come from <b style="color:var(--accent)">acetyl-CoA</b>,
+      wiring metabolism into gene regulation. HDAC inhibitors like <span class="tag2 a">SAHA</span> are studied as
+      cardiometabolic therapies — and are double-edged, because blocking the erasers de-represses <i>everything</i>.
+    </p>
+    <p class="sibling">♥ <strong>Same concept as <a href="../chromatin-command/" style="color:var(--accent)">Chromatin Command</a> and <a href="../hat-a-mole/" style="color:var(--accent)">HAT-a-Mole</a></strong> — three games, one switchboard. Here the writer's job is <em>timing</em>: transcription happens on the polymerase's beat, and you acetylate exactly when it matters.</p>
+    <h3>Your mission</h3>
+    <ul class="rules">
+      <li><span class="tag2 g">GREEN lanes = protective genes</span> (SERCA2a, MYH6, PGC-1α). A note is polymerase arriving — <b>tap its lane as the note crosses the line</b> to acetylate in time. Hit = transcript; miss = the gene stayed closed and the heart pays.</li>
+      <li><span class="tag2 r">RED lane = NPPA, a fetal stress gene.</span> <b>Never tap it.</b> A red note that passes untapped is a stress gene kept silent (bonus). Tapping it writes a mark on the stress gene — toxic transcript.</li>
+      <li><span class="tag2 a">SAHA overdrive</span> (charged by your hit streak): for 3 seconds every note auto-hits — greens AND the red lane. Total de-repression: protective program fully on, stress program leaking. Not gene-specific; neither is the drug.</li>
+      <li>60 notes per run. Your first 2 damaging mistakes are free practice; the run ends if heart health hits zero.</li>
+    </ul>
+    <h3>Controls</h3>
+    <p style="font-size:.93rem;margin:4px 0">
+      Lanes: <span class="k">D</span> <span class="k">F</span> <span class="k">J</span> <span class="k">K</span> ·
+      <span class="k">SPACE</span> = SAHA · on touch, tap the lane buttons under the screen.
+      Too fast or too slow? <span class="k">?speed=2.6</span> in the URL, or <span class="k">CBspeed({speed:2.6})</span> in the console.
+    </p>
+    <h3>After playing you can…</h3>
+    <ol class="objectives">
+      <li>Name the writer, eraser, and reader of acetylation (HAT, HDAC, BRD4) and what each does.</li>
+      <li>State what acetylation does to chromatin and transcription — and why timing against polymerase matters.</li>
+      <li>Explain why an HDAC inhibitor raises expression of helpful <i>and</i> harmful genes.</li>
+      <li>Connect acetyl-CoA supply to epigenetic regulation in one sentence.</li>
+    </ol>
+    <div class="btnrow"><button class="btn" id="btnStart">Start the beat</button></div>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="screen-game" hidden>
+    <div class="card" style="padding:12px">
+      <div class="hud">
+        <div class="meter"><span class="lbl"><span>Heart health</span><span id="healthNum">100</span></span>
+          <div class="bar"><i id="healthFill"></i></div></div>
+        <div class="stat"><span>Notes</span><b id="noteNum">0/60</b><span>Score</span><b id="scoreNum">0</b></div>
+        <div class="stat"><span>Streak</span><b id="comboNum">0</b><span>Practice</span><b id="pracNum">2</b></div>
+        <div class="meter"><span class="lbl"><span>SAHA overdrive</span><span id="sahaNum">0%</span></span>
+          <div class="bar"><i id="sahaFill"></i></div></div>
+      </div>
+    </div>
+    <div id="stage" style="margin-top:10px">
+      <canvas id="gameCanvas" aria-label="Cardio Beat playfield"></canvas>
+    </div>
+    <div class="lanepad">
+      <button class="gl" data-lane="0" aria-label="Lane SERCA2a">D</button>
+      <button class="gl" data-lane="1" aria-label="Lane MYH6">F</button>
+      <button class="gl" data-lane="2" aria-label="Lane PGC-1a">J</button>
+      <button class="rl" data-lane="3" aria-label="Lane NPPA — do not tap">K</button>
+      <button id="btnSaha" disabled>SAHA</button>
+    </div>
+    <p class="padhint">green lanes: tap on the line · red lane: hands off</p>
+  </section>
+
+  <!-- ============ END ============ -->
+  <section id="screen-end" class="card" hidden>
+    <h2 id="endTitle" class="bigresult win">Steady rhythm held</h2>
+    <p id="endBlurb" style="font-size:1rem;margin:0 0 4px"></p>
+    <div class="endstats">
+      <span>Score <b id="endScore">0</b></span>
+      <span>Transcripts <b id="endTranscripts">0</b></span>
+      <span>Best streak <b id="endCombo">0</b></span>
+    </div>
+    <p style="font-size:.9rem;color:var(--muted);margin:4px 0 0">Arcade score code (report this to your instructor):</p>
+    <span class="scorecode" id="endCode">—</span>
+    <h3>Named simplifications — what the game fakes</h3>
+    <ul class="simp">
+      <li>Four timing lanes stand in for thousands of loci; real HATs are not gene-aware — targeting comes from transcription factors and readers recruiting them, not from a player choosing lanes.</li>
+      <li>Transcription is not a single beat to hit: polymerase initiates, pauses, and elongates over seconds to minutes; the hit window is the teaching version of "the mark must be in place when the machinery arrives."</li>
+      <li>Your hit streak charging SAHA is game logic, not pharmacology — the real drug is dosed, not earned.</li>
+      <li class="true">The true part: writers open and erasers close; a mark must be present for transcription to proceed; stress-program genes are silenced by default and harmful when de-repressed; and HDAC inhibition is indiscriminate — the overdrive that auto-hits the red lane is exactly SAHA's double edge.</li>
+    </ul>
+    <div class="btnrow">
+      <button class="btn" id="btnQuiz">Take the 6-question check</button>
+      <button class="btn ghost" id="btnReplay">Play again</button>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="screen-quiz" class="card" hidden>
+    <h2>Check what you learned</h2>
+    <div class="qmeta"><span id="qNum">Question 1/6</span><span id="qScore">Correct: 0</span></div>
+    <p class="qprompt" id="qPrompt"></p>
+    <div class="opts" id="qOpts"></div>
+    <div class="explain" id="qExplain" hidden></div>
+    <div class="btnrow"><button class="btn" id="btnNextQ" hidden>Next question</button></div>
+  </section>
+
+  <section id="screen-quizend" class="card" hidden>
+    <h2 id="quizResultTitle" class="bigresult win">Passed</h2>
+    <p id="quizResultBlurb" style="font-size:1rem"></p>
+    <p style="font-size:.9rem;color:var(--muted);margin:4px 0 0" id="verifiedLabel" hidden>Verified module code (game + quiz):</p>
+    <span class="scorecode" id="verifiedCode" hidden>—</span>
+    <div class="btnrow">
+      <button class="btn" id="btnRetake" hidden>Retake quiz</button>
+      <button class="btn ghost" id="btnPlayAgain2">Play again</button>
+      <button class="btn ghost" id="btnBackLearn">Back to the flashcard</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>Part of the AI in Biomedicine student training pathway · AR INBRE, supported
+    by NIGMS of the NIH under award P20 GM103429. Educational content, not medical advice.</p>
+    <p><b>Named simplifications:</b> timing lanes stand in for loci, the hit window for "mark in place when polymerase arrives," and an earned overdrive for a dosed drug. Writer-opens / eraser-closes, silent-by-default stress genes, and SAHA's indiscriminate de-repression are the true part. Same concept as Chromatin Command (Module 13) — different mechanic on purpose.</p>
+    <p>Bio Arcade · single file · no accounts, no tracking, zero PII · quiz scores produce a verifiable offline code.</p>
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* ================= module constants ================= */
+const MODULE_ID = "cardio-beat-v1";
+const W = 480, H = 520;
+const HIT_Y = 420, HIT_WIN = 34;
+const LANES = [
+  { x: 90,  key:"KeyD", label:"D", gene:"SERCA2a", red:false },
+  { x: 190, key:"KeyF", label:"F", gene:"MYH6",    red:false },
+  { x: 290, key:"KeyJ", label:"J", gene:"PGC-1α",  red:false },
+  { x: 390, key:"KeyK", label:"K", gene:"NPPA",    red:true  },
+];
+const TOTAL_NOTES = 60;
+/* Speed — tunable without editing code:
+   URL params ?speed=2.6&spawn=80&ramp=0.15  or console: CBspeed({speed:2.6,spawn:80,ramp:0.15})
+   speed = note fall px/frame, spawn = frames between notes, ramp = speed gained per 15 notes */
+const qs = new URLSearchParams(location.search);
+function qn(name, def, min){ const v = parseFloat(qs.get(name)); return isNaN(v) ? def : Math.max(min, v); }
+let SPEED0 = qn("speed", 3.2, 1.2), SPAWN_EVERY = Math.round(qn("spawn", 70, 30)), RAMP = qn("ramp", 0.2, 0);
+const SPEED_MAX = 4.8;
+
+/* ================= theme palette ================= */
+function isDark(){
+  try{ return (document.documentElement.dataset.theme==="dark") ||
+    (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); }
+  catch(e){ return false; }
+}
+function PAL(){
+  return isDark() ? {
+    canvas:"#1F2228", line:"rgba(255,255,255,.22)", ink:"#E8EAED", dim:"#9AA5B1",
+    accent:"#D68264", good:"#5FB084", bad:"#D98378", saha:"#D191BE", soft:"#3A251D"
+  } : {
+    canvas:"#FFFFFF", line:"rgba(0,0,0,.18)", ink:"#1F2933", dim:"#52606D",
+    accent:"#B04A2F", good:"#2F7D52", bad:"#A83E32", saha:"#B05A92", soft:"#F4E4DD"
+  };
+}
+
+/* ================= score codes ================= */
+function fnv1a(str){
+  let h = 0x811c9dc5;
+  for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = (h>>>0) * 0x01000193 >>> 0; }
+  return (h>>>0).toString(36).toUpperCase().padStart(7,"0");
+}
+const gameCode = (score,notes)=>"CB14-"+fnv1a(MODULE_ID+"|"+score+"|"+notes);
+const quizCode = (score,notes,q)=>"CB14Q-"+fnv1a(MODULE_ID+"|"+score+"|"+notes+"|quiz"+q);
+
+/* ================= screens ================= */
+const screens = ["screen-learn","screen-game","screen-end","screen-quiz","screen-quizend"];
+function show(id){ screens.forEach(s=>document.getElementById(s).hidden = (s!==id)); }
+const $ = id => document.getElementById(id);
+
+/* ================= game state ================= */
+const canvas = $("gameCanvas"), ctx = canvas.getContext("2d");
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let running=false, frame=0;
+let health, score, combo, bestCombo, saha, sahaActive, practiceLeft, transcripts;
+let spawned, resolved, notes, flashes, floaters, speed;
+const keys = {}, keyHeld = {};
+
+function initGame(){
+  health=100; score=0; combo=0; bestCombo=0; saha=0; sahaActive=0; practiceLeft=2;
+  transcripts=0; spawned=0; resolved=0; frame=0; speed=SPEED0;
+  notes=[]; flashes=[]; floaters=[];
+}
+function floater(x,y,text,c){ floaters.push({x,y,text,c,life:70}); }
+function damage(amount,x,y,label){
+  if(practiceLeft>0){ practiceLeft--; floater(x,y,"PRACTICE — no damage ("+practiceLeft+" left)","dim"); updateHUD(); return; }
+  health=Math.max(0,health-amount);
+  floater(x,y,label+"  −"+amount,"bad");
+}
+
+function spawnNote(){
+  if(spawned>=TOTAL_NOTES) return;
+  if(frame % SPAWN_EVERY === 0){
+    const lane = Math.floor(Math.random()*4);
+    notes.push({ lane, y:-16, active:true });
+    spawned++;
+    if(spawned % 15 === 0) speed = Math.min(SPEED_MAX, speed + RAMP);
+  }
+}
+
+function tapLane(i){
+  if(!running) return;
+  let hit=false;
+  for(const n of notes){
+    if(n.lane===i && n.active && Math.abs(n.y-HIT_Y)<HIT_WIN){
+      n.active=false; resolved++; hit=true;
+      flashes.push({lane:i,timer:10});
+      const L=LANES[i];
+      if(!L.red){
+        score+=10; transcripts++; combo++; bestCombo=Math.max(bestCombo,combo);
+        health=Math.min(100,health+2);
+        if(saha<100) saha=Math.min(100,saha+4+(combo>10?2:0));
+        floater(L.x-34,HIT_Y-26,L.gene+" transcript ✓ +10","good");
+      } else {
+        combo=0;
+        damage(20,L.x-50,HIT_Y-26,"you acetylated "+L.gene+" — toxic transcript");
+      }
+      break;
+    }
+  }
+  if(!hit && !LANES[i].red && combo>0){ combo=0; floater(LANES[i].x-30,HIT_Y-26,"off the beat — streak reset","dim"); }
+  updateHUD();
+}
+
+function fireSaha(){
+  if(!running || saha<100 || sahaActive>0) return;
+  sahaActive=180; saha=0;
+  floater(W/2-110,H/2,"SAHA: every lane auto-hits — stress lane included","saha");
+  updateHUD();
+}
+
+function update(){
+  if(!running) return;
+  frame++;
+  if(sahaActive>0) sahaActive--;
+  spawnNote();
+
+  for(let i=notes.length-1;i>=0;i--){
+    const n=notes[i], L=LANES[n.lane];
+    n.y += speed;
+
+    // SAHA autoplay: indiscriminate de-repression
+    if(sahaActive>0 && n.active && Math.abs(n.y-HIT_Y)<HIT_WIN){
+      n.active=false; resolved++;
+      flashes.push({lane:n.lane,timer:10});
+      if(!L.red){ score+=10; transcripts++; combo++; bestCombo=Math.max(bestCombo,combo);
+        floater(L.x-30,HIT_Y-26,L.gene+" auto ✓ +10","good"); }
+      else { combo=0; damage(15,L.x-56,HIT_Y-26,"SAHA forced "+L.gene+" open — toxic transcript"); }
+    }
+
+    if(n.y > H+16){
+      if(n.active){
+        resolved++;
+        if(!L.red){ combo=0; damage(10,L.x-56,HIT_Y-26,L.gene+" stayed closed — transcription stalled"); }
+        else { score+=5; floater(L.x-40,HIT_Y-26,L.gene+" kept silent ✓ +5","good"); }
+      }
+      notes.splice(i,1);
+    }
+  }
+
+  for(let i=floaters.length-1;i>=0;i--){ const f=floaters[i]; f.y-=0.35; if(--f.life<=0) floaters.splice(i,1); }
+
+  if(health<=0) return endGame(false);
+  if(resolved>=TOTAL_NOTES && notes.length===0) return endGame(true);
+  updateHUD();
+}
+
+/* ================= HUD ================= */
+function updateHUD(){
+  $("healthFill").style.width=health+"%";
+  $("healthFill").classList.toggle("low",health<=40);
+  $("healthNum").textContent=Math.round(health);
+  $("noteNum").textContent=Math.min(resolved,TOTAL_NOTES)+"/"+TOTAL_NOTES;
+  $("scoreNum").textContent=score;
+  $("comboNum").textContent=combo+"×";
+  $("pracNum").textContent=practiceLeft;
+  const pct = sahaActive>0 ? (sahaActive/180*100) : saha;
+  $("sahaFill").style.width=pct+"%";
+  $("sahaNum").textContent = sahaActive>0 ? "ACTIVE" : Math.round(saha)+"%";
+  $("btnSaha").disabled = !(saha>=100 && sahaActive<=0);
+}
+
+/* ================= draw ================= */
+function sizeCanvas(){
+  const cssW=canvas.parentElement.clientWidth;
+  const cssH=cssW*H/W;
+  canvas.style.height=cssH+"px";
+  const dpr=Math.min(window.devicePixelRatio||1,3);
+  canvas.width=Math.round(cssW*dpr); canvas.height=Math.round(cssH*dpr);
+}
+window.addEventListener("resize", sizeCanvas);
+
+function draw(){
+  const C=PAL(), s=canvas.width/W;
+  ctx.setTransform(s,0,0,s,0,0);
+  ctx.fillStyle=C.canvas; ctx.fillRect(0,0,W,H);
+
+  if(sahaActive>0){
+    ctx.fillStyle=isDark()?"rgba(209,145,190,.08)":"rgba(176,90,146,.06)";
+    ctx.fillRect(0,0,W,H);
+    ctx.fillStyle=C.saha; ctx.font="700 11px "+getComputedStyle(document.body).fontFamily;
+    ctx.textAlign="center"; ctx.fillText("SAHA OVERDRIVE — NOT GENE-SPECIFIC", W/2, 30); ctx.textAlign="left";
+  }
+
+  // lanes + gene labels + hit line
+  ctx.font="700 11px "+getComputedStyle(document.body).fontFamily;
+  LANES.forEach(L=>{
+    ctx.strokeStyle=C.line; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(L.x,54); ctx.lineTo(L.x,H-8); ctx.stroke();
+    const col=L.red?C.bad:C.good;
+    ctx.textAlign="center";
+    ctx.fillStyle=col; ctx.fillText(L.gene, L.x, 24);
+    ctx.fillStyle=C.dim; ctx.fillText(L.red?"IGNORE":"tap "+L.label, L.x, 42);
+    // hit zone
+    ctx.strokeStyle=col; ctx.lineWidth=2;
+    ctx.strokeRect(L.x-30,HIT_Y-15,60,30);
+  });
+  ctx.textAlign="left";
+
+  // hit line across
+  ctx.strokeStyle=C.line; ctx.setLineDash([5,4]); ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(30,HIT_Y); ctx.lineTo(W-30,HIT_Y); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=C.dim; ctx.font="600 10px "+getComputedStyle(document.body).fontFamily;
+  ctx.fillText("polymerase line", 34, HIT_Y+24);
+
+  // flashes
+  for(let i=flashes.length-1;i>=0;i--){
+    const f=flashes[i], L=LANES[f.lane];
+    ctx.fillStyle=L.red?C.bad:C.good;
+    ctx.globalAlpha=f.timer/10;
+    ctx.fillRect(L.x-30,HIT_Y-15,60,30);
+    ctx.globalAlpha=1;
+    if(--f.timer<=0) flashes.splice(i,1);
+  }
+
+  // notes (acetyl-needing polymerase beats)
+  notes.forEach(n=>{
+    if(!n.active) return;
+    const L=LANES[n.lane];
+    ctx.fillStyle=L.red?C.bad:C.good;
+    const r=6;
+    ctx.beginPath();
+    ctx.moveTo(L.x-20+r,n.y-10); ctx.arcTo(L.x+20,n.y-10,L.x+20,n.y+10,r);
+    ctx.arcTo(L.x+20,n.y+10,L.x-20,n.y+10,r); ctx.arcTo(L.x-20,n.y+10,L.x-20,n.y-10,r);
+    ctx.arcTo(L.x-20,n.y-10,L.x+20,n.y-10,r); ctx.closePath(); ctx.fill();
+  });
+
+  // floaters
+  ctx.font="600 10.5px "+getComputedStyle(document.body).fontFamily;
+  floaters.forEach(f=>{
+    ctx.globalAlpha=Math.min(1,f.life/30);
+    ctx.fillStyle=C[f.c]||f.c;
+    ctx.fillText(f.text,Math.max(4,Math.min(f.x,W-170)),f.y);
+    ctx.globalAlpha=1;
+  });
+}
+
+function loop(){ update(); if(running||frame>0) draw(); requestAnimationFrame(loop); }
+
+/* ================= end / quiz ================= */
+function endGame(win){
+  running=false;
+  $("endTitle").textContent = win ? "Steady rhythm held" : "Cardiac arrest";
+  $("endTitle").className = "bigresult "+(win?"win":"lose");
+  $("endBlurb").textContent = win
+    ? "Sixty beats resolved: the protective program transcribed on time, the stress lane left alone. That is the writer's whole job — the right marks, in place, when polymerase arrives."
+    : "The protective genes missed their beats or the stress lane got written. Watch the line, not the notes — and remember the red lane scores by being ignored.";
+  $("endScore").textContent=score;
+  $("endTranscripts").textContent=transcripts;
+  $("endCombo").textContent=bestCombo+"×";
+  $("endCode").textContent=gameCode(score,Math.min(resolved,TOTAL_NOTES));
+  show("screen-end");
+}
+
+const QUIZ=[
+ {q:"Which enzyme family REMOVES acetyl marks from histone tails?",
+  o:["HATs","HDACs","BRD4 and other bromodomain readers","RNA polymerase II"],a:1,
+  e:"HDACs (histone deacetylases) are the erasers. HATs write the marks; readers like BRD4 bind them; polymerase transcribes the opened gene."},
+ {q:"Acetylated histone tails generally make the local chromatin…",
+  o:["More compact and silent","More open and transcribable","Permanently deleted","Replicated faster"],a:1,
+  e:"Acetylation neutralizes the histone tail's positive charge, loosening its grip on DNA — the gate opens and the gene can be transcribed."},
+ {q:"BRD4 is best described as a…",
+  o:["Writer that adds acetyl marks","Eraser that removes them","Reader that docks on acetyl marks and recruits the transcription machinery","Metabolite that donates acetyl groups"],a:2,
+  e:"BRD4 is a bromodomain 'reader': it recognizes acetyl-lysine and couples the mark to transcription. (BET inhibitors like JQ1 block exactly this step.)"},
+ {q:"A patient's heart cells receive an HDAC inhibitor. Expression of genes the HDACs were silencing will…",
+  o:["Decrease across the board","Increase — but only the beneficial ones","Increase — both beneficial and harmful ones","Stay unchanged"],a:2,
+  e:"Blocking the erasers de-represses whatever they were holding shut — helpful and harmful genes alike. That indiscriminate de-repression is the double edge."},
+ {q:"The acetyl groups used for histone acetylation come from…",
+  o:["ATP","Acetyl-CoA, a central metabolite","Glucose directly","The DNA backbone"],a:1,
+  e:"Acetyl-CoA donates the acetyl group — which is why cell metabolism (think diabetes) is wired straight into gene regulation."},
+ {q:"In the game, why could SAHA overdrive LOWER your heart health?",
+  o:["It slowed your taps down","It auto-hit the RED lane too, forcing stress-gene transcripts — eraser inhibition is not gene-specific","It drained the score to zero","It made the notes invisible"],a:1,
+  e:"The overdrive de-repressed everything: protective lanes AND the stress lane. The real drug has exactly that property — it cannot choose which silenced genes to release."},
+];
+let qi=0,qCorrect=0;
+function startQuiz(){ qi=0; qCorrect=0; show("screen-quiz"); renderQ(); }
+function renderQ(){
+  const q=QUIZ[qi];
+  $("qNum").textContent="Question "+(qi+1)+"/6";
+  $("qScore").textContent="Correct: "+qCorrect;
+  $("qPrompt").textContent=q.q;
+  const box=$("qOpts"); box.innerHTML="";
+  q.o.forEach((opt,i)=>{
+    const b=document.createElement("button");
+    b.className="opt"; b.type="button"; b.textContent=opt;
+    b.addEventListener("click",()=>answer(i,b));
+    box.appendChild(b);
+  });
+  $("qExplain").hidden=true; $("btnNextQ").hidden=true;
+}
+function answer(i,btn){
+  const q=QUIZ[qi];
+  [...$("qOpts").children].forEach((b,bi)=>{ b.disabled=true; if(bi===q.a) b.classList.add("correct"); });
+  const right=(i===q.a);
+  if(right){ qCorrect++; } else { btn.classList.add("wrong"); }
+  $("qScore").textContent="Correct: "+qCorrect;
+  $("qExplain").innerHTML=(right?"<b class='good'>That's right.</b> ":"<b class='bad'>Not quite.</b> ")+q.e;
+  $("qExplain").hidden=false;
+  $("btnNextQ").textContent = qi<QUIZ.length-1 ? "Next question" : "See result";
+  $("btnNextQ").hidden=false;
+}
+function nextQ(){
+  qi++;
+  if(qi<QUIZ.length) renderQ();
+  else {
+    const pass=qCorrect>=5;
+    $("quizResultTitle").textContent = pass ? "Passed — "+qCorrect+"/6" : "Not yet — "+qCorrect+"/6";
+    $("quizResultTitle").className="bigresult "+(pass?"win":"lose");
+    $("quizResultBlurb").textContent = pass
+      ? "Writers open, erasers close, readers recruit, acetyl-CoA pays — and inhibiting the erasers opens everything. Same switchboard whatever the instrument."
+      : "Pass mark is 5/6. Reread the explanations (or replay a run) and retake — retakes are free.";
+    $("verifiedLabel").hidden = !pass; $("verifiedCode").hidden = !pass;
+    if(pass){ $("verifiedCode").textContent = quizCode(score,Math.min(resolved,TOTAL_NOTES),qCorrect); }
+    $("btnRetake").hidden = pass;
+    show("screen-quizend");
+  }
+}
+
+/* ================= input ================= */
+window.addEventListener("keydown",e=>{
+  if(keyHeld[e.code]) return;
+  keyHeld[e.code]=true;
+  if(!running) return;
+  const li=LANES.findIndex(L=>L.key===e.code);
+  if(li>=0){ e.preventDefault(); tapLane(li); }
+  else if(e.code==="Space"){ e.preventDefault(); fireSaha(); }
+});
+window.addEventListener("keyup",e=>{ keyHeld[e.code]=false; });
+document.querySelectorAll(".lanepad [data-lane]").forEach(b=>{
+  b.addEventListener("pointerdown",e=>{ e.preventDefault(); tapLane(+b.dataset.lane); });
+});
+$("btnSaha").addEventListener("click",fireSaha);
+
+window.CBspeed=function(o){ o=o||{};
+  if(o.speed) SPEED0=Math.max(1.2,o.speed);
+  if(o.spawn) SPAWN_EVERY=Math.max(30,Math.round(o.spawn));
+  if(o.ramp!=null) RAMP=Math.max(0,o.ramp);
+  if(running) speed=Math.min(Math.max(SPEED0,speed),SPEED_MAX);
+  return {speed:SPEED0,spawn:SPAWN_EVERY,ramp:RAMP,current:speed};
+};
+window.CBstate=function(){ return {running,health,score,combo,saha,sahaActive,spawned,resolved,practiceLeft,transcripts}; };
+
+function startRun(){ initGame(); updateHUD(); show("screen-game"); sizeCanvas(); running=true; }
+$("btnStart").addEventListener("click",startRun);
+$("btnReplay").addEventListener("click",startRun);
+$("btnPlayAgain2").addEventListener("click",startRun);
+$("btnQuiz").addEventListener("click",startQuiz);
+$("btnNextQ").addEventListener("click",nextQ);
+$("btnRetake").addEventListener("click",startQuiz);
+$("btnBackLearn").addEventListener("click",()=>show("screen-learn"));
+
+/* ================= boot ================= */
+show("screen-learn"); sizeCanvas(); requestAnimationFrame(loop);
+</script>
+</body>
+</html>

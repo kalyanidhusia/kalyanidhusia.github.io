@@ -163,6 +163,30 @@
       "meta": "~8 min · phone-friendly · sound (mutable)",
       "generated": false,
       "description": "Play cardiac epigenetics: write acetyl marks, balance writers against erasers, and learn why HDAC inhibitors de-repress helpful and harmful genes alike."
+    },
+    {
+      "key": "cardio",
+      "slug": "cardio-beat",
+      "module": 14,
+      "title": "Cardio Beat",
+      "category": "Research frontiers",
+      "mod_label": "Module 14 · Cardiovascular Epigenetics · Rhythm Variant",
+      "teach": "<b>Same concept as Chromatin Command, second mechanic:</b> the acetylation switch as rhythm — tap protective-gene lanes exactly when polymerase arrives, leave the stress lane alone, and feel SAHA overdrive auto-hit both.",
+      "meta": "~6 min · phone-friendly · one concept, three games",
+      "generated": false,
+      "description": "The acetylation switch as a rhythm game: acetylate protective genes on the polymerase beat, ignore the stress lane, survive SAHA overdrive's double edge."
+    },
+    {
+      "key": "hatamole",
+      "slug": "hat-a-mole",
+      "module": 15,
+      "title": "HAT-a-Mole",
+      "category": "Research frontiers",
+      "mod_label": "Module 15 · Cardiovascular Epigenetics · Reflex Variant",
+      "teach": "<b>Same concept, third mechanic:</b> reflex-acetylate protective genes before each polymerase sweep — and learn the eraser lesson hands-on: the HDAC chewing on your mis-marked stress gene is the rescue, not the enemy.",
+      "meta": "~6 min · phone-friendly · one concept, three games",
+      "generated": false,
+      "description": "The acetylation switch as whack-a-mole: mark protective genes before the sweep, never mark stress genes, and let erasers fix your mistakes."
     }
   ],
   "category_notes": {

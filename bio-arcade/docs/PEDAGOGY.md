@@ -151,6 +151,22 @@ This section hosts modules whose concepts come from **active research programs**
 
 **Named simplifications.** Real chromatin is 3D with dozens of modifiable residues and locus-specific targeting, not eight binary gates; HDACs span four classes with different (often non-histone) substrates, and no drug inhibits all of them equally or in five-second pulses; "protective vs. stress" is the adult-vs-fetal gene program as a teaching split; polymerase is recruited by readers and transcription factors, not dive-bombing. The true parts: acetylation is reversible, writer/eraser balance sets gene output, the marks are paid for in acetyl-CoA, and eraser inhibition de-represses indiscriminately.
 
+## Modules 14–15 — Cardio Beat & HAT-a-Mole (same concept, different mechanics — on purpose)
+
+Modules 13, 14, and 15 teach the **same concept** — the acetylation switch — through three deliberately different mechanics: tower defense (Chromatin Command), rhythm (Cardio Beat), and reflex (HAT-a-Mole). All three share the identical flashcard concept text and five of six quiz items, so the concept check is held constant while the mechanic varies. That makes the trio a built-in design experiment for RQ4 (engagement/process): with the concept and assessment fixed, differences in completion, error patterns, and quiz outcomes across the three modules isolate the mechanic as the variable — exactly the comparison the telemetry schema's per-module funnel supports.
+
+### Module 14 — Cardio Beat (rhythm variant)
+
+**Mechanic → biology.** Four falling-note lanes: three protective genes (SERCA2a, MYH6, PGC-1α) and one stress lane (NPPA). A note is polymerase arriving; tapping a green lane in the hit window acetylates in time (transcript scored, heart healed), a missed green note is a stalled gene (damage), and the red lane scores by being **ignored** — tapping it writes a mark on a stress gene (toxic transcript). The hit streak charges **SAHA overdrive**, which auto-hits every lane for three seconds: the protective program fully on and the stress lane leaking, the drug's indiscriminate de-repression as autoplay. 60 notes per run; 2 free practice mistakes. Note speed is tunable without editing code (URL `?speed=&spawn=&ramp=`, console `CBspeed({...})`), following the Polymerase Runner convention.
+
+**Named simplifications.** Timing lanes stand in for loci; real HATs are not gene-aware (recruitment targets them); transcription is not a single beat; an earned overdrive stands in for a dosed drug. Writer-opens/eraser-closes, silent-by-default stress genes, and indiscriminate de-repression are the true parts.
+
+### Module 15 — HAT-a-Mole (reflex variant)
+
+**Mechanic → biology.** Eight pop-up chromatin loci; tap a protective gene to acetylate it before it sinks, and never tap a stress gene — a mis-tap **writes a mark on the stress gene that only an eraser can remove**. HDACs pop up on marked loci to strip the mark: bopping one protects a green mark (+), but bopping the HDAC erasing your mis-marked NPPA destroys your only rescue — erasers rendered as regulators, in the player's own hands. A **polymerase sweep** crosses on a timer and transcribes everything marked (green marks score and heal; red marks leak toxic transcripts; popped-but-unmarked protective genes stall and cost health, so the concept must be exercised to win). The **SAHA stopwatch** freezes every eraser until the sweep: green marks untouchable, mistakes locked in. Survive 8 sweeps; 2 free practice mistakes.
+
+**Named simplifications.** Pop-up loci stand in for genome-wide chromatin; the sweep is a metronome for continuous transcription; the stopwatch stands in for continuous, class-incomplete pharmacological inhibition. Writer-marks/eraser-unmarks, the eraser as the only rescue for a mis-written mark, and SAHA's double edge are the true parts.
+
 ---
 
 ## Assessment & evidence
