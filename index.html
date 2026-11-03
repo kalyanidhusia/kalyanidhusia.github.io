@@ -428,5 +428,21 @@
     </footer>
   </main>
   <script> document.getElementById('year').textContent = new Date().getFullYear(); </script>
+
+  <script>
+  document.querySelectorAll(
+    'a[href^="mailto:kalyanidhusia.bhu@gmail.com"]'
+  ).forEach(link => {
+    link.addEventListener("click", () => {
+      if (typeof window.oaiq === "function") {
+        oaiq("measure", "custom", {
+          type: "custom",
+          name: "contact_email_clicked"
+        });
+      }
+    });
+  });
+  </script>
+
 </body>
 </html>
