@@ -3,6 +3,7 @@
 **/.DS_Store
 
 *.old
+install_openai_pixel.py
 
 # Python
 __pycache__/
