@@ -3154,6 +3154,15 @@ header h1{font-size:1.7rem;line-height:1.25;margin:0 0 6px}
 footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
 footer p{margin:4px 0}
 a{color:var(--accent)}
+/* survey call-out (hub only) */
+.survey{margin-top:30px;padding-top:24px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:18px;align-items:center}
+@media (min-width:560px){.survey{grid-template-columns:200px 1fr;gap:26px}}
+.survey .qr{display:block;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px;width:200px;max-width:100%%;margin:0 auto}
+.survey .qr img{display:block;width:100%%;height:auto}
+.survey h2{font-size:1.25rem;margin:0 0 6px;line-height:1.3}
+.survey .eyebrow{margin-bottom:6px}
+.survey p{margin:0 0 8px;color:var(--muted);font-size:.95rem}
+.survey .meta{margin-top:4px}
 </style>
 </head>
 <body>
@@ -3166,6 +3175,17 @@ a{color:var(--accent)}
   </header>
 
 %(sections)s
+  <section class="survey" id="survey">
+    <a class="qr" href="survey/?code=QR" aria-label="Open the Bio-Arcade Learning Survey"><img src="survey/qr.png" alt="QR code linking to the Bio-Arcade Learning Survey" width="176" height="176"></a>
+    <div>
+      <p class="eyebrow">Help shape the next games</p>
+      <h2>Take the Bio-Arcade Learning Survey</h2>
+      <p>Eight minutes, anonymous, phone-friendly. Tell us which topics are hardest, how you actually study, how you use AI tools, and what the games did for you. Faculty get a shorter form.</p>
+      <p>Answers decide which concept becomes a game next and how Bio-Arcade is used in Arkansas classrooms; summaries, never individual responses, support the program's grant proposals.</p>
+      <a class="play" href="survey/?code=WEB">Take the survey</a>
+      <p class="meta">Scan the code on a phone or tap the button. No names, emails or student IDs are collected.</p>
+    </div>
+  </section>
   <footer>
     <p><b>Arkansas INBRE</b> — supported by the National Institute of General Medical Sciences of the NIH under grant P20&nbsp;GM103429.</p>
     <p>Educational content, not medical advice. Each game states its simplifications; the mechanics model one concept, not full biological reality.</p>

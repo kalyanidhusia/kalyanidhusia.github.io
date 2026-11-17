@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bio-Arcade Learning Survey</title>
+<meta name="description" content="Anonymous 8-minute survey on how Arkansas undergraduates learn biomedical concepts, for the AR INBRE Bio-Arcade project.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Courier+Prime&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Bio-Arcade Learning Survey, instrument v1.2 (QUESTION-BANK.md), concept check omitted.
+   One question per screen. Facilitator view only at ?facilitator=1.
+   Responses: saved in this browser AND posted to the collector (COLLECT_URL) when set.
+   Theme: UAMS red, matching the case-study slides. */
+:root{
+  --red:#A3182D; --red-dark:#7A1225; --red-soft:#F7E9EB; --red-line:#EBD3D7;
+  --bg:#FFFFFF; --card:#FFFFFF; --soft:#FAF7F7; --line:#E6E0E1; --line2:#F1ECED;
+  --ink:#1A1A1A; --ink2:#3A3A3A; --muted:#6B6B6B; --faint:#9A9A9A;
+  --ok:#0F6E56; --warn:#9A5B00;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --mono:"Courier Prime","Courier New",Courier,monospace;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.wrap.wide{max-width:1120px}
+header.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+header.top::before{content:"";display:block;height:6px;background:var(--red)}
+header.top .wrap{padding:14px 16px 12px}
+.hrow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--red)}
+header h1{font-family:var(--serif);font-size:24px;font-weight:800;letter-spacing:-.01em;margin:4px 0 2px;color:var(--ink);line-height:1.15}
+header .sub{font-size:12.5px;color:var(--muted);margin:0}
+.hbtn{background:#fff;color:var(--red);border:1px solid var(--red);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+.prog{margin-top:12px;padding-top:10px;border-top:1px solid var(--line2)}
+.prog .lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.prog .lbl b{color:var(--red);font-weight:400}
+.bar{width:100%;background:var(--line2);border-radius:2px;height:5px;overflow:hidden}
+.fill{height:100%;background:var(--red);width:0%;transition:width .3s}
+main.wrap{padding-top:22px;padding-bottom:40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:18px}
+.chead{border-bottom:1px solid var(--line);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chead .l{display:flex;align-items:center;gap:10px;min-width:0}
+.num{font-family:var(--mono);color:var(--red);font-size:13px;flex-shrink:0}
+.chead h2{font-size:13.5px;font-weight:600;margin:0;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chead .tag{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.cbody{padding:22px 18px 16px}
+.cfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 18px;border-top:1px solid var(--line2)}
+.cfoot .r{display:flex;gap:8px;align-items:center}
+.q{font-family:var(--serif);font-size:21px;font-weight:700;color:var(--ink);margin:0 0 14px;line-height:1.3}
+.q .req{color:var(--red)}
+.q .qid{display:block;font-family:var(--mono);font-size:11px;color:var(--red);letter-spacing:.2em;margin-bottom:8px;font-weight:400}
+.hint{font-size:12.5px;color:var(--muted);margin:-6px 0 14px}
+.lede{font-size:15px;color:var(--ink2);line-height:1.6;margin:0 0 12px}
+.consent{background:var(--soft);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:12px 14px;font-size:13px;color:var(--ink2);line-height:1.55;margin-bottom:16px}
+.opts{display:grid;grid-template-columns:1fr;gap:9px}
+.opts.two{grid-template-columns:1fr 1fr}
+@media(max-width:520px){.opts.two{grid-template-columns:1fr}}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 13px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:14px;font-weight:500;color:var(--ink2);text-align:left;font-family:inherit;transition:border-color .12s,background .12s;min-height:46px}
+.opt:hover{border-color:var(--red)}
+.opt .ck{width:16px;height:16px;border:1.5px solid #C9C0C2;border-radius:999px;flex-shrink:0;position:relative;background:#fff}
+.opt .ck.sq{border-radius:3px}
+.opt.on{border-color:var(--red);background:var(--red-soft)}
+.opt.on .ck{border-color:var(--red);background:var(--red)}
+.opt.on .ck::after{content:"";position:absolute;inset:3px;border-radius:inherit;background:#fff}
+.opt.on .ck.sq::after{inset:4px;border-radius:1px}
+.opt:focus-visible,.lk:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible,.btn:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+select,textarea,input[type=text]{width:100%;border:1px solid #C9C0C2;border-radius:8px;padding:12px;font-size:15px;font-family:inherit;color:var(--ink);background:#fff}
+textarea{min-height:110px;resize:vertical}
+.lkbox{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.lkanch{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:500;margin-bottom:8px;gap:10px}
+.lkgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.lk{display:flex;align-items:center;justify-content:center;padding:13px 4px;background:#fff;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-family:var(--mono);color:var(--ink2);font-size:16px}
+.lk:hover{border-color:var(--red)}
+.lk.on{background:var(--red);color:#fff;border-color:var(--red)}
+.topic{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topic b{font-family:var(--serif);font-size:22px;color:var(--ink)}
+.gtag{font-family:var(--mono);font-size:11px;color:var(--red);letter-spacing:.1em;text-transform:uppercase}
+.strip+.strip{margin-top:14px}
+.strip .sl{font-size:13.5px;color:var(--ink2);font-weight:600;margin-bottom:6px}
+.btn{background:var(--red);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--red-dark)}
+.btn:disabled{background:#D9D2D3;color:#fff;cursor:default}
+.btn.sec{background:#fff;color:var(--red);border:1px solid var(--red)}
+.btn.sec:hover{background:var(--red-soft)}
+.btn.link{background:none;color:var(--muted);border:none;padding:12px 10px;font-weight:500}
+.btn.link:hover{color:var(--ink);background:none}
+.btn.small{padding:8px 13px;font-size:12.5px;border-radius:7px}
+.btn.danger{background:var(--red-dark)}
+.ok{color:var(--ok);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.endmsg{font-size:15px;color:var(--ink2);line-height:1.6}
+.rev{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
+.rev div{border-top:3px solid var(--red-line);padding:10px 2px 0;min-width:110px}
+.rev b{display:block;font-family:var(--serif);font-size:26px;color:var(--red)}
+.rev span{font-family:var(--mono);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.12em}
+.codeline{font-family:var(--mono);font-size:11px;color:var(--faint);text-align:center;margin-top:6px;letter-spacing:.08em}
+.sent{font-size:12.5px;color:var(--muted);margin-top:10px}
+/* facilitator */
+.dcard{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:22px}
+.dhead{border-bottom:2px solid var(--red);padding:13px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dhead h3{margin:0;font-family:var(--serif);font-size:17px;font-weight:700}
+.dhead p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.pill{font-family:var(--mono);color:var(--red);font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+.dbody{padding:18px 20px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.kpi{border-top:3px solid var(--red-line);padding:8px 2px}
+.kpi span{display:block;font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--faint);letter-spacing:.12em}
+.kpi b{display:block;font-family:var(--serif);font-size:24px;font-weight:700;color:var(--ink);margin-top:2px}
+.kpi b.g{color:var(--ok)} .kpi b.b{color:var(--red)} .kpi b.w{color:var(--warn)}
+.take{border-left:3px solid var(--red);background:var(--soft);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0 4px;line-height:1.5}
+.take b{color:var(--red)}
+.fig{border:1px solid var(--line2);border-radius:8px;padding:12px 14px;background:#fff;margin-top:14px}
+.fig .fn{font-family:var(--mono);font-size:10.5px;color:var(--red);letter-spacing:.2em;text-transform:uppercase}
+.fig h4{margin:2px 0 1px;font-size:13.5px;font-weight:700;color:var(--ink)}
+.fig .fs{font-size:11.5px;color:var(--muted);margin:0 0 8px}
+.fig svg{max-width:720px}
+.fig .src{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line2);margin-top:8px;padding-top:6px;font-size:10.5px;color:var(--faint)}
+.fbtn{background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 9px;font-size:10.5px;font-weight:600;color:var(--muted);cursor:pointer;font-family:inherit}
+.fbtn:hover{color:var(--red);border-color:var(--red)}
+.smalln{display:inline-block;background:#FFF6E5;border:1px solid #F3D9A4;color:var(--warn);font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;margin-left:7px;vertical-align:middle}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:2px 0 6px}
+.legend .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.openq{border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:var(--soft);font-size:12.5px;margin-top:8px;line-height:1.5}
+.openq .t{font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--red);letter-spacing:.12em;margin-right:6px}
+.dfoot{background:var(--soft);border-top:1px solid var(--line);padding:11px 20px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.demo-banner{background:var(--warn);color:#fff;font-weight:700;text-align:center;padding:8px 12px;font-size:12.5px}
+footer.site{border-top:1px solid var(--line);padding:22px 0;margin-top:30px;font-size:12px;color:var(--muted)}
+footer.site .wrap{display:flex;flex-direction:column;gap:6px}
+footer.site b{color:var(--ink)}
+footer.site a{color:var(--red)}
+.hidden{display:none!important}
+svg text{font-family:var(--sans)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap" id="hwrap">
+  <div class="hrow">
+    <div style="min-width:0">
+      <div class="kicker">AR INBRE · Bio-Arcade</div>
+      <h1>Bio-Arcade Learning Survey</h1>
+      <p class="sub">Anonymous · about 8 minutes · skip any question you prefer not to answer</p>
+    </div>
+    <button class="hbtn hidden" id="exitFac">Respondent view</button>
+  </div>
+  <div class="prog" id="progWrap">
+    <div class="lbl"><span id="progLeft">Welcome</span><b id="progTxt"></b></div>
+    <div class="bar"><div class="fill" id="progFill"></div></div>
+  </div>
+</div></header>
+
+<main class="wrap" id="main">
+  <div id="view-survey">
+    <div class="card" id="stepCard">
+      <div class="chead" id="stepHead"></div>
+      <div class="cbody" id="stepBody"></div>
+      <div class="cfoot" id="stepFoot"></div>
+    </div>
+    <div class="codeline" id="codeLine"></div>
+  </div>
+
+  <div id="view-fac" class="hidden">
+    <div class="dcard">
+      <div class="dhead"><div><h3>Facilitator setup</h3><p>Reached only with ?facilitator=1 in the address. Respondents never see this page.</p></div><span class="pill">Facilitator</span></div>
+      <div class="dbody">
+        <p class="hint" style="margin-top:0">Set one collection code per class or group (e.g. <b>HENDRIX-BIO101</b>). To hand students a link that carries the code, add <code>?code=HENDRIX-BIO101</code> to the survey address. Responses from the public QR code are stamped <b>QR</b>; from the arcade page link, <b>WEB</b>.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <input type="text" id="collectionCode" placeholder="Collection code" autocomplete="off" style="max-width:320px">
+          <span class="hint" id="codeMsg" style="margin:0"></span>
+        </div>
+        <p class="hint" id="collectorState" style="margin:12px 0 0"></p>
+      </div>
+    </div>
+    <div class="dcard">
+      <div class="dhead"><div><h3>Response overview</h3><p>Aggregates only. Descriptive, not causal.</p></div></div>
+      <div class="dbody"><div class="kpis" id="kpis"></div><div id="takeaways"></div></div>
+    </div>
+    <div class="dcard"><div class="dhead"><div><h3>The gap chart</h3><p>Confidence vs. difficulty vs. faculty judgment, per topic</p></div><span class="pill">Headline</span></div><div class="dbody" id="dashGap"></div></div>
+    <div class="dcard"><div class="dhead"><div><h3>How students learn, and what blocks them</h3><p>Learning formats, barriers, interest, and the research-experience gap</p></div></div><div class="dbody" id="dashLearn"></div></div>
+    <div class="dcard"><div class="dhead"><div><h3>Bio-Arcade reaction</h3><p>Students who played: which games, did they help, would they use them unassigned</p></div></div><div class="dbody" id="dashArcade"></div></div>
+    <div class="dcard"><div class="dhead"><div><h3>AI tools in students' learning</h3><p>Adoption, intensity, purpose, verification: reported behavior, not learning evidence</p></div></div><div class="dbody" id="dashAI"></div></div>
+    <div class="dcard"><div class="dhead"><div><h3>Faculty: adoption picture</h3><p>Openness, pilot willingness, barriers, and the evidence that would convince them</p></div></div><div class="dbody" id="dashFac"></div></div>
+    <div class="dcard"><div class="dhead"><div><h3>Open answers</h3><p>Code into themes before quoting; report theme counts first</p></div></div><div class="dbody" id="dashOpen"></div></div>
+    <div class="dcard">
+      <div class="dhead"><div><h3>Data, methods and downloads</h3><p>Instrument v1.2 · this device's responses plus anything loaded from the collector</p></div></div>
+      <div class="dbody">
+        <p class="hint" style="margin-top:0">Rules from the question bank: gap index = mean difficulty − mean confidence; subgroups with <b>n &lt; 5</b> are flagged and should not be published; faculty results as counts until n ≥ 10. Demo data lives only in demo mode (<code>?demo=1</code>), is stamped <code>synthetic</code>, and is refused by the importer here.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+          <button class="btn small" id="pullBtn">Load all responses from collector</button>
+          <button class="btn small sec" id="expWide">Download CSV (wide)</button>
+          <button class="btn small sec" id="expLong">CSV (long)</button>
+          <button class="btn small sec" id="expJson">JSON</button>
+          <button class="btn small sec" id="expCodebook">Codebook</button>
+          <label class="btn small sec" style="cursor:pointer">Import JSON<input type="file" id="impFile" accept=".json,application/json" class="hidden"></label>
+          <button class="btn small sec" id="demoBtn">Demo data</button>
+          <button class="btn small danger" id="wipeBtn">Erase data on this device</button>
+        </div>
+        <p class="hint" id="shareMsg" style="margin:10px 0 0"></p>
+      </div>
+      <div class="dfoot"><span>Zero PII · export before clearing the browser</span><span id="dfootN"></span></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site"><div class="wrap">
+  <span><b>Bio-Arcade Learning Survey</b> · instrument v1.2 · Part of the Arkansas INBRE student training program, supported by NIGMS of the NIH under award P20 GM103429.</span>
+  <span>Anonymous and voluntary. No names, emails, or student IDs are collected. Games: <a href="https://kalyanidhusia.github.io/bio-arcade/">kalyanidhusia.github.io/bio-arcade</a></span>
+</div></footer>
+
+<script>
+"use strict";
+/* ============ configuration ============ */
+/* Paste the Apps Script web-app URL here after deploying survey/collector.gs. Empty = browser-only storage. */
+var COLLECT_URL="";
+/* ============ constants (QUESTION-BANK.md v1.2) ============ */
+var QS=new URLSearchParams(location.search);
+var DEMO=QS.get("demo")==="1";
+var FAC_MODE=QS.get("facilitator")==="1"||location.hash==="#facilitator";
+var KEY=DEMO?"bioarcade-survey-demo":"bioarcade-survey";
+var VSTU="student_v1.2",VFAC="faculty_v1.2";
+var PUIS=["Arkansas State University (ASU)","Arkansas Tech University (ATU)","Central Baptist College (CBC)","Harding University","Hendrix College","John Brown University (JBU)","Lyon College","Ouachita Baptist University (OBU)","Philander Smith College (PSC)","Southern Arkansas University (SAU)","University of Arkansas at Fort Smith (UAFS)","University of Arkansas at Little Rock (UALR)","University of Arkansas at Monticello (UAM)","University of Arkansas at Pine Bluff (UAPB)","University of Central Arkansas (UCA)","University of the Ozarks","Other"];
+var TOPICS=[
+ {id:"transcription",label:"Transcription",game:"Polymerase Runner"},
+ {id:"translation",label:"Translation",game:"Ribosome Snake"},
+ {id:"folding",label:"Protein folding",game:"Fold-Tris"},
+ {id:"immunology",label:"Immunology",game:"Phagocyte Patrol"},
+ {id:"pharmaco",label:"Pharmacokinetics",game:"Drug Flight"},
+ {id:"antibiotics",label:"Antibiotic resistance",game:"Lysis Lab"}
+];
+var GAMES=TOPICS.map(function(t){return t.game+" ("+t.label+")";});
+var STU=[
+ {num:1,title:"Who you are",items:[
+  {t:"select",id:"S1",q:"Which university do you attend?",opts:PUIS,req:true},
+  {t:"radio",id:"S2",q:"What is your major?",opts:["Biology","Computer Science","Biology + CS / interdisciplinary","Other STEM","Non-STEM"],req:true},
+  {t:"radio",id:"S3",q:"What year are you in?",opts:["Freshman","Sophomore","Junior","Senior","Other"],two:true},
+  {t:"check",id:"S4",q:"Which of these courses have you taken?",hint:"Tap all that apply.",opts:["General Biology","Genetics","Cell / Molecular Biology","Microbiology","Anatomy & Physiology","General Chemistry","Programming I","Data Structures","None of these yet"],excl:["None of these yet"],two:true}
+ ]},
+ {num:2,title:"Core topics: confidence and difficulty",items:[{t:"cdmatrix",id:"S5S6"}]},
+ {num:3,title:"How you learn",items:[
+  {t:"check",id:"S13",q:"Which of these ways do you use to learn science?",hint:"Tap all that apply.",opts:["Lectures","Textbook / readings","Videos","Games / simulations","Primary research articles","Podcasts","Social media / short video","AI chat tools","Study groups","Tutoring / office hours"],two:true},
+  {t:"check",id:"S14",q:"What makes biomedical research hard to consume?",hint:"Tap all that apply.",opts:["Technical jargon","Paywalls / no access","Statistics & math","Not enough time","Don't know where to start","Papers feel disconnected from class","Nothing — I read research comfortably"],excl:["Nothing — I read research comfortably"]},
+  {t:"likert",id:"S15",q:"How interested are you in biomedical research?",lo:"Not at all interested",hi:"Very interested"},
+  {t:"likert",id:"S16",q:"How interested are you in combining computer science and biology (e.g. bioinformatics, computational biology)?",lo:"Not at all interested",hi:"Very interested"},
+  {t:"radio",id:"S17",q:"Have you done undergraduate research?",opts:["Yes","No, but I want to","No, not interested"]},
+  {t:"radio",id:"S18",q:"Which career direction are you leaning toward?",opts:["Biomedical / life-science research","Healthcare / clinical","Software / data","Bioinformatics / computational biology","Teaching","Undecided","Other"],two:true}
+ ]},
+ {num:4,title:"Bio-Arcade itself",items:[
+  {t:"radio",id:"S19",q:"Have you played any Bio-Arcade games?",opts:["Yes","Not yet"]},
+  {t:"check",id:"S20",q:"Which games have you played?",hint:"Tap all that apply.",opts:GAMES,showIf:function(A){return A.S19==="Yes";}},
+  {t:"likert",id:"S21",q:"The games helped me learn.",lo:"Strongly disagree",hi:"Strongly agree",showIf:function(A){return A.S19==="Yes";}},
+  {t:"likert",id:"S22",q:"I would use them outside an assignment.",lo:"Strongly disagree",hi:"Strongly agree",showIf:function(A){return A.S19==="Yes";}},
+  {t:"likert",id:"S23",q:"I would recommend them to a classmate.",lo:"Strongly disagree",hi:"Strongly agree",showIf:function(A){return A.S19==="Yes";}}
+ ]},
+ {num:5,title:"In your own words",items:[
+  {t:"text",id:"S24",q:"What topic should become a game next?",short:true},
+  {t:"text",id:"S25",q:"What is the biggest gap in how you are learning this material right now? What support do you wish existed?"}
+ ]},
+ {num:6,title:"AI tools in your learning",items:[
+  {t:"check",id:"S26",q:"In the past 30 days, which AI tools have you used for schoolwork or studying?",hint:"Tap all that apply. No judgment either way; we want the real picture.",opts:["ChatGPT (OpenAI)","Claude (Anthropic)","Gemini (Google)","NotebookLM (Google)","Perplexity","Microsoft Copilot","Another tool","I haven't used AI tools in the past 30 days"],excl:["I haven't used AI tools in the past 30 days"],two:true},
+  {t:"radio",id:"S27",q:"How often do you use AI tools for studying?",opts:["Never","A few times a month","Weekly","Several times a week","Daily"]},
+  {t:"check",id:"S28",q:"What do you use AI tools for?",hint:"Tap all that apply.",opts:["Explaining concepts","Making practice questions / quizzing myself","Help with coding","Summarizing papers or readings","Checking my answers","Writing assignments","Generating ideas","Other"],two:true},
+  {t:"radio",id:"S29",q:"When an AI tool gives you an answer, how often do you check it against your course materials or another source?",opts:["Never","Rarely","Sometimes","Usually","Always"]},
+  {t:"radio",id:"S30",q:"Which best describes what AI tools mostly do for you?",opts:["Help me understand the concept","Help me finish faster","Mostly give me the answer","Not sure"]},
+  {t:"radio",id:"S31",q:"Have you ever caught an AI answer about biology or coding being wrong or misleading?",opts:["Yes","No","Not sure"]}
+ ]}
+];
+var FAC=[
+ {num:1,title:"Who you are",items:[
+  {t:"select",id:"F1",q:"Which university do you teach at?",opts:PUIS,req:true},
+  {t:"radio",id:"F2",q:"What is your department?",opts:["Biology / Life Sciences","Computer Science","Other STEM","Other"],req:true},
+  {t:"radio",id:"F3",q:"Which levels do you teach?",opts:["Introductory undergraduate","Upper-level undergraduate","Both intro and upper-level","Graduate"]},
+  {t:"text",id:"F4",q:"Which courses do you teach?",hint:"Brief, e.g. Genetics, Cell Biology, Intro Programming.",short:true}
+ ]},
+ {num:2,title:"Core topics: how hard are they for students to grasp?",items:[{t:"fmatrix",id:"F5"}]},
+ {num:3,title:"Games and active learning in your teaching",items:[
+  {t:"radio",id:"F6",q:"How often do you currently use games, simulations, or interactive tools in your teaching?",opts:["Never","Rarely","Sometimes","Often","Built into my courses"]},
+  {t:"radio",id:"F7",q:"Would you pilot Bio-Arcade in one of your classes?",opts:["Yes","Maybe","No"]},
+  {t:"likert",id:"F8",q:"How open are you to adopting a game-based learning tool like Bio-Arcade?",lo:"Not at all open",hi:"Very open"},
+  {t:"check",id:"F9",q:"What are the barriers to adopting game-based learning in your courses?",hint:"Tap all that apply.",opts:["Time in the syllabus","Alignment to learning objectives","Lack of evidence it works","Technology / access for students","Accessibility concerns","Cost","No real barriers"],excl:["No real barriers"]},
+  {t:"check",id:"F10",q:"What evidence would convince you that a tool like this is worth class time?",hint:"Tap all that apply.",opts:["Measured learning gains","Student feedback / engagement data","A map to my learning objectives","A small pilot in my own class","Colleagues using it successfully","A published study"]},
+  {t:"radio",id:"F14",q:"What is your current approach to students using AI tools (like ChatGPT) in your courses?",opts:["Not allowed","Discouraged","Allowed with limits","Encouraged","No explicit policy"]},
+  {t:"text",id:"F11",q:"What support would you need to use a tool like this well?"}
+ ]}
+];
+
+/* ============ helpers ============ */
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return [];}}
+function store(d){try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function $(s){return document.querySelector(s);}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function normCode(s){return (s||"").toUpperCase().replace(/[^A-Z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
+function getCode(){var c=normCode(QS.get("code")||"");if(c){try{localStorage.setItem(KEY+"-code",c);}catch(e){}return c;}try{return localStorage.getItem(KEY+"-code")||"";}catch(e){return "";}}
+
+/* ============ collector ============ */
+function postRecord(r,cb){
+  if(!COLLECT_URL){cb(false);return;}
+  try{fetch(COLLECT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(r),keepalive:true}).then(function(){cb(true);}).catch(function(){cb(false);});}
+  catch(e){cb(false);}
+}
+function flushUnsent(){
+  if(!COLLECT_URL||!navigator.onLine)return;
+  var d=load(),pending=d.filter(function(r){return r.sent===false&&!r.synthetic;});
+  if(!pending.length)return;
+  var i=0;(function next(){if(i>=pending.length)return;var r=pending[i++];postRecord(r,function(ok){if(ok){var all=load();all.forEach(function(x){if(x.id===r.id)x.sent=true;});store(all);}next();});})();
+}
+
+/* ============ stepper state ============ */
+var consent=null,role=null,A={},stepIdx=0,submitted=false,lastSent=null;
+function sections(){return role==="faculty"?FAC:STU;}
+function buildSteps(){
+  var steps=[{k:"intro"},{k:"consent"}];
+  if(consent==="no"){steps.push({k:"end",msg:"No problem. Nothing has been recorded. You can close this page."});return steps;}
+  if(consent==="yes")steps.push({k:"elig"});
+  if(role==="exit"){steps.push({k:"end",msg:"Thank you for your interest. This survey is for current Arkansas undergraduates and their faculty, so no answers will be recorded. You are still welcome to play Bio-Arcade at kalyanidhusia.github.io/bio-arcade."});return steps;}
+  if(role==="student"||role==="faculty"){
+    sections().forEach(function(sec){
+      var vis=sec.items.filter(function(it){return !it.showIf||it.showIf(A);});
+      var n=0,total=0;
+      vis.forEach(function(it){total+=it.t==="cdmatrix"||it.t==="fmatrix"?TOPICS.length:1;});
+      vis.forEach(function(it){
+        if(it.t==="cdmatrix"||it.t==="fmatrix")TOPICS.forEach(function(t){n++;steps.push({k:"item",sec:sec,item:it,topic:t,pos:n,total:total,key:it.id+":"+t.id});});
+        else{n++;steps.push({k:"item",sec:sec,item:it,pos:n,total:total,key:it.id});}
+      });
+    });
+    steps.push({k:"review"});
+  }
+  return steps;
+}
+var STEPS=buildSteps();
+function stepKey(s){return s.k==="item"?s.key:s.k;}
+function rebuildKeep(){var cur=stepKey(STEPS[stepIdx]);STEPS=buildSteps();var i=STEPS.findIndex(function(s){return stepKey(s)===cur;});stepIdx=i>=0?i:Math.min(stepIdx,STEPS.length-1);}
+function go(delta){var next=stepIdx+delta;if(next<0||next>=STEPS.length)return;stepIdx=next;render();window.scrollTo({top:0,behavior:"smooth"});}
+function stepAnswered(s){
+  if(s.k==="consent")return consent!=null;if(s.k==="elig")return role!=null;
+  if(s.k!=="item")return true;
+  var it=s.item;
+  if(s.topic){var ids=it.t==="cdmatrix"?[s.topic.id+"_conf",s.topic.id+"_diff"]:[s.topic.id+"_teach"];return ids.every(function(id){return typeof A[id]==="number";});}
+  var v=A[it.id];if(it.t==="check")return Array.isArray(v)&&v.length>0;if(it.t==="text")return !!v;return v!=null&&v!=="";
+}
+function stepRequired(s){return s.k==="consent"||s.k==="elig"||(s.k==="item"&&!!s.item.req);}
+
+/* ============ rendering ============ */
+function likert(container,key,lo,hi,label){
+  var box=el("div","lkbox");
+  if(label)box.appendChild(el("div","sl",esc(label)));
+  box.appendChild(el("div","lkanch",'<span>1 = '+esc(lo)+'</span><span>5 = '+esc(hi)+'</span>'));
+  var g=el("div","lkgrid");
+  for(var n=1;n<=5;n++)(function(n){var b=el("button","lk"+(A[key]===n?" on":""),String(n));b.type="button";
+    b.addEventListener("click",function(){A[key]=n;Array.prototype.forEach.call(g.children,function(x,i){x.classList.toggle("on",i===n-1);});refreshFoot();});g.appendChild(b);})(n);
+  box.appendChild(g);container.appendChild(box);
+}
+function optionGroup(container,id,opts,multi,excl,two){
+  var g=el("div","opts"+(two?" two":""));
+  opts.forEach(function(o){
+    var on=multi?(A[id]||[]).indexOf(o)>=0:A[id]===o;
+    var b=el("button","opt"+(on?" on":""),'<span class="ck'+(multi?" sq":"")+'"></span><span>'+esc(o)+'</span>');b.type="button";
+    b.addEventListener("click",function(){
+      if(!multi){A[id]=o;Array.prototype.forEach.call(g.children,function(x){x.classList.toggle("on",x===b);});}
+      else{var cur=(A[id]||[]).slice(),i=cur.indexOf(o),ex=excl||[];
+        if(i>=0){cur.splice(i,1);b.classList.remove("on");}
+        else{if(ex.indexOf(o)>=0){cur=[];Array.prototype.forEach.call(g.children,function(x){x.classList.remove("on");});}
+          else{cur=cur.filter(function(x){return ex.indexOf(x)<0;});Array.prototype.forEach.call(g.children,function(x){if(ex.indexOf(x.textContent.trim())>=0)x.classList.remove("on");});}
+          cur.push(o);b.classList.add("on");}
+        A[id]=cur;}
+      rebuildKeep();refreshFoot();
+    });
+    g.appendChild(b);
+  });
+  container.appendChild(g);
+}
+function render(){
+  var s=STEPS[stepIdx],head=$("#stepHead"),body=$("#stepBody");
+  body.innerHTML="";
+  var secNum="",title="",tag="";
+  if(s.k==="intro"){
+    title="Welcome";tag="Start";
+    body.innerHTML='<p class="q">Help us make Bio-Arcade better.</p><p class="lede">Bio-Arcade is a set of short browser games that each teach one biomedical concept. This survey asks what you already find hard, what helps you learn, how you use AI tools, and, if you have played, what the games did for you. Your answers shape which games get built next and how they are used in Arkansas classrooms.</p><p class="lede">One question per screen. Use <b>Next</b> to continue or <b>Skip</b> on any question you prefer not to answer. Students: about 8 minutes. Faculty: about 5.</p>';
+  } else if(s.k==="consent"){
+    secNum="00";title="Before you start";tag="Consent";
+    body.innerHTML='<div class="consent">This survey is <b>anonymous and voluntary</b>. It is not tied to any grade. Responses are used to understand learning needs and to plan game-based learning resources, and may be summarized, without any names, as background for a grant proposal. Skip any question you prefer not to answer, except the ones needed to sort responses. You can stop at any time; answers are recorded only when you press Submit.</div><p class="q"><span class="qid">S0a</span>I have read the information above and agree to take part. <span class="req">*</span></p>';
+    var g=el("div","opts");[["yes","Yes, I agree to take part"],["no","No, I do not agree"]].forEach(function(p){
+      var b=el("button","opt"+(consent===p[0]?" on":""),'<span class="ck"></span><span>'+p[1]+'</span>');b.type="button";
+      b.addEventListener("click",function(){consent=p[0];role=null;A={};Array.prototype.forEach.call(g.children,function(x){x.classList.toggle("on",x===b);});rebuildKeep();refreshFoot();});g.appendChild(b);});
+    body.appendChild(g);
+  } else if(s.k==="elig"){
+    secNum="00";title="Before you start";tag="Eligibility";
+    body.innerHTML='<p class="q"><span class="qid">S0b</span>Are you 18 or older and currently an undergraduate at a college or university in Arkansas? <span class="req">*</span></p>';
+    var g2=el("div","opts");[["student","Yes, I am an undergraduate student"],["faculty","I am faculty or staff"],["exit","No"]].forEach(function(p){
+      var b=el("button","opt"+(role===p[0]?" on":""),'<span class="ck"></span><span>'+p[1]+'</span>');b.type="button";
+      b.addEventListener("click",function(){role=p[0];A={};Array.prototype.forEach.call(g2.children,function(x){x.classList.toggle("on",x===b);});rebuildKeep();refreshFoot();});g2.appendChild(b);});
+    body.appendChild(g2);
+  } else if(s.k==="end"){
+    title="Thank you";tag="";body.innerHTML='<p class="endmsg">'+esc(s.msg).replace("kalyanidhusia.github.io/bio-arcade",'<a href="https://kalyanidhusia.github.io/bio-arcade/">kalyanidhusia.github.io/bio-arcade</a>')+'</p>';
+  } else if(s.k==="review"){
+    title="Review and submit";tag=role==="faculty"?"Faculty form":"Student form";
+    var items=STEPS.filter(function(x){return x.k==="item";}),done=items.filter(stepAnswered).length;
+    if(submitted){
+      var sentLine=lastSent===true?'Your response reached the collector.':lastSent===false&&COLLECT_URL?'Saved on this device; it will be sent when this page is next opened online.':'Saved on this device.';
+      body.innerHTML='<p class="q">Thank you.</p><p class="endmsg"><span class="ok">Submitted.</span> Your anonymous response has been recorded.</p><div class="rev"><div><b>'+done+'</b><span>answered</span></div><div><b>'+(items.length-done)+'</b><span>skipped</span></div></div><p class="sent">'+sentLine+'</p><p class="hint" style="margin-top:14px">You can close this page, or <a href="https://kalyanidhusia.github.io/bio-arcade/">play the games</a>. If this device is shared, press the button below for the next person.</p>';
+    } else body.innerHTML='<p class="q">Ready to submit?</p><p class="lede">You answered <b>'+done+' of '+items.length+'</b> questions. Press Submit to record your response, or go back to change an answer.</p><div class="rev"><div><b>'+done+'</b><span>answered</span></div><div><b>'+(items.length-done)+'</b><span>skipped</span></div></div><p class="hint" style="margin-top:14px">Nothing is recorded until you press Submit.</p>';
+  } else {
+    var it=s.item;secNum=(s.sec.num<10?"0":"")+s.sec.num;title=s.sec.title;tag="Question "+s.pos+" of "+s.total;
+    if(s.topic){
+      body.innerHTML='<div class="topic"><b>'+esc(s.topic.label)+'</b><span class="gtag">'+esc(s.topic.game)+'</span></div>';
+      if(it.t==="cdmatrix"){body.appendChild(el("p","hint",'S5 and S6 for this topic.'));var w1=el("div","strip");likert(w1,s.topic.id+"_conf","Not at all confident","Very confident","How confident are you in your understanding of this topic?");body.appendChild(w1);var w2=el("div","strip");likert(w2,s.topic.id+"_diff","Easy","Very hard","How hard was it to learn?");body.appendChild(w2);}
+      else{body.appendChild(el("p","hint",'F5 for this topic.'));var w3=el("div","strip");likert(w3,s.topic.id+"_teach","Easy for students to grasp","Very hard for students to grasp","In your experience, how hard is this topic for students to grasp?");body.appendChild(w3);}
+    } else {
+      body.appendChild(el("p","q",'<span class="qid">'+it.id+'</span>'+esc(it.q)+(it.req?' <span class="req">*</span>':'')));
+      if(it.hint)body.appendChild(el("p","hint",esc(it.hint)));
+      if(it.t==="select"){var sel=el("select");sel.innerHTML='<option value="">Choose one</option>'+it.opts.map(function(o){return '<option'+(A[it.id]===o?" selected":"")+'>'+esc(o)+'</option>';}).join("");sel.addEventListener("change",function(){A[it.id]=sel.value||undefined;refreshFoot();});body.appendChild(sel);}
+      else if(it.t==="radio")optionGroup(body,it.id,it.opts,false,null,it.two);
+      else if(it.t==="check")optionGroup(body,it.id,it.opts,true,it.excl,it.two);
+      else if(it.t==="likert")likert(body,it.id,it.lo,it.hi,null);
+      else if(it.t==="text"){var ta=el(it.short?"input":"textarea");if(it.short)ta.type="text";ta.placeholder="Optional";ta.value=A[it.id]||"";ta.addEventListener("input",function(){A[it.id]=ta.value.trim()||undefined;refreshFoot();});body.appendChild(ta);}
+    }
+  }
+  head.innerHTML='<div class="l">'+(secNum?'<span class="num">'+secNum+'</span>':'')+'<h2>'+esc(title)+'</h2></div><span class="tag">'+esc(tag)+'</span>';
+  refreshFoot();
+}
+function refreshFoot(){
+  var s=STEPS[stepIdx],foot=$("#stepFoot");foot.innerHTML="";
+  var back=el("button","btn link","Back");back.type="button";back.disabled=stepIdx===0;back.addEventListener("click",function(){go(-1);});
+  var r=el("div","r");
+  if(s.k==="intro"){var st=el("button","btn","Start");st.addEventListener("click",function(){go(1);});r.appendChild(st);}
+  else if(s.k==="end"){var ag=el("button","btn sec","Start over");ag.addEventListener("click",function(){resetAll();});r.appendChild(ag);}
+  else if(s.k==="review"){
+    if(submitted){var nx=el("button","btn sec","Submit another response");nx.addEventListener("click",function(){resetAll();});r.appendChild(nx);}
+    else{var sb=el("button","btn","Submit");sb.addEventListener("click",submit);r.appendChild(sb);}
+  } else {
+    var ans=stepAnswered(s),req=stepRequired(s);
+    if(!req&&!ans){var sk=el("button","btn link","Skip");sk.type="button";sk.addEventListener("click",function(){go(1);});r.appendChild(sk);}
+    var nxt=el("button","btn","Next");nxt.type="button";nxt.disabled=!ans;nxt.addEventListener("click",function(){go(1);});r.appendChild(nxt);
+  }
+  foot.appendChild(back);foot.appendChild(r);
+  progress();
+}
+function progress(){
+  var items=STEPS.filter(function(x){return x.k==="item";}),s=STEPS[stepIdx];
+  if(s.k==="intro"||s.k==="consent"||s.k==="elig"||s.k==="end"){$("#progLeft").textContent=s.k==="end"?"Done":"Getting started";$("#progTxt").textContent="";$("#progFill").style.width=s.k==="end"?"100%":"0%";return;}
+  var idxItem=items.indexOf(s),pct=s.k==="review"?100:Math.round((idxItem/Math.max(items.length,1))*100);
+  $("#progLeft").textContent=role==="faculty"?"Faculty form":"Student form";
+  $("#progTxt").textContent=s.k==="review"?"Review":"Question "+(idxItem+1)+" of "+items.length;
+  $("#progFill").style.width=pct+"%";
+}
+function submit(){
+  var code=getCode()||"WEB";
+  var r={id:uid(),ts:new Date().toISOString(),instrument_version:role==="faculty"?VFAC:VSTU,role:role,collection:code,consent:"yes",answers:{},ua:(/Mobi|Android/i.test(navigator.userAgent)?"mobile":"desktop")};
+  if(DEMO)r.synthetic=true;
+  STEPS.filter(function(x){return x.k==="item";}).forEach(function(s){
+    if(s.topic){(s.item.t==="cdmatrix"?[s.topic.id+"_conf",s.topic.id+"_diff"]:[s.topic.id+"_teach"]).forEach(function(id){if(A[id]!==undefined)r.answers[id]=A[id];});}
+    else if(A[s.item.id]!==undefined)r.answers[s.item.id]=A[s.item.id];
+  });
+  r.sent=false;
+  var d=load();d.push(r);store(d);submitted=true;lastSent=null;render();
+  if(COLLECT_URL&&!DEMO)postRecord(r,function(ok){lastSent=ok;if(ok){var all=load();all.forEach(function(x){if(x.id===r.id)x.sent=true;});store(all);}if(submitted)render();});
+  else lastSent=null;
+}
+function resetAll(){consent=null;role=null;A={};submitted=false;lastSent=null;STEPS=buildSteps();stepIdx=0;render();window.scrollTo({top:0});}
+/* swipe + keyboard */
+(function(){var x0=null;var card=$("#stepCard");
+  card.addEventListener("touchstart",function(e){x0=e.touches[0].clientX;},{passive:true});
+  card.addEventListener("touchend",function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<70)return;
+    var s=STEPS[stepIdx];if(dx<0){if(s.k==="item"&&(stepAnswered(s)||!stepRequired(s)))go(1);else if(s.k==="intro")go(1);}else go(-1);},{passive:true});
+  document.addEventListener("keydown",function(e){if(e.target.tagName==="TEXTAREA"||e.target.tagName==="INPUT"||e.target.tagName==="SELECT")return;
+    var s=STEPS[stepIdx];if(e.key==="ArrowRight"&&s.k==="item"&&(stepAnswered(s)||!stepRequired(s)))go(1);if(e.key==="ArrowLeft")go(-1);});
+})();
+
+/* ============ facilitator view ============ */
+if(FAC_MODE){
+  $("#view-survey").classList.add("hidden");$("#view-fac").classList.remove("hidden");$("#progWrap").classList.add("hidden");
+  $("#main").classList.add("wide");$("#hwrap").classList.add("wide");
+  var eb=$("#exitFac");eb.classList.remove("hidden");eb.addEventListener("click",function(){location.href=location.pathname+(getCode()?"?code="+encodeURIComponent(getCode()):"");});
+  $("#collectionCode").value=getCode();
+  $("#collectionCode").addEventListener("change",function(e){e.target.value=normCode(e.target.value);try{localStorage.setItem(KEY+"-code",e.target.value);}catch(x){}$("#codeMsg").innerHTML=e.target.value?'<span class="ok">Saved on this device.</span> Student link: <code>'+esc(location.origin+location.pathname+"?code="+e.target.value)+'</code>':'<span class="warn">No code set.</span>';});
+  $("#collectorState").innerHTML=COLLECT_URL?'<span class="ok">Collector connected.</span> Submissions are posted to the Google Sheet; use "Load all responses from collector" below to chart everything collected so far.':'<span class="warn">No collector configured.</span> Responses stay on each device until exported. Set COLLECT_URL in index.html after deploying collector.gs.';
+} else {
+  var c0=getCode();$("#codeLine").textContent=c0?"Collection "+c0:"";
+  render();flushUnsent();window.addEventListener("online",flushUnsent);
+}
+function counts(list,get){var c={};list.forEach(function(r){var v=get(r);if(Array.isArray(v))v.forEach(function(x){c[x]=(c[x]||0)+1;});else if(v!=null&&v!=="")c[v]=(c[v]||0)+1;});return c;}
+function sortPairs(c,order){var ks=order?order.filter(function(k){return k in c;}):Object.keys(c).sort(function(a,b){return c[b]-c[a];});return ks.map(function(k){return [k,c[k]];});}
+function avg(a){return a.length?a.reduce(function(x,y){return x+y;},0)/a.length:null;}
+function mean(list,get){var v=list.map(get).filter(function(x){return typeof x==="number";});return {m:avg(v),n:v.length};}
+function dateRange(d){if(!d.length)return "no data yet";var ds=d.map(function(r){return String(r.ts).slice(0,10);}).sort();return ds[0]===ds[ds.length-1]?ds[0]:ds[0]+" to "+ds[ds.length-1];}
+function smallN(n){return n>0&&n<5?'<span class="smalln">n &lt; 5, do not publish</span>':"";}
+var INK="#1A1A1A",MUT="#6B6B6B",C1="#A3182D",C2="#C2740A",C3="#4B5A8A",C4="#0F6E56";
+function svgOpen(w,h){return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" width="100%" role="img" style="display:block">';}
+function lbl(s){s=String(s);return esc(s.length>36?s.slice(0,35)+"…":s);}
+function barSVG(pairs,o){o=o||{};var W=640,rh=26,lw=o.lw||230,H=pairs.length*rh+8,max=Math.max.apply(null,pairs.map(function(p){return p[1];}).concat([o.max||1]));var s=svgOpen(W,H);
+  pairs.forEach(function(p,i){var y=4+i*rh,bw=Math.max(2,(p[1]/max)*(W-lw-70));
+    s+='<text x="'+(lw-8)+'" y="'+(y+15)+'" text-anchor="end" font-size="11.5" fill="'+INK+'">'+lbl(p[0])+'</text><rect x="'+lw+'" y="'+y+'" width="'+bw+'" height="18" rx="3" fill="'+(o.color||C1)+'"><title>'+esc(p[0])+': '+p[1]+'</title></rect><text x="'+(lw+bw+6)+'" y="'+(y+13)+'" font-size="11" font-weight="600" fill="'+MUT+'">'+(o.fmt?o.fmt(p[1]):p[1])+'</text>';});
+  return s+'</svg>';}
+function multiSVG(rows,series,colors,max,fmt){var W=640,lw=230,bh=12,gap=3,rh=series.length*(bh+gap)+10,H=rows.length*rh+8;var s=svgOpen(W,H);
+  rows.forEach(function(r,i){var y=4+i*rh;s+='<text x="'+(lw-8)+'" y="'+(y+rh/2)+'" text-anchor="end" font-size="11.5" fill="'+INK+'">'+lbl(r[0])+'</text>';
+    r[1].forEach(function(v,j){var yy=y+j*(bh+gap);if(v!=null){var bw=Math.max(2,(v/max)*(W-lw-70));s+='<rect x="'+lw+'" y="'+yy+'" width="'+bw+'" height="'+bh+'" rx="2" fill="'+colors[j]+'"><title>'+esc(r[0])+', '+esc(series[j])+': '+fmt(v)+'</title></rect><text x="'+(lw+bw+5)+'" y="'+(yy+10)+'" font-size="10" font-weight="600" fill="'+MUT+'">'+fmt(v)+'</text>';}
+      else s+='<text x="'+(lw+2)+'" y="'+(yy+10)+'" font-size="10" fill="'+MUT+'">–</text>';});});
+  return s+'</svg>';}
+function legend(items){return '<div class="legend">'+items.map(function(p){return '<span><span class="sw" style="background:'+p[1]+'"></span>'+esc(p[0])+'</span>';}).join("")+'</div>';}
+var figN=0;
+function figure(container,title,sub,svg,csv,extra){figN++;var id="fig"+figN;var d=el("div","fig");
+  d.innerHTML='<div class="fn">Figure '+figN+'</div><h4>'+title+'</h4><p class="fs">'+sub+'</p>'+(extra||"")+'<div id="'+id+'-svg">'+svg+'</div><div class="src"><span>Source: Bio-Arcade Learning Survey, '+esc(dateRange(load()))+' · instrument v1.2</span><span><button class="fbtn" data-png="'+id+'">PNG for slides</button> <button class="fbtn" data-csv="'+id+'">Data CSV</button></span></div>';
+  d.dataset.csv=JSON.stringify(csv);d.dataset.title=title.replace(/<[^>]+>/g,"");container.appendChild(d);}
+function download(name,text,type){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:type}));a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},2000);}
+function cell(v){v=(v==null?"":Array.isArray(v)?v.join("; "):String(v));return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+$("#view-fac").addEventListener("click",function(e){var b=e.target.closest(".fbtn");if(!b)return;var fig=b.closest(".fig"),nm=fig.dataset.title.replace(/[^a-z0-9]+/gi,"_").toLowerCase();
+  if(b.dataset.csv){download(nm+".csv",JSON.parse(fig.dataset.csv).map(function(r){return r.map(cell).join(",");}).join("\n"),"text/csv");}
+  else{var sv=document.getElementById(b.dataset.png+"-svg").querySelector("svg"),vb=sv.getAttribute("viewBox").split(" "),w=+vb[2],h=+vb[3],sc=2,img=new Image();
+    img.onload=function(){var c=document.createElement("canvas");c.width=w*sc;c.height=h*sc;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.scale(sc,sc);x.drawImage(img,0,0);var a=document.createElement("a");a.href=c.toDataURL("image/png");a.download=nm+".png";a.click();};
+    img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(new XMLSerializer().serializeToString(sv));}});
+function f1(v){return v==null?"–":v.toFixed(1);}
+function renderDash(){
+  figN=0;var data=load(),stu=data.filter(function(r){return r.role==="student";}),fac=data.filter(function(r){return r.role==="faculty";});
+  var played=stu.filter(function(r){return r.answers.S19==="Yes";}),notp=stu.filter(function(r){return r.answers.S19==="Not yet";});
+  var insts={};data.forEach(function(r){var v=r.answers.S1||r.answers.F1;if(v&&v!=="Other")insts[v]=1;});
+  var byCol=counts(data,function(r){return r.collection;});
+  $("#kpis").innerHTML='<div class="kpi"><span>Responses</span><b>'+data.length+'</b></div><div class="kpi"><span>Students</span><b class="b">'+stu.length+'</b></div><div class="kpi"><span>Faculty</span><b class="b">'+fac.length+'</b></div><div class="kpi"><span>Played / not yet</span><b class="g">'+played.length+' / '+notp.length+'</b></div><div class="kpi"><span>INBRE PUIs</span><b>'+Object.keys(insts).length+'</b></div><div class="kpi"><span>Via QR / web</span><b>'+(byCol.QR||0)+' / '+(byCol.WEB||0)+'</b></div><div class="kpi"><span>Window</span><b style="font-size:12px;line-height:1.8;font-family:var(--mono)">'+esc(dateRange(data))+'</b></div>';
+  $("#dfootN").textContent=data.length+" responses loaded";
+  var gapRows=[],worst=null;
+  TOPICS.forEach(function(t){var c=mean(stu,function(r){return r.answers[t.id+"_conf"];}),d=mean(stu,function(r){return r.answers[t.id+"_diff"];}),f=mean(fac,function(r){return r.answers[t.id+"_teach"];});
+    gapRows.push([t.label,[c.m,d.m,f.m]]);
+    if(c.m!=null&&d.m!=null){var g=d.m-c.m;if(!worst||g>worst.g)worst={t:t.label,g:g};}});
+  var tk=[];
+  if(worst)tk.push("Biggest measured gap among <b>"+stu.length+" student respondents</b>: <b>"+esc(worst.t)+"</b> (difficulty − confidence = "+worst.g.toFixed(1)+").");
+  if(stu.length){var want=stu.filter(function(r){return r.answers.S17==="No, but I want to";}).length;tk.push("<b>"+want+" of "+stu.length+"</b> students have not done research but want to: the pipeline-gap number.");}
+  if(fac.length){var ym=fac.filter(function(r){return r.answers.F7==="Yes"||r.answers.F7==="Maybe";}).length;tk.push("<b>"+ym+" of "+fac.length+"</b> faculty would pilot Bio-Arcade (yes + maybe): the adoption-pipeline number.");}
+  $("#takeaways").innerHTML=tk.length?"<p class='hint' style='margin:12px 0 4px'><b>Takeaways so far.</b> Respondent descriptions, not statewide estimates. Order of claims: demonstrated, then reported, then intended.</p>"+tk.map(function(k){return '<div class="take">'+k+'</div>';}).join(""):"<p class='hint' style='margin-top:12px'>No responses yet. Charts fill as submissions arrive.</p>";
+  var dG=$("#dashGap");dG.innerHTML=(stu.length||fac.length)?"":"<p class='hint'>No data yet.</p>";
+  if(stu.length||fac.length){
+    figure(dG,"Confidence vs. difficulty vs. faculty judgment, by topic"+smallN(stu.length),"Means on the 1–5 scale. Confidence and difficulty are student self-report (S5, S6); faculty judgment is 'hard for students to grasp' (F5). A topic that is hard AND low-confidence is an instructional need.",multiSVG(gapRows,["Confidence","Difficulty","Faculty: hard to grasp"],[C1,C2,C3],5,f1),[["topic","confidence_mean","difficulty_mean","faculty_difficulty_mean"]].concat(gapRows.map(function(r){return [r[0]].concat(r[1]);})),legend([["Confidence (S5)",C1],["Difficulty (S6)",C2],["Faculty: hard to grasp (F5)",C3]]));
+    var byMaj={};stu.forEach(function(r){var m=r.answers.S2;if(!m)return;var v=[];TOPICS.forEach(function(t){var x=r.answers[t.id+"_conf"];if(typeof x==="number")v.push(x);});if(v.length){byMaj[m]=byMaj[m]||[];byMaj[m].push(avg(v));}});
+    var mp=Object.keys(byMaj).map(function(k){return [k+" (n="+byMaj[k].length+")",+avg(byMaj[k]).toFixed(2)];});
+    if(mp.length)figure(dG,"Mean confidence across the six topics, by major","Biology vs. CS split (S2 × S5).",barSVG(mp,{max:5,fmt:f1}),[["major","mean_confidence"]].concat(mp));
+  }
+  var dL=$("#dashLearn");dL.innerHTML=stu.length?"":"<p class='hint'>No student responses yet.</p>";
+  if(stu.length){
+    var s13=sortPairs(counts(stu,function(r){return r.answers.S13;}));figure(dL,"How students learn science"+smallN(stu.length),"Formats students report using (S13); multi-select.",barSVG(s13),[["format","count"]].concat(s13));
+    var s14=sortPairs(counts(stu,function(r){return r.answers.S14;}));figure(dL,"What makes biomedical research hard to consume"+smallN(stu.length),"Barriers (S14). 'Nothing' is the honesty valve.",barSVG(s14,{color:C2}),[["barrier","count"]].concat(s14));
+    var i15=mean(stu,function(r){return r.answers.S15;}),i16=mean(stu,function(r){return r.answers.S16;});figure(dL,"Interest in biomedical research and in combining CS + biology","Means on 1–5 (S15, S16).",barSVG([["Biomedical research (S15)",i15.m||0],["Combining CS + biology (S16)",i16.m||0]],{max:5,fmt:f1}),[["item","mean","n"],["S15",i15.m,i15.n],["S16",i16.m,i16.n]]);
+    var s17=sortPairs(counts(stu,function(r){return r.answers.S17;}),["Yes","No, but I want to","No, not interested"]);figure(dL,"Undergraduate research experience","S17. 'No, but I want to' is unmet demand.",barSVG(s17,{color:C3}),[["answer","count"]].concat(s17));
+    var s18=sortPairs(counts(stu,function(r){return r.answers.S18;}));if(s18.length)figure(dL,"Career direction","S18, read against S17.",barSVG(s18),[["direction","count"]].concat(s18));
+  }
+  var dA=$("#dashArcade");dA.innerHTML=stu.length?"":"<p class='hint'>No student responses yet.</p>";
+  if(stu.length){
+    figure(dA,"Played Bio-Arcade?","S19. Low reach is itself a finding about dissemination.",barSVG([["Yes",played.length],["Not yet",notp.length]],{color:C4}),[["played","count"],["Yes",played.length],["Not yet",notp.length]]);
+    if(played.length){var gp=sortPairs(counts(played,function(r){return r.answers.S20;}));figure(dA,"Games played"+smallN(played.length),"Among the "+played.length+" students who played (S20).",barSVG(gp),[["game","count"]].concat(gp));
+      var rx=[["The games helped me learn (S21)",mean(played,function(r){return r.answers.S21;}).m||0],["I would use them outside an assignment (S22)",mean(played,function(r){return r.answers.S22;}).m||0],["I would recommend them to a classmate (S23)",mean(played,function(r){return r.answers.S23;}).m||0]];
+      figure(dA,"Reaction among students who played"+smallN(played.length),"Means on 1–5. Voluntary-use intent (S22) is the strongest adoption signal.",barSVG(rx,{max:5,fmt:f1,lw:300}),[["item","mean"]].concat(rx));}
+  }
+  var dAI=$("#dashAI");dAI.innerHTML=stu.length?"":"<p class='hint'>No student responses yet.</p>";
+  if(stu.length){
+    var tools=sortPairs(counts(stu,function(r){return r.answers.S26;}));figure(dAI,"AI tools used for schoolwork in the past 30 days"+smallN(stu.length),"S26, 30-day window; tool names are categories, not endorsements.",barSVG(tools),[["tool","count"]].concat(tools));
+    var fr=sortPairs(counts(stu,function(r){return r.answers.S27;}),["Never","A few times a month","Weekly","Several times a week","Daily"]);figure(dAI,"How often students use AI for studying","S27.",barSVG(fr,{color:C2}),[["frequency","count"]].concat(fr));
+    var pu=sortPairs(counts(stu,function(r){return r.answers.S28;}));if(pu.length)figure(dAI,"What AI is used for","S28. Explaining concepts and practice questions are the tutor-use signal.",barSVG(pu),[["purpose","count"]].concat(pu));
+    var ve=sortPairs(counts(stu,function(r){return r.answers.S29;}),["Never","Rarely","Sometimes","Usually","Always"]),ca=sortPairs(counts(stu,function(r){return r.answers.S31;}),["Yes","No","Not sure"]);
+    figure(dAI,"Verification culture: checking AI answers, and having caught one wrong","S29 and S31. High adoption + low verification is the AI-literacy need.",barSVG(ve.map(function(p){return ["Checks: "+p[0],p[1]];}).concat(ca.map(function(p){return ["Caught an error: "+p[0],p[1]];})),{color:C3}),[["item","count"]].concat(ve.map(function(p){return ["S29 "+p[0],p[1]];}),ca.map(function(p){return ["S31 "+p[0],p[1]];})));
+    var ro=sortPairs(counts(stu,function(r){return r.answers.S30;}));if(ro.length)figure(dAI,"What AI mostly does for students","S30, perception only.",barSVG(ro),[["role","count"]].concat(ro));
+  }
+  var dF=$("#dashFac");dF.innerHTML=fac.length?"":"<p class='hint'>No faculty responses yet.</p>";
+  if(fac.length){
+    var f8=mean(fac,function(r){return r.answers.F8;}),f7=sortPairs(counts(fac,function(r){return r.answers.F7;}),["Yes","Maybe","No"]);figure(dF,"Would pilot Bio-Arcade in class"+smallN(fac.length),"F7 (counts) · openness (F8) averages "+f1(f8.m)+" / 5 over "+f8.n+" faculty. Report as counts until n ≥ 10.",barSVG(f7,{color:C4}),[["answer","count"]].concat(f7,[["F8_mean_openness",f8.m]]));
+    var f6=sortPairs(counts(fac,function(r){return r.answers.F6;}),["Never","Rarely","Sometimes","Often","Built into my courses"]);figure(dF,"Current use of games / simulations in teaching","F6.",barSVG(f6),[["frequency","count"]].concat(f6));
+    var f9=sortPairs(counts(fac,function(r){return r.answers.F9;})),f10=sortPairs(counts(fac,function(r){return r.answers.F10;}));figure(dF,"Barriers to adopting game-based learning","F9.",barSVG(f9,{color:C2}),[["barrier","count"]].concat(f9));figure(dF,"Evidence that would convince faculty","F10. Whatever tops this is what the project must produce first.",barSVG(f10,{color:C3}),[["evidence","count"]].concat(f10));
+    var f14=sortPairs(counts(fac,function(r){return r.answers.F14;}),["Not allowed","Discouraged","Allowed with limits","Encouraged","No explicit policy"]);if(f14.length)figure(dF,"Faculty approach to student AI use","F14, read against S26/S27 per campus.",barSVG(f14),[["policy","count"]].concat(f14));
+  }
+  var op=[];stu.forEach(function(r){if(r.answers.S24)op.push(["S24 · next game",r.answers.S24]);if(r.answers.S25)op.push(["S25 · biggest gap",r.answers.S25]);});fac.forEach(function(r){if(r.answers.F11)op.push(["F11 · support needed",r.answers.F11]);});
+  $("#dashOpen").innerHTML=op.length?op.map(function(o){return '<div class="openq"><span class="t">'+esc(o[0])+'</span>'+esc(o[1])+'</div>';}).join(""):"<p class='hint'>No open answers yet.</p>";
+}
+function allSpecs(){var l=[];STU.forEach(function(s){s.items.forEach(function(i){if(i.t==="cdmatrix")TOPICS.forEach(function(t){l.push({id:t.id+"_conf",role:"student",t:"likert",q:"S5 Confidence: "+t.label});l.push({id:t.id+"_diff",role:"student",t:"likert",q:"S6 Hard to learn: "+t.label});});else l.push({id:i.id,role:"student",t:i.t,q:i.q,opts:i.opts||null});});});
+  FAC.forEach(function(s){s.items.forEach(function(i){if(i.t==="fmatrix")TOPICS.forEach(function(t){l.push({id:t.id+"_teach",role:"faculty",t:"likert",q:"F5 Hard for students to grasp: "+t.label});});else l.push({id:i.id,role:"faculty",t:i.t,q:i.q,opts:i.opts||null});});});return l;}
+function mergeRecords(inc,label){var syn=0;if(!DEMO){var real=inc.filter(function(r){return !(r&&r.synthetic===true);});syn=inc.length-real.length;inc=real;}
+  var d=load(),seen={};d.forEach(function(r){seen[r.id]=1;});var add=0;inc.forEach(function(r){if(r&&r.id&&r.answers&&!seen[r.id]){r.sent=true;d.push(r);seen[r.id]=1;add++;}});store(d);renderDash();
+  $("#shareMsg").textContent=label+": "+add+" new, "+(inc.length-add)+" already here"+(syn?", "+syn+" synthetic records refused":"")+". Total "+d.length+".";}
+if(FAC_MODE){
+  $("#pullBtn").addEventListener("click",function(){if(!COLLECT_URL){$("#shareMsg").textContent="No collector configured.";return;}$("#shareMsg").textContent="Loading…";
+    fetch(COLLECT_URL+(COLLECT_URL.indexOf("?")>0?"&":"?")+"format=json").then(function(r){return r.json();}).then(function(j){mergeRecords(Array.isArray(j)?j:(j.records||[]),"Collector");}).catch(function(){$("#shareMsg").textContent="Could not reach the collector. Check COLLECT_URL and that the web app is deployed for 'Anyone'.";});});
+  $("#expWide").addEventListener("click",function(){var d=load(),cols=allSpecs().map(function(s){return s.id;}).filter(function(c,i,a){return a.indexOf(c)===i;});var head=["response_id","timestamp","instrument_version","role","collection","device","consent","synthetic_flag"].concat(cols),lines=[head.join(",")];
+    d.forEach(function(r){var row=[r.id,r.ts,r.instrument_version,r.role,r.collection,r.ua||"",r.consent,r.synthetic?"true":"false"];cols.forEach(function(c){row.push(r.answers[c]);});lines.push(row.map(cell).join(","));});download("bioarcade_survey_wide.csv",lines.join("\n"),"text/csv");$("#shareMsg").textContent="Exported "+d.length+" responses (wide CSV).";});
+  $("#expLong").addEventListener("click",function(){var d=load(),lines=["response_id,role,collection,item_id,value"];d.forEach(function(r){Object.keys(r.answers||{}).forEach(function(k){lines.push([r.id,r.role,r.collection,k,r.answers[k]].map(cell).join(","));});});download("bioarcade_survey_long.csv",lines.join("\n"),"text/csv");$("#shareMsg").textContent="Exported long CSV.";});
+  $("#expJson").addEventListener("click",function(){download("bioarcade_survey_responses.json",JSON.stringify(load(),null,2),"application/json");$("#shareMsg").textContent="Exported JSON.";});
+  $("#expCodebook").addEventListener("click",function(){var t="Bio-Arcade Learning Survey, codebook (instrument v1.2), generated "+new Date().toISOString().slice(0,10)+"\nScales 1–5, higher = more of the thing named. Gap index = mean S6 − mean S5 per topic. Collection: QR = public QR code, WEB = arcade page link, other = facilitator class code.\n\n"+allSpecs().map(function(s){return s.id+" ["+s.role+"] ("+s.t+")\n  Q: "+s.q+(s.opts?"\n  Options: "+s.opts.join(" | "):"");}).join("\n\n");download("bioarcade_survey_codebook.txt",t,"text/plain");$("#shareMsg").textContent="Codebook downloaded.";});
+  $("#impFile").addEventListener("change",function(e){var f=e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{var inc=JSON.parse(rd.result);if(!Array.isArray(inc))throw 0;mergeRecords(inc,"Import");}catch(err){$("#shareMsg").textContent="Import failed: not a Bio-Arcade survey JSON export.";}};rd.readAsText(f);e.target.value="";});
+  $("#wipeBtn").addEventListener("click",function(){if(confirm("Erase all survey data stored in this browser? Records already in the collector are not affected.")){localStorage.removeItem(KEY);renderDash();$("#shareMsg").textContent="Local data erased.";}});
+  $("#demoBtn").addEventListener("click",function(){
+    if(!DEMO){$("#shareMsg").innerHTML="Demo data loads only in <a href='?facilitator=1&demo=1'>demo mode</a>: a separate data store, every record stamped synthetic, refused by this importer and never posted to the collector.";return;}
+    function pick(a){return a[Math.floor(Math.random()*a.length)];}function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+    var demo=[];
+    for(var i=0;i<16;i++){var maj=pick(["Biology","Computer Science","Biology + CS / interdisciplinary","Biology"]),pl=Math.random()<0.6;
+      var ans={S1:pick(PUIS.slice(0,8)),S2:maj,S3:pick(["Freshman","Sophomore","Junior","Senior"]),S4:["General Biology",pick(["Genetics","Programming I","General Chemistry"])],S13:["Lectures","Videos",pick(["Games / simulations","AI chat tools","Study groups"])],S14:[pick(["Technical jargon","Statistics & math","Don't know where to start"])],S15:rnd(2,5),S16:rnd(2,5),S17:pick(["Yes","No, but I want to","No, but I want to","No, not interested"]),S18:pick(["Biomedical / life-science research","Healthcare / clinical","Software / data","Bioinformatics / computational biology","Undecided"]),S19:pl?"Yes":"Not yet",S26:[pick(["ChatGPT (OpenAI)","Claude (Anthropic)","Gemini (Google)"]),"ChatGPT (OpenAI)"],S27:pick(["A few times a month","Weekly","Several times a week"]),S28:["Explaining concepts",pick(["Checking my answers","Help with coding","Summarizing papers or readings"])],S29:pick(["Rarely","Sometimes","Usually"]),S30:pick(["Help me understand the concept","Help me finish faster"]),S31:pick(["Yes","No","Not sure"])};
+      if(pl){ans.S20=[pick(GAMES),pick(GAMES)];ans.S21=rnd(3,5);ans.S22=rnd(2,5);ans.S23=rnd(3,5);}
+      TOPICS.forEach(function(t){var weak=(t.id==="folding"||t.id==="pharmaco");ans[t.id+"_conf"]=weak?rnd(1,3):rnd(2,5);ans[t.id+"_diff"]=weak?rnd(3,5):rnd(2,4);});
+      demo.push({id:uid()+"ds"+i,ts:new Date(Date.now()-rnd(0,6)*864e5).toISOString(),instrument_version:VSTU,role:"student",collection:pick(["QR","WEB","DEMO-CLASS"]),consent:"yes",synthetic:true,answers:ans});}
+    for(var j=0;j<4;j++){var fa={F1:pick(PUIS.slice(0,8)),F2:j===1?"Computer Science":"Biology / Life Sciences",F3:"Both intro and upper-level",F6:pick(["Rarely","Sometimes"]),F7:pick(["Yes","Maybe","Yes"]),F8:rnd(3,5),F9:["Time in the syllabus",pick(["Alignment to learning objectives","Lack of evidence it works"])],F10:["Measured learning gains",pick(["A map to my learning objectives","A small pilot in my own class"])],F14:pick(["Allowed with limits","Discouraged","No explicit policy"])};
+      TOPICS.forEach(function(t){fa[t.id+"_teach"]=(t.id==="folding"||t.id==="pharmaco")?rnd(4,5):rnd(2,4);});demo.push({id:uid()+"df"+j,ts:new Date().toISOString(),instrument_version:VFAC,role:"faculty",collection:"DEMO",consent:"yes",synthetic:true,answers:fa});}
+    store(load().concat(demo));renderDash();$("#shareMsg").textContent="Demo set loaded: 16 synthetic students + 4 synthetic faculty (demo-mode store only).";});
+  renderDash();
+}
+if(DEMO){var bn=el("div","demo-banner","DEMO MODE: synthetic data only; nothing here is research data and nothing is posted to the collector. Remove demo=1 from the address for the real survey.");document.body.insertBefore(bn,document.body.firstChild);}
+</script>
+</body>
+</html>
