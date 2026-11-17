@@ -1,7 +1,7 @@
-name: Refresh survey/responses.csv
+name: Refresh bio-arcade/survey/responses.csv
 
 # Pulls every response from the Google Sheet collector (Apps Script web app) and commits
-# survey/responses.csv when it changed. Zero PII by design of the instrument.
+# bio-arcade/survey/responses.csv when it changed. Zero PII by design of the instrument.
 # Requires repository secret SURVEY_COLLECT_URL = the Apps Script web app URL (…/exec).
 
 on:
@@ -24,11 +24,11 @@ jobs:
           test -n "$URL" || { echo "SURVEY_COLLECT_URL secret is not set"; exit 1; }
           curl -sSL --fail "${URL}?format=csv" -o /tmp/responses.csv
           head -c 200 /tmp/responses.csv | grep -q '^server_ts,' || { echo "unexpected response from collector"; head -c 400 /tmp/responses.csv; exit 1; }
-          mkdir -p survey && cp /tmp/responses.csv survey/responses.csv
-          echo "rows: $(($(wc -l < survey/responses.csv) - 1))"
+          mkdir -p bio-arcade/survey && cp /tmp/responses.csv bio-arcade/survey/responses.csv
+          echo "rows: $(($(wc -l < bio-arcade/survey/responses.csv) - 1))"
       - name: Commit if changed
         run: |
           git config user.name "survey-bot"
           git config user.email "survey-bot@users.noreply.github.com"
-          git add survey/responses.csv
+          git add bio-arcade/survey/responses.csv
           git diff --cached --quiet && echo "no change" || git commit -m "survey: refresh responses.csv ($(date -u +%F))" && git push
